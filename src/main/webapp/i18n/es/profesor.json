@@ -1,0 +1,29 @@
+{
+    "easyscheduleApp": {
+        "profesor" : {
+            "home": {
+                "title": "Profesors",
+                "createLabel": "Crear nuevo Profesor",
+                "createOrEditLabel": "Crear o editar Profesor"
+            },
+            "created": "Un nuevo Profesor ha sido creado con el identificador {{ param }}",
+            "updated": "Un Profesor ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Profesor ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Profesor {{ id }}?"
+            },
+            "detail": {
+                "title": "Profesor"
+            },
+            "nombre": "Nombre",
+            "primerApellido": "Primer Apellido",
+            "segundoApellido": "Segundo Apellido",
+            "codProfesor": "Cod Profesor",
+            "email": "Email",
+            "categoria": "Categoria",
+            "numCreditosImpartir": "Num Creditos Impartir",
+            "prioridad": "Prioridad",
+            "usuAlta": "Usu Alta"
+        }
+    }
+}
