@@ -1,9 +1,12 @@
 package com.pfg.easyschedule.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -55,6 +58,10 @@ public class Profesor implements Serializable {
     @NotNull
     @Column(name = "usu_alta", nullable = false)
     private String usuAlta;
+
+    @ManyToMany(mappedBy = "profesors")
+    @JsonIgnore
+    private Set<Asignatura> asignaturas = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -179,6 +186,31 @@ public class Profesor implements Serializable {
 
     public void setUsuAlta(String usuAlta) {
         this.usuAlta = usuAlta;
+    }
+
+    public Set<Asignatura> getAsignaturas() {
+        return asignaturas;
+    }
+
+    public Profesor asignaturas(Set<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
+        return this;
+    }
+
+    public Profesor addAsignatura(Asignatura asignatura) {
+        this.asignaturas.add(asignatura);
+        asignatura.getProfesors().add(this);
+        return this;
+    }
+
+    public Profesor removeAsignatura(Asignatura asignatura) {
+        this.asignaturas.remove(asignatura);
+        asignatura.getProfesors().remove(this);
+        return this;
+    }
+
+    public void setAsignaturas(Set<Asignatura> asignaturas) {
+        this.asignaturas = asignaturas;
     }
 
     @Override
