@@ -60,8 +60,8 @@ public class Asignatura implements Serializable {
 
     @ManyToMany
     @JoinTable(name = "asignatura_profesor",
-               joinColumns = @JoinColumn(name="asignaturas_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="profesors_id", referencedColumnName="id"))
+               joinColumns = @JoinColumn(name="id_asignatura", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="id_profesor", referencedColumnName="id"))
     private Set<Profesor> profesors = new HashSet<>();
 
     public Long getId() {
@@ -207,6 +207,7 @@ public class Asignatura implements Serializable {
     }
 
     public Asignatura profesors(Set<Profesor> profesors) {
+
         this.profesors = profesors;
         return this;
     }
