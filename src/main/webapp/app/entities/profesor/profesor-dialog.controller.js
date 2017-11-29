@@ -5,14 +5,15 @@
         .module('easyscheduleApp')
         .controller('ProfesorDialogController', ProfesorDialogController);
 
-    ProfesorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Profesor'];
+    ProfesorDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Profesor', 'Asignatura'];
 
-    function ProfesorDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Profesor) {
+    function ProfesorDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Profesor, Asignatura) {
         var vm = this;
 
         vm.profesor = entity;
         vm.clear = clear;
         vm.save = save;
+        vm.asignaturas = Asignatura.query();
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();

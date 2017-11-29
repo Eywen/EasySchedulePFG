@@ -2,11 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "asignatura",
-            "otherEntityName": "asignatura",
+            "relationshipName": "profesor",
+            "otherEntityName": "profesor",
             "relationshipType": "many-to-many",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "profesor"
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "asignatura"
         }
     ],
     "fields": [
@@ -18,67 +19,63 @@
             ]
         },
         {
-            "fieldName": "primerApellido",
+            "fieldName": "plan",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "segundoApellido",
+            "fieldName": "titulacion",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "codProfesor",
+            "fieldName": "creditos",
             "fieldType": "Integer",
             "fieldValidateRules": [
-                "required",
-                "max"
-            ],
-            "fieldValidateRulesMax": "3"
+                "required"
+            ]
         },
         {
-            "fieldName": "email",
-            "fieldType": "String",
+            "fieldName": "num_grupos",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "creditos_teoricos",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "categoria",
-            "fieldType": "String",
+            "fieldName": "creditos_practicas",
+            "fieldType": "Integer",
             "fieldValidateRules": [
                 "required"
             ]
         },
         {
-            "fieldName": "numCreditosImpartir",
-            "fieldType": "Integer",
-            "fieldValidateRules": []
+            "fieldName": "num_grupos_teoricos",
+            "fieldType": "Integer"
         },
         {
-            "fieldName": "prioridad",
-            "fieldType": "Integer",
-            "fieldValidateRules": [
-                "required",
-                "max"
-            ],
-            "fieldValidateRulesMax": "2"
+            "fieldName": "num_grupos_practicas",
+            "fieldType": "Integer"
         },
         {
-            "fieldName": "usuAlta",
+            "fieldName": "usu_alta",
             "fieldType": "String",
             "fieldValidateRules": [
                 "required"
             ]
         }
     ],
-    "changelogDate": "20170312131505",
+    "changelogDate": "20171008213459",
     "dto": "no",
     "service": "no",
-    "entityTableName": "profesor",
-    "pagination": "pagination"
+    "entityTableName": "asignatura",
+    "pagination": "pager"
 }

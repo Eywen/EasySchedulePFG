@@ -1,0 +1,144 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myAsignaturaLabel" data-translate="easyscheduleApp.asignatura.home.createOrEditLabel">Create or edit a Asignatura</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.asignatura.id">
+            <label for="id" data-translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.asignatura.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.nombre" for="field_nombre">Nombre</label>
+            <input type="text" class="form-control" name="nombre" id="field_nombre"
+                    ng-model="vm.asignatura.nombre"
+                    required/>
+            <div ng-show="editForm.nombre.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.nombre.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.plan" for="field_plan">Plan</label>
+            <input type="text" class="form-control" name="plan" id="field_plan"
+                    ng-model="vm.asignatura.plan"
+                    required/>
+            <div ng-show="editForm.plan.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.plan.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.titulacion" for="field_titulacion">Titulacion</label>
+            <input type="text" class="form-control" name="titulacion" id="field_titulacion"
+                    ng-model="vm.asignatura.titulacion"
+                    required/>
+            <div ng-show="editForm.titulacion.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.titulacion.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.creditos" for="field_creditos">Creditos</label>
+            <input type="number" class="form-control" name="creditos" id="field_creditos"
+                    ng-model="vm.asignatura.creditos"
+                    required/>
+            <div ng-show="editForm.creditos.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.creditos.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.creditos.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.num_grupos" for="field_num_grupos">Num Grupos</label>
+            <input type="number" class="form-control" name="num_grupos" id="field_num_grupos"
+                    ng-model="vm.asignatura.num_grupos"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.creditos_teoricos" for="field_creditos_teoricos">Creditos Teoricos</label>
+            <input type="number" class="form-control" name="creditos_teoricos" id="field_creditos_teoricos"
+                    ng-model="vm.asignatura.creditos_teoricos"
+                    required/>
+            <div ng-show="editForm.creditos_teoricos.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.creditos_teoricos.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.creditos_teoricos.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.creditos_practicas" for="field_creditos_practicas">Creditos Practicas</label>
+            <input type="number" class="form-control" name="creditos_practicas" id="field_creditos_practicas"
+                    ng-model="vm.asignatura.creditos_practicas"
+                    required/>
+            <div ng-show="editForm.creditos_practicas.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.creditos_practicas.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.creditos_practicas.$error.number" data-translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.num_grupos_teoricos" for="field_num_grupos_teoricos">Num Grupos Teoricos</label>
+            <input type="number" class="form-control" name="num_grupos_teoricos" id="field_num_grupos_teoricos"
+                    ng-model="vm.asignatura.num_grupos_teoricos"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.num_grupos_practicas" for="field_num_grupos_practicas">Num Grupos Practicas</label>
+            <input type="number" class="form-control" name="num_grupos_practicas" id="field_num_grupos_practicas"
+                    ng-model="vm.asignatura.num_grupos_practicas"
+                    />
+        </div>
+        <div class="form-group">
+            <label class="control-label" data-translate="easyscheduleApp.asignatura.usu_alta" for="field_usu_alta">Usu Alta</label>
+            <input type="text" class="form-control" name="usu_alta" id="field_usu_alta"
+                    ng-model="vm.asignatura.usu_alta"
+                    required/>
+            <div ng-show="editForm.usu_alta.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.usu_alta.$error.required" data-translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label data-translate="easyscheduleApp.asignatura.profesor" for="field_profesor">Profesor</label>
+            <select class="form-control" id="field_profesor" multiple name="profesor" ng-model="vm.asignatura.profesors" ng-options="profesor as profesor.id for profesor in vm.profesors track by profesor.id"></select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

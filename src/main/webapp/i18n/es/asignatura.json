@@ -1,0 +1,31 @@
+{
+    "easyscheduleApp": {
+        "asignatura" : {
+            "home": {
+                "title": "Asignaturas",
+                "createLabel": "Crear nuevo Asignatura",
+                "createOrEditLabel": "Crear o editar Asignatura"
+            },
+            "created": "Un nuevo Asignatura ha sido creado con el identificador {{ param }}",
+            "updated": "Un Asignatura ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Asignatura ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Asignatura {{ id }}?"
+            },
+            "detail": {
+                "title": "Asignatura"
+            },
+            "nombre": "Nombre",
+            "plan": "Plan",
+            "titulacion": "Titulacion",
+            "creditos": "Creditos",
+            "num_grupos": "Num Grupos",
+            "creditos_teoricos": "Creditos Teoricos",
+            "creditos_practicas": "Creditos Practicas",
+            "num_grupos_teoricos": "Num Grupos Teoricos",
+            "num_grupos_practicas": "Num Grupos Practicas",
+            "usu_alta": "Usu Alta",
+            "profesor": "Profesor"
+        }
+    }
+}

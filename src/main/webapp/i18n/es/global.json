@@ -8,6 +8,7 @@
             "entities": {
                 "main": "Entidades",
                 "profesor": "Profesor",
+                "asignatura": "Asignatura",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

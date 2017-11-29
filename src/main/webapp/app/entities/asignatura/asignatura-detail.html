@@ -1,0 +1,65 @@
+
+<div>
+    <h2><span data-translate="easyscheduleApp.asignatura.detail.title">Asignatura</span> {{vm.asignatura.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span data-translate="easyscheduleApp.asignatura.nombre">Nombre</span></dt>
+        <dd>
+            <span>{{vm.asignatura.nombre}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.plan">Plan</span></dt>
+        <dd>
+            <span>{{vm.asignatura.plan}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.titulacion">Titulacion</span></dt>
+        <dd>
+            <span>{{vm.asignatura.titulacion}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.creditos">Creditos</span></dt>
+        <dd>
+            <span>{{vm.asignatura.creditos}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.num_grupos">Num Grupos</span></dt>
+        <dd>
+            <span>{{vm.asignatura.num_grupos}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.creditos_teoricos">Creditos Teoricos</span></dt>
+        <dd>
+            <span>{{vm.asignatura.creditos_teoricos}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.creditos_practicas">Creditos Practicas</span></dt>
+        <dd>
+            <span>{{vm.asignatura.creditos_practicas}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.num_grupos_teoricos">Num Grupos Teoricos</span></dt>
+        <dd>
+            <span>{{vm.asignatura.num_grupos_teoricos}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.num_grupos_practicas">Num Grupos Practicas</span></dt>
+        <dd>
+            <span>{{vm.asignatura.num_grupos_practicas}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.usu_alta">Usu Alta</span></dt>
+        <dd>
+            <span>{{vm.asignatura.usu_alta}}</span>
+        </dd>
+        <dt><span data-translate="easyscheduleApp.asignatura.profesor">Profesor</span></dt>
+        <dd>
+            <span ng-repeat="profesor in vm.asignatura.profesors">
+                <a ui-sref="profesor-detail({id: profesor.id})">{{profesor.id}}</a>{{$last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            ui-sref="{{ vm.previousState }}"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span data-translate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button" ui-sref="asignatura-detail.edit({id:vm.asignatura.id})" class="btn btn-primary">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span class="hidden-sm-down" data-translate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -5056,9 +5056,9 @@ a.thumbnail.active {
   color: inherit;
 }
 .alert-success {
-  color: #3c763d;
-  background-color: #dff0d8;
-  border-color: #d6e9c6;
+  color: #5F3884;
+  background-color: #DFDFDF;
+  border-color: #6A5A82;
 }
 .alert-success hr {
   border-top-color: #c9e2b3;
@@ -5068,8 +5068,8 @@ a.thumbnail.active {
 }
 .alert-info {
   color: #31708f;
-  background-color: #d9edf7;
-  border-color: #bce8f1;
+  background-color: #31708f;
+  border-color: ##380B61;
 }
 .alert-info hr {
   border-top-color: #a6e1ec;
@@ -5078,9 +5078,9 @@ a.thumbnail.active {
   color: #245269;
 }
 .alert-warning {
-  color: #8a6d3b;
-  background-color: #fcf8e3;
-  border-color: #faebcc;
+  color: #5F3884;
+  background-color: #DFDFDF;
+  border-color: #6A5A82;
 }
 .alert-warning hr {
   border-top-color: #f7e1b5;

@@ -23,7 +23,8 @@
             "categoria": "Categoria",
             "numCreditosImpartir": "Num Creditos Impartir",
             "prioridad": "Prioridad",
-            "usuAlta": "Usu Alta"
+            "usuAlta": "Usu Alta",
+            "asignatura": "Asignatura"
         }
     }
 }

@@ -5,9 +5,9 @@
         .module('easyscheduleApp')
         .controller('ProfesorDetailController', ProfesorDetailController);
 
-    ProfesorDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Profesor'];
+    ProfesorDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'previousState', 'entity', 'Profesor', 'Asignatura'];
 
-    function ProfesorDetailController($scope, $rootScope, $stateParams, previousState, entity, Profesor) {
+    function ProfesorDetailController($scope, $rootScope, $stateParams, previousState, entity, Profesor, Asignatura) {
         var vm = this;
 
         vm.profesor = entity;
