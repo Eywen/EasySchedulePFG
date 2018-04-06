@@ -59,6 +59,12 @@ public class Profesor implements Serializable {
     @Column(name = "usu_alta", nullable = false)
     private String usuAlta;
 
+    @NotNull
+    @Column(name = "login", nullable = false)
+    private String login;
+
+
+
     @ManyToMany(mappedBy = "profesors")
     @JsonIgnore
     private Set<Asignatura> asignaturas = new HashSet<>();
@@ -228,6 +234,14 @@ public class Profesor implements Serializable {
         return Objects.equals(id, profesor.id);
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
@@ -245,6 +259,7 @@ public class Profesor implements Serializable {
             ", categoria='" + categoria + "'" +
             ", numCreditosImpartir='" + numCreditosImpartir + "'" +
             ", prioridad='" + prioridad + "'" +
+            ", login='" + login + "'" +
             ", usuAlta='" + usuAlta + "'" +
             '}';
     }

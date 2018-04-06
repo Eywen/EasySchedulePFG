@@ -4,7 +4,9 @@
             "home": {
                 "title": "Profesors",
                 "createLabel": "Crear nuevo Profesor",
-                "createOrEditLabel": "Crear o editar Profesor"
+                "createOrEditLabel": "Crear o editar Profesor",
+                "chooseSubject": "Elegir asignatura",
+                "selections": "Selecciones"
             },
             "created": "Un nuevo Profesor ha sido creado con el identificador {{ param }}",
             "updated": "Un Profesor ha sido actualizado con el identificador {{ param }}",
@@ -21,7 +23,7 @@
             "codProfesor": "Cod Profesor",
             "email": "Email",
             "categoria": "Categoria",
-            "numCreditosImpartir": "Num Creditos Impartir",
+            "numCreditosImpartir": "Creditos Impartir",
             "prioridad": "Prioridad",
             "usuAlta": "Usu Alta",
             "asignatura": "Asignatura"

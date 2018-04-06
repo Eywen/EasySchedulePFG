@@ -20,6 +20,17 @@
                     return data;
                 }
             },
+            'getByLogin': {
+                method: 'GET',
+                url: 'api/profesors/login/:login',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    console.log('data: ',data);
+                    return data;
+                }
+            },
             'update': { method:'PUT' }
         });
     }

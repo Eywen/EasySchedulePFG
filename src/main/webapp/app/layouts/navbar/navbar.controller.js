@@ -24,6 +24,8 @@
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
 
+        console.log(ProfileService.getProfileInfo());
+
         function login() {
             collapseNavbar();
             LoginService.open();

@@ -12,4 +12,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface ProfesorRepository extends JpaRepository<Profesor,Long> {
 
+    @Query("SELECT p FROM Profesor p WHERE p.login = ?1")
+    Profesor getLogin (String login);
+
 }
