@@ -46,6 +46,7 @@
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('profesor');
+                    $translatePartialLoader.addPart('asignatura');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
@@ -133,7 +134,8 @@
                                 numCreditosImpartir: null,
                                 prioridad: null,
                                 usuAlta: null,
-                                id: null
+                                id: null,
+                                asignaturas: null
                             };
                         }
                     }
@@ -168,6 +170,41 @@
                     $state.go('^');
                 });
             }]
+        })
+        .state('profesor.getsubjects', {
+            parent: 'profesor',
+            url: '/{id}/getsubjects',
+            data: {
+                authorities: ['ROLE_USER'],
+                pageTitle: 'easyscheduleApp.profesor.detail.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/profesor/profesor-getsubjects.html',
+                    controller: 'ProfesorGetSubjectsController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('profesor');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'Profesor', function($stateParams, Profesor) {
+                    console.log('getsubjectstate: ', $stateParams);
+
+                    return Profesor.getSubjects({id : $stateParams.id}).$promise;
+                    console.log ('after getsubject service');
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'profesor',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
         })
         .state('profesor.delete', {
             parent: 'profesor',

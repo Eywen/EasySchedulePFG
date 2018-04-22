@@ -9,16 +9,18 @@ import javax.persistence.ManyToOne;
  * Created by kara_ on 01/11/2017.
  */
 @Embeddable
-public class AsignaturaProfesorId {
+public class AsignaturaProfesorId implements Serializable {
 
-    /*private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-    @ManyToOne
-    @JoinColumn(name="id", nullable = false)
+    /*@ManyToOne(optional=false)
+    @JoinColumn(name="id", insertable=false, updatable=false, referencedColumnName="id")*/
     private Asignatura asignatura;
 
-    @ManyToOne
-    @JoinColumn(name="id", nullable = false)
+
+
+    /*@ManyToOne(optional=false)
+    @JoinColumn(name="id", insertable=false, updatable=false, referencedColumnName="id")*/
     private Profesor profesor;
 
     public AsignaturaProfesorId() {
@@ -69,5 +71,5 @@ public class AsignaturaProfesorId {
             "asignatura=" + asignatura +
             ", profesor=" + profesor +
             '}';
-    }*/
+    }
 }

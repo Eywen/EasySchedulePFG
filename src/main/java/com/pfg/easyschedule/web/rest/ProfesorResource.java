@@ -8,6 +8,8 @@ import com.pfg.easyschedule.web.rest.util.HeaderUtil;
 import com.pfg.easyschedule.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -109,11 +113,15 @@ public class ProfesorResource {
     public ResponseEntity<Profesor> getProfesor(@PathVariable Long id) {
         log.debug("REST request to get Profesor : {}", id);
         Profesor profesor = profesorRepository.findOne(id);
+
+
+
+        //log.debug("REST request to get Profesor : {}", profesor);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesor));
     }
 
     /**
-     * GET  /profesors/:login : get the "login" profesor.
+     * GET  /profesors/login/:login : get the "login" profesor.
      *
      * @param login the login of the profesor to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the profesor, or with status 404 (Not Found)
@@ -121,11 +129,13 @@ public class ProfesorResource {
     @GetMapping("/profesors/login/{login}")
     @Timed
     public ResponseEntity<Profesor> getProfesorLogin(@PathVariable String login) {
-        log.debug("REST request to get Profesor : {}", login);
+        log.debug("REST request to get Profesor login: {}", login);
         System.out.println("login ======> "+login);
         Profesor profesor = profesorRepository.getLogin(login);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesor));
     }
+
+
 
     /**
      * DELETE  /profesors/:id : delete the "id" profesor.

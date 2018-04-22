@@ -2,7 +2,7 @@
     "easyscheduleApp": {
         "profesor" : {
             "home": {
-                "title": "Profesors",
+                "title": "Profesores",
                 "createLabel": "Crear nuevo Profesor",
                 "createOrEditLabel": "Crear o editar Profesor",
                 "chooseSubject": "Elegir asignatura",
