@@ -63,6 +63,18 @@ public class Profesor implements Serializable {
     @JsonIgnore
     private Set<Asignatura> asignaturas = new HashSet<>();
 
+    @NotNull
+    @Column(name = "login", nullable = false)
+    private String login;
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
     public Long getId() {
         return id;
     }
@@ -245,6 +257,7 @@ public class Profesor implements Serializable {
             ", categoria='" + categoria + "'" +
             ", numCreditosImpartir='" + numCreditosImpartir + "'" +
             ", prioridad='" + prioridad + "'" +
+            ", login='" + login + "'" +
             ", usuAlta='" + usuAlta + "'" +
             '}';
     }

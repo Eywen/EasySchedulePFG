@@ -5,9 +5,9 @@
         .module('easyscheduleApp')
         .controller('HomeController', HomeController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state'];
+    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state','Profesor'];
 
-    function HomeController ($scope, Principal, LoginService, $state) {
+    function HomeController ($scope, Principal, LoginService, $state,Profesor) {
         var vm = this;
 
         vm.account = null;
@@ -23,6 +23,10 @@
         function getAccount() {
             Principal.identity().then(function(account) {
                 vm.account = account;
+                Profesor.getByLogin({login: vm.account.login}, function (result) {
+                            vm.userLogin = result;
+                             
+                 });
                 vm.isAuthenticated = Principal.isAuthenticated;
             });
         }

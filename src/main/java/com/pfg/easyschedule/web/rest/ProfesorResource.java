@@ -33,7 +33,7 @@ public class ProfesorResource {
     private final Logger log = LoggerFactory.getLogger(ProfesorResource.class);
 
     private static final String ENTITY_NAME = "profesor";
-        
+
     private final ProfesorRepository profesorRepository;
 
     public ProfesorResource(ProfesorRepository profesorRepository) {
@@ -109,6 +109,21 @@ public class ProfesorResource {
     public ResponseEntity<Profesor> getProfesor(@PathVariable Long id) {
         log.debug("REST request to get Profesor : {}", id);
         Profesor profesor = profesorRepository.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesor));
+    }
+
+    /**
+     * GET  /profesors/:login : get the "login" profesor.
+     *
+     * @param login the login of the profesor to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the profesor, or with status 404 (Not Found)
+     */
+    @GetMapping("/profesors/login/{login}")
+    @Timed
+    public ResponseEntity<Profesor> getProfesorLogin(@PathVariable String login) {
+        log.debug("REST request to get Profesor : {}", login);
+        System.out.println("login ======> "+login);
+        Profesor profesor = profesorRepository.getLogin(login);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesor));
     }
 
