@@ -6,30 +6,23 @@
         <div class="col-md-8">
             <h1 data-translate="home.title">Welcome, EasySchedule</h1>
             <!-- <p class="lead" data-translate="home.subtitle">This is your homepage</p> -->
-
+            <br><br><br>
             <div ng-switch="vm.isAuthenticated()">
-                <div class="alert alert-success" ng-switch-when="true" data-translate="home.logged.message" translate-values="{username: '{{vm.account.login}}'}">
-                    You are logged in as user "{{vm.account.login}}".<div ng-switch-when="true" has-authority="ROLE_USER">
-                   
-                        <button type="submit"
-                                ui-sref="home.profesor({id:vm.userLogin.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                        </button>
+                <div class="alert alert-success message" ng-switch-when="true" data-translate="home.logged.message" translate-values="{username: '{{vm.account.login}}'}" >
+                   You are logged in as user "{{vm.account.login}}".<div ng-switch-when="true" has-authority="ROLE_USER">               
+                     </div>
+                </div><br><br>
+                <div>                
+                    <button type="submit"
+                            ui-sref="home.profesor({id:vm.userLogin.id})"
+                            class="btn btn-primary btn-sm" ng-switch-when="true" has-authority="ROLE_USER">
+                        <span class="glyphicon glyphicon-eye-open"></span>
+                        <span class="hidden-sm-down" data-translate="entity.action.choices"></span>
+                    </button>
                        
             </div>
-                </div>
-                <div ng-switch-when="true" has-authority="ROLE_USER">
-                   
-                        <button type="submit"
-                                ui-sref="home.profesor({id:vm.userLogin.id})"
-                                class="btn btn-primary btn-sm">
-                            <span class="glyphicon glyphicon-pencil"></span>
-                            <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-                        </button>
                        
-            </div>
+           
                 <div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.authenticated" translate-compile>
                     If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
                 </div>

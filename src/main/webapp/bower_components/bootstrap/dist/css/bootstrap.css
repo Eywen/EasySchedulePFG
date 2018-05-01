@@ -5025,10 +5025,10 @@ a.thumbnail.active {
   color: #333;
 }
 .alert {
-  padding: 15px;
-  margin-bottom: 20px;
+  padding: .75rem 1.25rem;
+  margin-bottom: 1rem;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: .25rem;
 }
 .alert h4 {
   margin-top: 0;
@@ -5056,9 +5056,9 @@ a.thumbnail.active {
   color: inherit;
 }
 .alert-success {
-  color: #5F3884;
-  background-color: #DFDFDF;
-  border-color: #6A5A82;
+  background-color: #dff0d8;
+  border-color: #d0e9c6;
+  color: #3c763d;
 }
 .alert-success hr {
   border-top-color: #c9e2b3;
