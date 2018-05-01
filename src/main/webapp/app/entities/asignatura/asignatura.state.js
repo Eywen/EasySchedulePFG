@@ -170,6 +170,38 @@
                 });
             }]
         })
+        .state('asignatura.all', {
+            parent: 'asignatura',
+            url: '/asignaturas/{id}',
+            data: {
+                authorities: ['ROLE_USER'],
+                pageTitle: 'easyscheduleApp.asignatura.detail.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/asignatura/asignaturas-all.html',
+                    controller: 'AsignaturasAll',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('asignatura');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'Asignatura', function($stateParams, Asignatura) {
+                    return Asignatura.query().$promise;
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'asignatura',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+        })
         .state('asignatura.delete', {
             parent: 'asignatura',
             url: '/{id}/delete',
