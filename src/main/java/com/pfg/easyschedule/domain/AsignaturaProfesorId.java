@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
  * Created by kara_ on 01/11/2017.
  */
 @Embeddable
-public class AsignaturaProfesorId implements Serializable{
+public class AsignaturaProfesorId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

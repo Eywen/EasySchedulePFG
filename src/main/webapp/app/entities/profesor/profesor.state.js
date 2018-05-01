@@ -46,6 +46,7 @@
                 }],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('profesor');
+                    $translatePartialLoader.addPart('asignatura');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]

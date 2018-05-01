@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -59,9 +60,17 @@ public class Profesor implements Serializable {
     @Column(name = "usu_alta", nullable = false)
     private String usuAlta;
 
-    @ManyToMany(mappedBy = "profesors")
-    @JsonIgnore
-    private Set<Asignatura> asignaturas = new HashSet<>();
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+        name = "asignatura_profesor",
+        joinColumns = { @JoinColumn(name = "id_profesor") },
+        inverseJoinColumns = { @JoinColumn(name = "id_asignatura") }
+    )
+
+    /*@ManyToMany(mappedBy = "profesors")
+    @JsonIgnore*/
+    //private Set<Asignatura> asignaturas = new HashSet<>();
+    private List<Asignatura> asignaturas ;
 
     @NotNull
     @Column(name = "login", nullable = false)
@@ -200,11 +209,11 @@ public class Profesor implements Serializable {
         this.usuAlta = usuAlta;
     }
 
-    public Set<Asignatura> getAsignaturas() {
+    public List<Asignatura> getAsignaturas() {
         return asignaturas;
     }
 
-    public Profesor asignaturas(Set<Asignatura> asignaturas) {
+    public Profesor asignaturas(List<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
         return this;
     }
@@ -221,7 +230,7 @@ public class Profesor implements Serializable {
         return this;
     }
 
-    public void setAsignaturas(Set<Asignatura> asignaturas) {
+    public void setAsignaturas(List<Asignatura> asignaturas) {
         this.asignaturas = asignaturas;
     }
 
