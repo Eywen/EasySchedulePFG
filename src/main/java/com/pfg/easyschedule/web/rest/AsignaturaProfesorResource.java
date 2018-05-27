@@ -51,72 +51,6 @@ public class AsignaturaProfesorResource {
         this.profesorRepository = profesorRepository;
     }
 
-    ///////////////////////OK
-
-    /**
-     * GET  /asignaturaprofesors/subjects/:id : get the "asignaturas" profesor.
-     *
-     * @param id  of the profesor to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the subjects, or with status 404 (Not Found)
-     */
-    //@GetMapping("/asignaturaprofesors/subjects/{id}")
-    @RequestMapping(value = "/asignaturaprofesors/subjects/{id}",
-        method= RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
-    @Timed
-    public ResponseEntity<List<Asignatura>> getProfesorSubjects(@PathVariable Long id) {
-        log.debug("REST request to get Profesor Subjects: {}", id);
-
-        //List<Asignatura> subjects = asignaturaProfesorRepository.getProfesorSubjects(id);
-
-        Profesor asigProfesor = profesorRepository.findOne(id);
-        log.debug("Recuperado profesor: {} ",asigProfesor);
-        log.debug("REST get Profesor Subjects: {}", asigProfesor.getAsignaturas());
-        List<Asignatura> asignaturas = new ArrayList<>();
-        asignaturas = asigProfesor.getAsignaturas();
-        // JSONObject json = new JSONObject();
-
-
-
-        return Optional.ofNullable(asignaturas)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-        // return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asigProfesor.getAsignaturas()));
-    }
-
-    /**
-     * GET  /asignaturasProfesor : get all the asignaturas-profesors.
-     *
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of asignaturasprofesors in body
-     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
-     */
-    @GetMapping("/asignaturaprofesors")
-    @Timed
-    //public ResponseEntity<List<AsignaturaProfesor>> getAllAsignaturasProfesors(@ApiParam Pageable pageable) {
-    public ResponseEntity<List<AsignaturaProfesor>> getAllAsignaturasProfesors() {
-        log.debug("REST request to get a page of AsignaturasProfesors");
-        //Page<AsignaturaProfesor> page = asignaturaProfesorRepository.findAll(pageable);
-        //HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/asignaturaprofesors");
-        List<AsignaturaProfesor> asignaturasProfesor =asignaturaProfesorRepository.findAll();
-        log.debug("asignaturaProfesorRepository.findAll"+asignaturaProfesorRepository.findAll());
-        // return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
-        /*Page<AsignaturaProfesor> page = asignaturaProfesorRepository.findAll(pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/asignaturaprofesors");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);*/
-        return Optional.ofNullable(asignaturasProfesor)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-
-    }
-
-    //////////////////////////////////////
-
     /**
      * POST  /subjectsprofesors : to assign one subject to teacher.
      *
@@ -124,16 +58,22 @@ public class AsignaturaProfesorResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new asignatura, or with status 400 (Bad Request) if the asignatura has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/asignaturaprofesors",
+    /*@RequestMapping(value = "/asignaturaprofesors/addsubject",
         method = RequestMethod.POST,
-        produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PostMapping("/asignaturaprofesors/{id_prof}/{id_asig}")
+        produces = MediaType.APPLICATION_JSON_VALUE)*/
+    @PostMapping("/asignaturaprofesors")
     //@Timed
     public ResponseEntity<AsignaturaProfesor> createAsignaturaProfesor(@Valid @RequestBody AsignaturaProfesorId asignaturaProfesorId) throws URISyntaxException {
         log.debug("REST request to save AsignaturaProfesor : {}", asignaturaProfesorId);
-        /*if (asignaturaProfesor.getProfAsigpk() != null) {
+
+       /* if (AsignaturaProfesorId.getId_asignatura() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new asignatura cannot already have an ID")).body(null);
         }*/
+
+       if (asignaturaProfesorRepository.exists(asignaturaProfesorId)){
+           return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idasignacionexists", "this asignatura  already exists to this teacher")).body(null);
+       }
+
         AsignaturaProfesor asignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId);
         log.debug("new AsignaturaProfesor with asignaturaProfesorId from REST : {}", asignaturaProfesor);
 
@@ -149,6 +89,53 @@ public class AsignaturaProfesorResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         //return null;
     }
+
+    /////////////////////////////////////////////////////////////
+    /**
+    *DELETE  /asignaturaprofesors/delete the  asignaturaProfesors.
+     * @return the ResponseEntity with status 200 (OK)
+     *
+    */
+    @DeleteMapping("/asignaturaprofesors")
+    @Timed
+    public ResponseEntity<Void> deleteAsignaturaProfesors(@Valid @RequestBody AsignaturaProfesorId asignaturaProfesorId) {
+        log.debug("REST request to delete AsignaturaProfesors : {}", asignaturaProfesorId);
+        // asignaturaRepository.delete(id);
+        //  return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+        return null;
+    }
+
+    /////////////////////////////////////////////////////////////no ok
+
+
+ /*   *//**
+     * GET  /asignaturasProfesor : get all the asignaturas-profesors.
+     *
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of asignaturasprofesors in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     *//*
+    @GetMapping("/asignaturaprofesors")
+    @Timed
+    //public ResponseEntity<List<AsignaturaProfesor>> getAllAsignaturasProfesors(@ApiParam Pageable pageable) {
+    public ResponseEntity<List<AsignaturaProfesor>> getAllAsignaturasProfesors() {
+        log.debug("REST request to get a page of AsignaturasProfesors");
+        //Page<AsignaturaProfesor> page = asignaturaProfesorRepository.findAll(pageable);
+        //HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/asignaturaprofesors");
+        List<AsignaturaProfesor> asignaturasProfesor =asignaturaProfesorRepository.findAll();
+        log.debug("asignaturaProfesorRepository.findAll"+asignaturaProfesorRepository.findAll());
+        // return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        *//*Page<AsignaturaProfesor> page = asignaturaProfesorRepository.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/asignaturaprofesors");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);*//*
+        return Optional.ofNullable(asignaturasProfesor)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+    }*/
+
     /**
      * POST  /asignaturas : Create a new asignatura.
      *
@@ -181,7 +168,11 @@ public class AsignaturaProfesorResource {
 
 
 
-    /**
+
+/*
+
+    */
+/**
      * PUT  /asignaturaprofesors : Updates an existing asignatura.
      *
      * @param asignaturaProfesorId the asignatura to update
@@ -189,29 +180,36 @@ public class AsignaturaProfesorResource {
      * or with status 400 (Bad Request) if the asignatura-profesor is not valid,
      * or with status 500 (Internal Server Error) if the asignatura-profesor couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
-     */
+     *//*
+
     @PutMapping("/asignaturaprofesors")
     @Timed
     public ResponseEntity<Asignatura> updateAsignaturaProfesor(@Valid @RequestBody AsignaturaProfesorId asignaturaProfesorId) throws URISyntaxException {
         log.debug("REST request to update AsignaturaProfesor : {}", asignaturaProfesorId);
-       /* if (asignatura.getId() == null) {
+       */
+/* if (asignatura.getId() == null) {
             return createAsignatura(asignatura);
         }
         Asignatura result = asignaturaRepository.save(asignatura);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, asignatura.getId().toString()))
-            .body(result);*/
+            .body(result);*//*
+
        return null;
     }
+*/
 
 
+/*
 
-    /**
+    */
+/**
      * GET  /asignaturaprofesors/:id : get the "id asig" asignaturaProfesors.
      *
      * @param id the id of the asignatura to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the asignaturaProfesors, or with status 404 (Not Found)
-     */
+     *//*
+
     @GetMapping("/asignaturaprofesors/{id}")
     @Timed
     public ResponseEntity<AsignaturaProfesor> getAsignaturaProfesors(@PathVariable Long id) {
@@ -219,13 +217,14 @@ public class AsignaturaProfesorResource {
         //Asignatura asignatura = asignaturaProfesorRepository.findOneWithEagerRelationships(id);
         return null;// ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignatura));
     }
+*/
 
-    /**
+  /*  *//**
      * DELETE  /asignaturaprofesors/ delete the  asignaturaProfesors.
      *
      *
      * @return the ResponseEntity with status 200 (OK)
-     */
+     *//*
     @DeleteMapping("/asignaturaprofesors")
     @Timed
     public ResponseEntity<Void> deleteAsignaturaProfesors(@Valid @RequestBody AsignaturaProfesorId asignaturaProfesorId) {
@@ -234,6 +233,6 @@ public class AsignaturaProfesorResource {
         //  return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
         return null;
     }
-
+*/
 
 }
