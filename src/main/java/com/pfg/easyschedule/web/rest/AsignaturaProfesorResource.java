@@ -96,13 +96,23 @@ public class AsignaturaProfesorResource {
      * @return the ResponseEntity with status 200 (OK)
      *
     */
-    @DeleteMapping("/asignaturaprofesors")
+    @DeleteMapping("/asignaturaprofesors/deleteselection/{id_profesor}/{id_asignatura}")
+    //@DeleteMapping("/asignaturaprofesors/deleteselection")
     @Timed
-    public ResponseEntity<Void> deleteAsignaturaProfesors(@Valid @RequestBody AsignaturaProfesorId asignaturaProfesorId) {
-        log.debug("REST request to delete AsignaturaProfesors : {}", asignaturaProfesorId);
+    public ResponseEntity<Void> deleteAsignaturaProfesors(@PathVariable Long id_profesor, @PathVariable Long id_asignatura) {
+        log.debug("REST request to delete AsignaturaProfesors id_profesor : {}", id_profesor );
+        log.debug("REST request to delete AsignaturaProfesors id_asignatura : {}", id_asignatura );
+
+        AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId();
+        asignaturaProfesorId.setId_asignatura(id_asignatura);
+        asignaturaProfesorId.setId_profesor(id_profesor);
+        AsignaturaProfesor asignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId);
+
+        asignaturaProfesorRepository.delete(asignaturaProfesor);
+       // log.debug("REST request to delete AsignaturaProfesors idasig : {}", id_asignatura );
         // asignaturaRepository.delete(id);
-        //  return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-        return null;
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignaturaProfesor.getProfAsigpk().toString())).build();
+        //return null;
     }
 
     /////////////////////////////////////////////////////////////no ok
