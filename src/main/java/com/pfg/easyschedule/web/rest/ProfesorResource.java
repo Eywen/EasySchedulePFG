@@ -1,6 +1,8 @@
 package com.pfg.easyschedule.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.pfg.easyschedule.domain.Asignatura;
+import com.pfg.easyschedule.domain.AsignaturaProfesor;
 import com.pfg.easyschedule.domain.Profesor;
 
 import com.pfg.easyschedule.repository.ProfesorRepository;
@@ -14,12 +16,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,6 +66,7 @@ public class ProfesorResource {
             .body(result);
     }
 
+
     /**
      * PUT  /profesors : Updates an existing profesor.
      *
@@ -82,6 +89,8 @@ public class ProfesorResource {
             .body(result);
     }
 
+
+
     /**
      * GET  /profesors : get all the profesors.
      *
@@ -95,6 +104,7 @@ public class ProfesorResource {
         log.debug("REST request to get a page of Profesors");
         Page<Profesor> page = profesorRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/profesors");
+        log.debug("Page all Profesors"+page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
@@ -122,7 +132,6 @@ public class ProfesorResource {
     @Timed
     public ResponseEntity<Profesor> getProfesorLogin(@PathVariable String login) {
         log.debug("REST request to get Profesor : {}", login);
-        System.out.println("login ======> "+login);
         Profesor profesor = profesorRepository.getLogin(login);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesor));
     }
@@ -140,5 +149,48 @@ public class ProfesorResource {
         profesorRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
+
+
+    /**
+     * GET  /profesors/subjects/:id : get the "asignaturas" profesor.
+     *
+     * @param id  of the profesor to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the subjects, or with status 404 (Not Found)
+     */
+    //@GetMapping("/asignaturaprofesors/subjects/{id}")
+    @RequestMapping(value = "/profesors/subjects/{id}",
+        method= RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Timed
+    public ResponseEntity<List<Asignatura>> getProfesorSubjects(@PathVariable Long id) {
+        log.debug("REST request to get Profesor Subjects: {}", id);
+
+        //List<Asignatura> subjects = asignaturaProfesorRepository.getProfesorSubjects(id);
+
+        Profesor asigProfesor = profesorRepository.findOne(id);
+        log.debug("Recuperado profesor: {} ",asigProfesor);
+        log.debug("REST get Profesor Subjects: {}", asigProfesor.getAsignaturas());
+        List<Asignatura> asignaturas = new ArrayList<>();
+        asignaturas = asigProfesor.getAsignaturas();
+        // JSONObject json = new JSONObject();
+
+
+
+        return Optional.ofNullable(asignaturas)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        // return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asigProfesor.getAsignaturas()));
+    }
+
+
+
+
+
+
+
+
 
 }

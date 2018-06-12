@@ -190,7 +190,7 @@
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'Asignatura', function($stateParams, Asignatura) {
-                    return Asignatura.query().$promise;
+                    return  Asignatura.query().$promise;
                 }],
                 previousState: ["$state", function ($state) {
                     var currentStateData = {

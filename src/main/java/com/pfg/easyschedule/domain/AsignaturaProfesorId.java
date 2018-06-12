@@ -1,9 +1,7 @@
 package com.pfg.easyschedule.domain;
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 /**
  * Created by kara_ on 01/11/2017.
@@ -13,38 +11,37 @@ public class AsignaturaProfesorId implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /*@ManyToOne(optional=false)
-    @JoinColumn(name="id", insertable=false, updatable=false, referencedColumnName="id")*/
-    private Asignatura asignatura;
 
+    @Column(name = "id_profesor")
+    private long id_profesor;
 
+    @Column(name = "id_asignatura")
+    private long id_asignatura;
 
-    /*@ManyToOne(optional=false)
-    @JoinColumn(name="id", insertable=false, updatable=false, referencedColumnName="id")*/
-    private Profesor profesor;
 
     public AsignaturaProfesorId() {
     }
 
-    public AsignaturaProfesorId(Asignatura asignatura, Profesor profesor) {
-        this.asignatura = asignatura;
-        this.profesor = profesor;
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-    public Asignatura getAsignatura() {
-        return asignatura;
+
+
+    public long getId_profesor() {
+        return id_profesor;
     }
 
-    public void setAsignatura(Asignatura asignatura) {
-        this.asignatura = asignatura;
+    public void setId_profesor(long id_profesor) {
+        this.id_profesor = id_profesor;
     }
 
-    public Profesor getProfesor() {
-        return profesor;
+    public  long getId_asignatura() {
+        return id_asignatura;
     }
 
-    public void setProfesor(Profesor profesor) {
-        this.profesor = profesor;
+    public void setId_asignatura(long id_asignatura) {
+        this.id_asignatura = id_asignatura;
     }
 
     @Override
@@ -54,22 +51,22 @@ public class AsignaturaProfesorId implements Serializable {
 
         AsignaturaProfesorId that = (AsignaturaProfesorId) o;
 
-        if (!getAsignatura().equals(that.getAsignatura())) return false;
-        return getProfesor().equals(that.getProfesor());
+        if (getId_profesor() != that.getId_profesor()) return false;
+        return getId_asignatura() == that.getId_asignatura();
     }
 
     @Override
     public int hashCode() {
-        int result = getAsignatura().hashCode();
-        result = 31 * result + getProfesor().hashCode();
+        int result = (int) (getId_profesor() ^ (getId_profesor() >>> 32));
+        result = 31 * result + (int) (getId_asignatura() ^ (getId_asignatura() >>> 32));
         return result;
     }
 
     @Override
     public String toString() {
         return "AsignaturaProfesorId{" +
-            "asignatura=" + asignatura +
-            ", profesor=" + profesor +
+             ", id_profesor=" + id_profesor +
+            ", id_asignatura=" + id_asignatura +
             '}';
     }
 }

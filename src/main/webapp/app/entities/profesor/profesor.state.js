@@ -205,6 +205,33 @@
                 }]
             }
         })
+        /*.state('profesor.selectsubject', {
+            parent: 'home',
+            url: '/{id_prof}/selectsubject/{id_asig}',
+            data: {
+                authorities: ['ROLE_USER']
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                $uibModal.open({
+                    templateUrl: 'app/entities/profesor/profesor-select-subject.html',
+                    controller: 'ProfesorSelectSubjectController',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: function () {
+                            return {
+                                
+                            };
+                        }
+                    }
+                }).result.then(function() {
+                    $state.go('asignatura.all', null, { reload: 'asignatura.all' });
+                }, function() {
+                    $state.go('asignatura.all');
+                });
+            }]
+        })*/
         .state('profesor.delete', {
             parent: 'profesor',
             url: '/{id}/delete',

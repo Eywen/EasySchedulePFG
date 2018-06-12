@@ -27,22 +27,17 @@
                     if (data) {
                         data = angular.fromJson(data);
                     }
-                    console.log('data: ',data);
                     return data;
                 }
             },
             'getSubjects': {
                 method: 'GET',
                 isArray: true,
-                url: 'api/asignaturaprofesors/subjects/:id',
+                url: 'api/profesors/subjects/:id',
                 transformResponse: function (data) {
                     if (data) {
-                        console.log ("data  : ", data);
-                        console.log ("data toJson : ", angular.toJson(data));
-                        console.log('before fromJson data subjects: ',data);
                         data = angular.fromJson(data);
                     }
-                    console.log('After from Jsondata subjects: ',data);
                     return data;
                 }
             },

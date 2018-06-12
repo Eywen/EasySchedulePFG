@@ -1,13 +1,9 @@
 package com.pfg.easyschedule.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -60,7 +56,7 @@ public class Profesor implements Serializable {
     @Column(name = "usu_alta", nullable = false)
     private String usuAlta;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
     @JoinTable(
         name = "asignatura_profesor",
         joinColumns = { @JoinColumn(name = "id_profesor") },
@@ -75,6 +71,9 @@ public class Profesor implements Serializable {
     @NotNull
     @Column(name = "login", nullable = false)
     private String login;
+
+    public Profesor() {
+    }
 
     public String getLogin() {
         return login;

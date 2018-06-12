@@ -9,6 +9,8 @@
                 "main": "Entidades",
                 "profesor": "Profesor",
                 "asignatura": "Asignatura",
+                "asignaturaProfesor" : "Asignación",
+                "asignatura-profesor" : "Asignaciones",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -87,6 +89,7 @@
             "back": "Volver",
             "cancel": "Cancelar",
             "choices": "Selecciones",
+            "select" : "Seleccionar",
             "delete": "Eliminar",
             "edit": "Editar",
             "open": "Open",
@@ -121,7 +124,8 @@
         "Size": "¡El campo {{fieldName}} no cumple con los requisitos de tamaño mínimo/máximo!",
         "userexists": "Login name already used!",
         "emailexists": "E-mail is already in use!",
-        "idexists": "A new {{entityName}} cannot already have an ID"
+        "idexists": "A new {{entityName}} cannot already have an ID",
+        "idasignacionexists": "Esta {{entityName}} ya existe para este profesor, por favor intente con otra asignatura"
     },
     "footer": "pie de página"
 }

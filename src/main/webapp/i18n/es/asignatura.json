@@ -15,6 +15,9 @@
             "detail": {
                 "title": "Asignatura"
             },
+            "select": {
+                "question": "¿Seguro que quiere seleccionar la Asignatura {{ id }}?"
+            },
             "nombre": "Nombre",
             "plan": "Plan",
             "titulacion": "Titulacion",

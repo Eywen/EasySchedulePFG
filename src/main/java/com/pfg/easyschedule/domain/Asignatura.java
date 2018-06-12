@@ -58,13 +58,16 @@ public class Asignatura implements Serializable {
     @Column(name = "usu_alta", nullable = false)
     private String usu_alta;
 
-    @ManyToMany(mappedBy = "asignaturas")
+    @ManyToMany(mappedBy = "asignaturas", fetch=FetchType.LAZY)
     private Set<Profesor> profesors = new HashSet<>();
     /*@ManyToMany
     @JoinTable(name = "asignatura_profesor",
                joinColumns = @JoinColumn(name="id_asignatura", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="id_profesor", referencedColumnName="id"))
     private Set<Profesor> profesors = new HashSet<>();*/
+
+    public Asignatura() {
+    }
 
     public Long getId() {
         return id;

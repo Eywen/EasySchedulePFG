@@ -9,7 +9,7 @@
 
     function NavbarController ($state, Auth, Principal, ProfileService, LoginService) {
         var vm = this;
-        console.log('vm navbar state: ',Auth);
+        console.log('vm navbar state Auth: ',Auth);
         vm.isNavbarCollapsed = true;
         vm.isAuthenticated = Principal.isAuthenticated;
 
@@ -23,7 +23,7 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
-        console.log('vm navbar state: ',vm);
+        console.log('vm navbar state vm: ',vm);
         function login() {
             collapseNavbar();
             LoginService.open();
