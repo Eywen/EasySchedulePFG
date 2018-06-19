@@ -33,7 +33,7 @@ public class AsignaturaResource {
     private final Logger log = LoggerFactory.getLogger(AsignaturaResource.class);
 
     private static final String ENTITY_NAME = "asignatura";
-        
+
     private final AsignaturaRepository asignaturaRepository;
 
     public AsignaturaResource(AsignaturaRepository asignaturaRepository) {
@@ -108,7 +108,8 @@ public class AsignaturaResource {
     @Timed
     public ResponseEntity<Asignatura> getAsignatura(@PathVariable Long id) {
         log.debug("REST request to get Asignatura : {}", id);
-        Asignatura asignatura = asignaturaRepository.findOneWithEagerRelationships(id);
+       // Asignatura asignatura = asignaturaRepository.findOneWithEagerRelationships(id);
+        Asignatura asignatura = asignaturaRepository.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignatura));
     }
 
