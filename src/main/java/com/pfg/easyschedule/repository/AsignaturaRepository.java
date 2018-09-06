@@ -2,6 +2,7 @@ package com.pfg.easyschedule.repository;
 
 import com.pfg.easyschedule.domain.Asignatura;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
@@ -18,5 +19,7 @@ public interface AsignaturaRepository extends JpaRepository<Asignatura,Long> {
 
     @Query("select asignatura from Asignatura asignatura left join fetch asignatura.profesors where asignatura.id =:id")
     Asignatura findOneWithEagerRelationships(@Param("id") Long id);
+
+
 
 }
