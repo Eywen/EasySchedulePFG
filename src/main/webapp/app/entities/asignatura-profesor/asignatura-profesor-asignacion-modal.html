@@ -1,0 +1,41 @@
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myProfesorLabel" data-translate="easyscheduleApp.profesor.profesor-asignatura.title">Select subject</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <!-- <p data-translate="easyscheduleApp.asignatura.select.question" translate-values="{id: '{{vm.asignatura.id}}'}">Are you sure you want to select this Asignatura?</p -->
+        <div class="row">
+          <div class="col-sm-6">
+            <h4 data-translate="easyscheduleApp.asignatura.home.title">Asignaturas</h4>
+            <select id="subject" class="form-control" ng-model="vm.miAsignatura" ng-options="asig as asig.nombre for asig in vm.asignaturas | orderBy:'nombre' track by asig.id" >
+              <option value="">Elige opción</option>
+            </select>
+          </div><!--/col-->
+        </div><!--/row-->
+        <div class="row">
+          <div class="col-sm-6">
+<!-- -----
+<select id="subject" class="form-control" >
+              <option ng-repeat="profesor in vm.profesors | orderBy:'primerApellido'" ng-selected="profesor.id" ng-model="profesor.id">{{profesor.primerApellido}} {{profesor.segundoApellido}} {{profesor.nombre}}</option>
+            </select>
+            ----- -->
+            <h4 data-translate="easyscheduleApp.profesor.home.title">Profesores</h4>
+            <select id="teacher" class="form-control" ng-model="vm.miProfesor" ng-options="profesor as profesor.primerApellido+' '+profesor.segundoApellido+' '+profesor.nombre for profesor in vm.profesors | orderBy:'primerApellido' track by profesor.id" >
+              <option value="">Elige opción</option>
+            </select>
+          </div><!--/col-->
+        </div><!--/row-->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear(vm.profesorId)">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-primary">
+            <span class=""glyphicon glyphicon-save""></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form

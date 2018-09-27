@@ -1,0 +1,60 @@
+<div>
+    <h2 data-translate="easyscheduleApp.asignatura.home.title">Asignaturas</h2>
+    <jhi-alert></jhi-alert>
+    
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span></th>
+                    <th jh-sort-by="nombre"><span data-translate="easyscheduleApp.asignatura.nombre">Nombre</span></th>
+                    <th jh-sort-by="plan"><span data-translate="easyscheduleApp.asignatura.plan">Plan</span></th>
+                    <th jh-sort-by="titulacion"><span data-translate="easyscheduleApp.asignatura.titulacion">Titulacion</span></th>
+                    <th jh-sort-by="creditos"><span data-translate="easyscheduleApp.asignatura.creditos">Creditos</span></th>
+                    <th jh-sort-by="num_grupos"><span data-translate="easyscheduleApp.asignatura.num_grupos">Num Grupos</span></th>
+                    <th jh-sort-by="creditos_teoricos"><span data-translate="easyscheduleApp.asignatura.creditos_teoricos">Creditos Teoricos</span></th>
+                    <th jh-sort-by="creditos_practicas"><span data-translate="easyscheduleApp.asignatura.creditos_practicas">Creditos Practicas</span></th>
+                    <th jh-sort-by="num_grupos_teoricos"><span data-translate="easyscheduleApp.asignatura.num_grupos_teoricos">Num Grupos Teoricos</span></th>
+                    <th jh-sort-by="num_grupos_practicas"><span data-translate="easyscheduleApp.asignatura.num_grupos_practicas">Num Grupos Practicas</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="asignatura in  vm.asignaturas track by asignatura.id"> <!--track by asignatura.id ng-if='asignatura == vm.asignaturasMostrar' vm.asignaturas item in items | filter:x as results -->                    
+                    <td>{{asignatura.id}}</td>
+                    <td>{{asignatura.nombre}}</td>
+                    <td>{{asignatura.plan}}</td>
+                    <td>{{asignatura.titulacion}}</td>
+                    <td>{{asignatura.creditos}}</td>
+                    <td>{{asignatura.num_grupos}}</td>
+                    <td>{{asignatura.creditos_teoricos}}</td>
+                    <td>{{asignatura.creditos_practicas}}</td>
+                    <td>{{asignatura.num_grupos_teoricos}}</td>
+                    <td>{{asignatura.num_grupos_practicas}}</td>
+                    <td>{{vm.profesor}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="asignatura-profesor.selectsubject({id_prof: vm.profesor,id_asig:asignatura.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon glyphicon-ok-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.select"></span>
+                            </button>
+                            <!-- ui-sref="asignatura-profesor.selectsubject({id_prof: vm.profesor,id_asig:asignatura.id})" -->
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <!-- <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count> -->
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+    <!-- <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager> -->
+    <button type="button" onclick="history.back()" class="btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <span class="hidden-sm-down"data-translate="entity.action.back"> Back</span>
+    </button>
+</div>

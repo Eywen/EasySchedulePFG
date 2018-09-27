@@ -1,0 +1,51 @@
+<div class="table-responsive"> 
+        <table class="jh-table table table-striped ">
+            <thead>
+                <tr >
+                    <th ><span data-translate="global.field.id">ID</span> </th>
+                    <th ><span data-translate="easyscheduleApp.profesor.nombre">Nombre</span></th>
+                    <th><span data-translate="easyscheduleApp.profesor.primerApellido">Primer Apellido</span> </th>
+                    <th ><span data-translate="easyscheduleApp.profesor.segundoApellido">Segundo Apellido</span></span></th>
+                    <th ><span data-translate="easyscheduleApp.profesor.codProfesor">Cod Profesor</span></th>
+                    <th ><span data-translate="easyscheduleApp.profesor.email">Email</span></th>
+                    <th ><span data-translate="easyscheduleApp.profesor.categoria">Categoria</span></span></th>
+                    <th ><span data-translate="easyscheduleApp.profesor.numCreditosImpartir">Creditos Impartir</span></span></th>
+                    <th ><span data-translate="easyscheduleApp.profesor.prioridad">Prioridad</span></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{vm.profesor.id}}</a></td>
+                    <td>{{vm.profesor.nombre}}</td>
+                    <td>{{vm.profesor.primerApellido}}</td>
+                    <td>{{vm.profesor.segundoApellido}}</td>
+                    <td>{{vm.profesor.codProfesor}}</td>
+                    <td>{{vm.profesor.email}}</td>
+                    <td>{{vm.profesor.categoria}}</td>
+                    <td>{{vm.profesor.numCreditosImpartir}}</td>
+                    <td>{{vm.profesor.prioridad}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="profesor.getsubjects({id:vm.profesor.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="easyscheduleApp.profesor.home.selections"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="asignatura.all({id:vm.profesor.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="easyscheduleApp.profesor.home.chooseSubject"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" onclick="history.back()" class="btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <span class="hidden-sm-down"data-translate="entity.action.back"> Back</span>
+    </button>
+    </div>

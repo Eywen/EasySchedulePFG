@@ -1,0 +1,153 @@
+<div ng-class="{active: vm.$state.includes('admin')}"   has-authority="ROLE_ADMIN"> 
+    <h2 data-translate="easyscheduleApp.profesor.profesor-asignatura.title">Asignaciones</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6 no-padding-left">
+                 <button class="btn btn-primary"   ui-sref="asignatura-profesor.new">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span  data-translate="easyscheduleApp.profesor.profesor-asignatura.createLabel">
+                        Create new Selection asignatura-profesor.selectsubject
+                    </span>
+                </button>
+                <button class="btn btn-warning"   ui-sref="asignatura-profesor.conflictos">
+                    <span class="glyphicon glyphicon-eye-open"></span>
+                    <span  data-translate="easyscheduleApp.profesor.profesor-asignatura.conflicts">
+                        Consflict in asignatura-profesor.selectsubject
+                    </span>
+                </button> 
+            </div>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <!-- <div>
+        <button data-toggle="collapse" data-target="#demo">
+            Collapsible
+        </button>
+        <div id="demo" class="collapse">
+            lloorrrooo!!!
+        </div>
+    </div> -->
+
+    <div class="panel panel-info" ng-repeat="profesor in vm.profesors | orderBy:'primerApellido' track by profesor.id ">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{profesor.primerApellido}} {{profesor.segundoApellido}} {{profesor.nombre}}</h3>
+      </div>
+      <div class="panel-footer" ng-repeat="asignatura in profesor.asignaturas | orderBy:'nombre' track by asignatura.id" >
+        <span class="col-sm-8">
+            {{asignatura.nombre}}
+        </span>
+        <button type="submit " ui-sref="asignatura-profesor.edit({id_prof:profesor.id,id_asig:asignatura.id})"
+            class="btn btn-primary btn-sm" >
+                <span class="glyphicon glyphicon-pencil"></span>
+                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+        </button>
+        <button type="submit " ui-sref="asignatura-profesor.delete({id_prof:profesor.id,id_asig:asignatura.id})"
+            class="btn btn-danger btn-sm">
+             <span class="glyphicon glyphicon-remove-circle"></span>
+                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+        </button> 
+      </div>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+    <button type="button" onclick="history.back()" class="btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left"></span>
+        <span class="hidden-sm-down"data-translate="entity.action.back"> Back</span>
+    </button>
+</div>
+<!--
+//////
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" aria-expandanded="true">
+                        Expand
+                    </a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    ......
+                </div>   
+            </div>
+        </div>
+    </div>
+    //////
+-->
+    <!-- <div class="table-responsive" >
+        <table class="jh-table table table-striped" >
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    
+                    <th jh-sort-by="nombre"><span data-translate="easyscheduleApp.profesor.detail.title">Profesor</span></th>
+                    <th jh-sort-by="usuAlta" class="text-right"><span data-translate="easyscheduleApp.asignatura.detail.title">Asignatura</span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="profesor in vm.profesors | orderBy:'profesor.primerApellido' track by profesor.id">
+                    <td>{{profesor.primerApellido}} {{profesor.segundoApellido}} {{profesor.nombre}}</td>
+                    <td>
+                        <dl ng-repeat="asignatura in profesor.asignaturas" class="list-unstyled list-inline">
+                            <!-- <dd >
+                               {{asignatura.nombre}}
+                            </dd>   -->
+                            <!-- <dd class="text-right" ng-class="{active: vm.$state.includes('admin')}"   has-authority="ROLE_ADMIN">
+                                    <span class="text-left">{{asignatura.nombre}} </span>
+                                    <button type="submit "
+                                    ui-sref="asignatura-profesor.edit({id_prof:profesor.id,id_asig:asignatura.id})"
+                                    class="btn btn-info btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                                    </button>
+                                    <button type="submit "
+                                    ui-sref="asignatura-profesor.delete({id_prof:profesor.id,id_asig:asignatura.id})"
+                                    class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                        <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                                    </button>
+                            </dd>                          
+                        </dl>
+                    </td> -->
+                    <!-- <td class="text-right" ng-class="{active: vm.$state.includes('admin')}"   has-authority="ROLE_ADMIN">
+                        <button type="submit "
+                                ui-sref="asignatura-profesor.delete({id_prof:profesor.id,id_asig:asignatura.id})"
+                                class="btn btn-danger btn-sm">
+                            <span class="glyphicon glyphicon-remove-circle"></span>
+                            <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                        </button>
+                    </td> -->
+                    
+                    <!-- <td >
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="profesor-detail({id:profesor.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="profesor.edit({id:profesor.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                             <button type="submit"
+                                    ui-sref="profesor.getsubjects({id:profesor.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-sm-down" data-translate="easyscheduleApp.profesor.home.selections"></span>
+                            </button>
+                           
+                        </div>
+                    </td> -->
+               <!--  </tr>
+            </tbody>
+        </table>
+    </div> --> 
+    
