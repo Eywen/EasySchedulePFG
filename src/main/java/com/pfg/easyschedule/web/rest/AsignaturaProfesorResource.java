@@ -65,7 +65,7 @@ public class AsignaturaProfesorResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
-    
+
     /**
     *DELETE  /asignaturaprofesors/delete the  asignaturaProfesors.
      * @return the ResponseEntity with status 200 (OK)

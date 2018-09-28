@@ -30,8 +30,14 @@
 
         function save () {            
             vm.isSaving = true;
+            if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
+		        vm.miProfesor.asignaturas.push(vm.miAsignatura);
+		        console.log('vm.profesor.asignaturas  push ',vm.miProfesor.asignaturas);
+              	Profesor.update(vm.miProfesor,onSaveSuccess,onSaveError);
+            }  
+            
             //console.log("en guardar asignación");
-            Profesor.get({id:   vm.miProfesor.id}, function (result) {
+           /* Profesor.get({id:   vm.miProfesor.id}, function (result) {
             	vm.profesor = result;  
             	//console.log('profesor ',vm.profesor);  
             	//obtener el numero de cursos que tiene esta asignatura
@@ -65,7 +71,7 @@
 		            	Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
 		            }
 		        }); 
-        	});	
+        	});	*/
         }
 
         function onSaveSuccess (result) {
