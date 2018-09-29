@@ -24,9 +24,7 @@
      
         vm.asignaturaId = $stateParams.id_asig;
         vm.profesorId = $stateParams.id_prof;
-        Asignatura.get({id:  vm.profesorId}, function (result) {
-            vm.miAsignatura = result;
-        });
+        
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -38,13 +36,28 @@
 
         function save () {
             vm.isSaving = true;
+            //asignación sin ningun tipo de coprobacion de num de creidtos o asignaturas permitidas. Ya se hará más adelante.
+            if (vm.profesorId !== null && vm.asignaturaId !==null) {
+                Profesor.get({id:  vm.profesorId}, function (result) {
+                    vm.profesor = result;  
+                    console.log('profesor ',vm.profesor);
+                    Asignatura.get({id:  vm.asignaturaId}, function (result) {
+                        vm.miAsignatura = result;
+                        console.log('asignatura ',vm.miAsignatura);
+                        vm.profesor.asignaturas.push(vm.miAsignatura); 
+                        console.log('vm.profesor.asignaturas ',vm.profesor.asignaturas);
+                        Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
+                    });
+                });
+            }
+            
             /*if (vm.profesorId !== null && vm.asignaturaId !==null) {
                 AsignaturaProfesor.addasigProf(vm.datos,onSaveSuccess,onSaveError);
                 AsignaturaProfesor.addasigProf(vm.profesorId,vm.asignaturaId,onSaveSuccess,onSaveError);
             } else {
                  console.log('No está lista para llamar service de select asig');
             }*/
-            Profesor.get({id:  vm.profesorId}, function (result) {
+            /*Profesor.get({id:  vm.profesorId}, function (result) {
                 vm.profesor = result;  
                 //console.log('profesor ',vm.profesor);  
                 //obtener el numero de cursos que tiene esta asignatura
@@ -78,7 +91,7 @@
                         Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
                     }
                 }); 
-            }); 
+            }); */
         }
 
         function onSaveSuccess (result) {
