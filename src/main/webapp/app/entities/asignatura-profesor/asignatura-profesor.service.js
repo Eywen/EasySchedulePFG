@@ -21,6 +21,20 @@
                     return data;
                 }
             },*/
+            /*'getasignaturainprof': { 
+                method: 'GET',
+                //isArray:true,
+                url: 'api/asignaturaprofesors/asignaturainprof/:asignatura',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    console.log('getconfirmacion ',data);
+                    return data;
+                }*/
+            /*},*/
+
+            ///////////////////////////////////////////
             'getconfirmacion': {
                 method: 'GET',
                 url: 'api/asignaturaprofesors/:id_asignatura/:prioridad_profesor',
@@ -53,6 +67,18 @@
                     return data;
                 }
 
+            },
+            'getasignaturainprof': { 
+                method: 'POST',
+                isArray:true,
+                url: 'api/asignaturaprofesors/asignaturainprof',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    console.log('getconfirmacion ',data);
+                    return data;
+                }
             },
             'update': { method:'PUT' }
         });

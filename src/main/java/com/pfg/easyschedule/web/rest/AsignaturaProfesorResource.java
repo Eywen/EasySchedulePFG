@@ -6,12 +6,19 @@ import com.pfg.easyschedule.domain.Profesor;
 import com.pfg.easyschedule.repository.AsignaturaRepository;
 import com.pfg.easyschedule.repository.ProfesorRepository;
 import com.pfg.easyschedule.web.rest.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.validation.Valid;
 import java.net.URISyntaxException;
 import java.util.*;
@@ -28,6 +35,8 @@ public class AsignaturaProfesorResource {
     private static final String ENTITY_NAME = "asignaturaProfesor";
     private final ProfesorRepository profesorRepository;
     private final AsignaturaRepository asignaturaRepository;
+    @Autowired
+    EntityManager entityManager;
 
     public AsignaturaProfesorResource(AsignaturaRepository asignaturaRepository, ProfesorRepository profesorRepository ) {
         this.profesorRepository = profesorRepository;
@@ -85,5 +94,43 @@ public class AsignaturaProfesorResource {
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignatura.getId().toString())).build();
     }
 
+    ////////////////////////////
+    /**
+     * @param asignatura  to find
+     * @return the ResponseEntity with status 200 (OK) and with body the profesors, or with status 404 (Not Found)
+     */
+    @PostMapping ("/asignaturaprofesors/asignaturainprof")
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Timed
+    public ResponseEntity<List<Profesor>> getSubjectInProfesores(@RequestBody Asignatura asignatura) {
+        log.debug("REST request to get asignatura in Profesors: {}", asignatura);
+        List <Profesor> profesores = new ArrayList<>(); // todos los profesores
+        List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
+        List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
+        /*try{
+            String query = "select p.id from Profesor p INNER JOIN asignatura_profesor nmt  where nmt.id_asignatura = " + asignatura.getId() +" and nmt.id_profesor = p.id";
+            log.debug("QUERY: "+ query);
+            lista = entityManager.createQuery(query);
+        }catch (Exception e){
+            log.debug("NO SE PUDO CONSTRUIR LA QUERY ", e.getCause());
+            return (ResponseEntity<List<Profesor>>) ResponseEntity.badRequest();
+        }*/
+        profesores = profesorRepository.findAll();
+        log.debug("profesores: ",profesores);
+        for (Profesor profesor: profesores) {
+            asignaturas = profesor.getAsignaturas();
+            log.debug("profesor antes del if: ",profesor);
+            for (Asignatura asignaturaList: asignaturas) {
+                if (asignaturaList.getId() == asignatura.getId()){
+                    log.debug("profesor : ",profesor);
+                    profesoresList.add(profesor);
+                }
+            }
+        }
+        //ordeno los profesores por prioridad antes de devolverlos
+        Collections.sort(profesoresList);
+        log.debug("profesoresList : ",profesoresList.toArray());
 
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesoresList));
+    }
 }

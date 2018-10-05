@@ -30,11 +30,15 @@
 
         function save () {            
             vm.isSaving = true;
-            if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
+            AsignaturaProfesor.getasignaturainprof(vm.miAsignatura, function (result){
+            	console.log('getasignaturainprof ',result);
+            },onSaveSuccess, onSaveError);
+            //COMENTADO TEMPORALMENTE PARA HACER LAS PRUEBAS DE VALIDACIONES, PERO ESTE IF ES EL CODIGO DE ASIGNACION AUTOMATICA
+            /*if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
 		        vm.miProfesor.asignaturas.push(vm.miAsignatura);
 		        console.log('vm.profesor.asignaturas  push ',vm.miProfesor.asignaturas);
               	Profesor.update(vm.miProfesor,onSaveSuccess,onSaveError);
-            }  
+            } */ 
             
             //console.log("en guardar asignación");
            /* Profesor.get({id:   vm.miProfesor.id}, function (result) {

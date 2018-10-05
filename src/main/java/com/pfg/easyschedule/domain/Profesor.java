@@ -11,7 +11,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "profesor")
-public class Profesor implements Serializable {
+public class Profesor implements Serializable ,  Comparable<Profesor>{
 
     private static final long serialVersionUID = 1L;
 
@@ -251,6 +251,16 @@ public class Profesor implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+    public int compareTo(Profesor o) {
+        if (prioridad < o.prioridad) {
+            return -1;
+        }
+        if (prioridad > o.prioridad) {
+            return 1;
+        }
+        return 0;
     }
 
     @Override
