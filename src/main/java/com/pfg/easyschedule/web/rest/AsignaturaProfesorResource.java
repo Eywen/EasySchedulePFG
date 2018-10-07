@@ -107,30 +107,99 @@ public class AsignaturaProfesorResource {
         List <Profesor> profesores = new ArrayList<>(); // todos los profesores
         List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
         List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
-        /*try{
-            String query = "select p.id from Profesor p INNER JOIN asignatura_profesor nmt  where nmt.id_asignatura = " + asignatura.getId() +" and nmt.id_profesor = p.id";
-            log.debug("QUERY: "+ query);
-            lista = entityManager.createQuery(query);
-        }catch (Exception e){
-            log.debug("NO SE PUDO CONSTRUIR LA QUERY ", e.getCause());
-            return (ResponseEntity<List<Profesor>>) ResponseEntity.badRequest();
-        }*/
         profesores = profesorRepository.findAll();
-        log.debug("profesores: ",profesores);
         for (Profesor profesor: profesores) {
             asignaturas = profesor.getAsignaturas();
-            log.debug("profesor antes del if: ",profesor);
             for (Asignatura asignaturaList: asignaturas) {
                 if (asignaturaList.getId() == asignatura.getId()){
-                    log.debug("profesor : ",profesor);
                     profesoresList.add(profesor);
                 }
             }
         }
         //ordeno los profesores por prioridad antes de devolverlos
         Collections.sort(profesoresList);
-        log.debug("profesoresList : ",profesoresList.toArray());
-
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesoresList));
+    }
+
+    /**
+     * @param datos  list of teachers to find their prioritys and priority actual  teacher
+     * @return the ResponseEntity with status 200 (OK) and with body the profesors lower prioritys, or with status 404 (Not Found)
+     */
+    @PostMapping ("/asignaturaprofesors/getlowerpriority")
+    @Timed
+    public ResponseEntity<List<Profesor>> getLowerPriority(@RequestBody HashMap<String,Object> datos) {
+        log.debug("REST request to get lower priority from array: {}", datos);
+        ArrayList<Profesor> listaProfesores= null;
+        List<Profesor> list = new ArrayList();
+        Number profesorId = null;
+        Profesor profesor = new Profesor();
+        Iterator<Map.Entry<String,Object>> it = datos.entrySet().iterator();
+        Collection<Object> collection= datos.values();
+        log.debug("COLLECTIONS  ", collection );
+        int cont = 0;
+        while (it.hasNext()) {
+            Map.Entry<String,Object> e = it.next();
+            log.debug("HASHMAP KEY: {} VALUE: {} CONT {}", e.getKey(),e.getValue(), cont );
+            //System.out.println(e.getKey() + " " + e.getValue());
+            if (cont == 0){
+                listaProfesores = (ArrayList<Profesor>) e.getValue();
+                log.debug("LISTAPROFESORES {}", listaProfesores );
+            }
+            else if (cont ==1){
+                profesorId = (Number) e.getValue();//(e.getClass().cast(Profesor));//
+                log.debug("PROFESORID {} ", profesorId );
+
+            }
+            cont++;
+            //list.add((Profesor) e.getValue());
+        }
+
+        long id = profesorId.longValue();
+        Long pId = id;
+        log.debug("LongID {} ", profesorId.longValue() );
+        profesor = profesorRepository.findOne(pId);
+        log.debug("(PROFESOR) PROFESOR: {}", profesor);
+        //listaProfesores = list;
+        //listaProfesores= (ArrayList<Profesor>) list.get(0);
+        //log.debug("LISTAPROFESORES {}", listaProfesores );
+        //profesor = (Profesor) list.get(1);
+        // list.get(1)
+        //log.debug("PROFESOR {} CLASE {}", list.get(1),list.get(1).getClass() );
+        /*
+
+        ObjectMapper om = new ObjectMapper();
+        try {
+            String s = om.writeValueAsString(list.get(1));
+            MappingIterator<Profesor> prof = om.readValues((JsonParser) list.get(1),Profesor.class);
+            log.debug("PROF: {}", prof );
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            log.debug("ERROR TRIYING TO WRITE OM" );
+        } catch (IOException e) {
+            e.printStackTrace();
+            log.debug("ERROR TRIYING TO READ OM" );
+        }
+         */
+       /* List<Profesor> myObjectsProfesor =
+            mapper.readValue(jsonInput, new TypeReference<List<Profesor>>(){});*/
+
+        /*int index = -1;
+        for (int profInd = 0; profInd < listaProfesores.size(); profInd++) {
+            if (listaProfesores.get(profInd).getPrioridad().equals(profesor.g)) {
+                index = profInd;
+                break;
+            }
+        }*/
+        /*return index;*/
+       /* for (Profesor profesor : listaProfesores){
+
+        }*/
+
+       /* for (Map.Entry<Object, Profesor> profesor : profesores.entrySet()){
+            Object clave = profesor.getKey();
+            Profesor valor = profesor.getValue();
+            System.out.println(clave+"  ------->  "+valor.toString());
+        }*/
+        return null;
     }
 }

@@ -68,6 +68,19 @@
                 }
 
             },
+            //////////////////////////////////////
+            'getlowerpriority': { 
+                method: 'POST',
+                isArray:true,
+                url: 'api/asignaturaprofesors/getlowerpriority',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    console.log('getlowerpriority ',data);
+                    return data;
+                }
+            },
             'getasignaturainprof': { 
                 method: 'POST',
                 isArray:true,
