@@ -68,7 +68,7 @@
                 }
 
             },
-            //////////////////////////////////////
+            //////////////////////////////////////gethighestpriority
             'getlowerpriority': { 
                 method: 'GET',
                 isArray:true,
@@ -78,6 +78,18 @@
                         data = angular.fromJson(data);
                     }
                     console.log('getlowerpriority ',data);
+                    return data;
+                }
+            },
+            'gethighestpriority': { 
+                method: 'GET',
+                isArray:true,
+                url: 'api/asignaturaprofesors/gethighestpriority/:asignaturaId/:profesorId',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    console.log('gethighestpriority ',data);
                     return data;
                 }
             },

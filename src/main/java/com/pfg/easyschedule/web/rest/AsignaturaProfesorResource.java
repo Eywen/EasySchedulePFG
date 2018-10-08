@@ -197,13 +197,36 @@ public class AsignaturaProfesorResource {
        @Timed
        public ResponseEntity<List<Profesor>> getLowerPriority(@PathVariable Long asignaturaId, @PathVariable Long profesorId) {
            log.debug("REST request to get lower priority from asignaturaId: {} profesorId: {}", asignaturaId,profesorId);
-           List <Profesor> profesores = new ArrayList<>(); // todos los profesores
-           List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
            List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
            Asignatura asignatura = asignaturaRepository.findOne(asignaturaId);
            Profesor prof = profesorRepository.findOne(profesorId);
-           profesores = profesorRepository.findAll();
+           //profesores = profesorRepository.findAll();
            List <Profesor> lowerPriorityProfesor = new ArrayList<>();
+           profesoresList = getProfesoresList(asignatura);
+          lowerPriorityProfesor = lowerPriorityTeachers(profesoresList,prof);
+           return ResponseUtil.wrapOrNotFound(Optional.ofNullable(lowerPriorityProfesor));
+       }
+
+    @GetMapping ("/asignaturaprofesors/gethighestpriority/{asignaturaId}/{profesorId}")
+    @Timed
+    public ResponseEntity<List<Profesor>> getHighestPriority(@PathVariable Long asignaturaId, @PathVariable Long profesorId) {
+        log.debug("REST request to get highest priority from asignaturaId: {} profesorId: {}", asignaturaId,profesorId);
+        List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
+        Asignatura asignatura = asignaturaRepository.findOne(asignaturaId);
+        Profesor prof = profesorRepository.findOne(profesorId);
+        List <Profesor> highestPriorityProfesor = new ArrayList<>();
+
+        profesoresList = getProfesoresList(asignatura);
+        highestPriorityProfesor = highestPriorityTeachers(profesoresList,prof);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(highestPriorityProfesor));
+    }
+
+       public List<Profesor> getProfesoresList (Asignatura asignatura){
+           List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
+           List <Profesor> profesores = new ArrayList<>(); // todos los profesores
+           List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
+
+           profesores = profesorRepository.findAll();
            for (Profesor profesor: profesores) {
                asignaturas = profesor.getAsignaturas();
                for (Asignatura asignaturaList: asignaturas) {
@@ -214,9 +237,7 @@ public class AsignaturaProfesorResource {
            }
            //ordeno los profesores por prioridad antes de devolverlos
            Collections.sort(profesoresList);
-           //int index = profesoresList.indexOf(prof);
-           lowerPriorityProfesor = lowerPriorityTeachers(profesoresList,prof);
-           return ResponseUtil.wrapOrNotFound(Optional.ofNullable(lowerPriorityProfesor));
+           return profesoresList;
        }
 
        public List<Profesor> lowerPriorityTeachers (List<Profesor> profesoresList, Profesor prof ){
@@ -228,13 +249,29 @@ public class AsignaturaProfesorResource {
             * menor, por ejemplo el q tenga prioridad 1 tiene mas prioridad que los demás
             **/
            while (profesoresList.get(cont).getPrioridad() > prof.getPrioridad() && cont >0) {
-               //if (profesoresList.get(cont).getPrioridad() > prof.getPrioridad()) {
                    lowerPriorityProfesor.add(profesoresList.get(cont));
-               //}
                cont--;
            }
 
            log.debug("(LOWER PRIORITY): {} cont: {}",lowerPriorityProfesor, cont);
            return lowerPriorityProfesor;
+       }
+
+       public List<Profesor> highestPriorityTeachers (List<Profesor> profesoresList, Profesor prof){
+           List <Profesor> highestPriorityProfesor = new ArrayList<>();
+           int cont = 0;
+           //TODO revisar si el 1 es la mayor prioridad o la menor
+           /** agrego a un array todos los profesores que tienen menor prioridad
+            *que el profesore al que se quiere asignar la asignatura. prioridad grande es
+            * menor, por ejemplo el q tenga prioridad 1 tiene mas prioridad que los demás
+            **/
+           log.debug("PROFESORESlIST IN HIGHEST PRIORITY",profesoresList);
+           while (profesoresList.get(cont).getPrioridad() < prof.getPrioridad() && cont  < profesoresList.size()) {
+               highestPriorityProfesor.add(profesoresList.get(cont));
+               cont++;
+           }
+
+           log.debug("(HIGHEST PRIORITY): {} cont: {}",highestPriorityProfesor, cont);
+           return highestPriorityProfesor;
        }
 }

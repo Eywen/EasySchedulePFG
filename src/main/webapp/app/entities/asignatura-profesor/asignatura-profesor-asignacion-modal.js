@@ -41,6 +41,9 @@
 	            AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
 	            	console.log('getlowerpriority ',result);
 	            },onSaveSuccess, onSaveError);
+                AsignaturaProfesor.gethighestpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+                    console.log('gethighestpriority ',result);
+                },onSaveSuccess, onSaveError);
            // },onSaveSuccess, onSaveError);
             
             //COMENTADO TEMPORALMENTE PARA HACER LAS PRUEBAS DE VALIDACIONES, PERO ESTE IF ES EL CODIGO DE ASIGNACION AUTOMATICA
