@@ -32,16 +32,16 @@
         function save () {            
             vm.isSaving = true;
             //OBTENGO LA LISTA DE LOS PROFESORES QUE TIENEN UNA ASIGNATURA
-            AsignaturaProfesor.getasignaturainprof(vm.miAsignatura, function (result){
+            /*AsignaturaProfesor.getasignaturainprof(vm.miAsignatura, function (result){
             	console.log('getasignaturainprof ',result);
             	vm.profesoresAsignatura = result;
-            	console.log('vm.profesoresAsignatura ',vm.profesoresAsignatura);
-                vm.datosgetpriority = {profesores: vm.profesoresAsignatura, profesorId: vm.miProfesor.id}
+            	console.log('vm.profesoresAsignatura ',vm.profesoresAsignatura);*/
+                //vm.datosgetpriority = {asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}
             	//OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
-	            AsignaturaProfesor.getlowerpriority(vm.datosgetpriority, function (result){
+	            AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
 	            	console.log('getlowerpriority ',result);
 	            },onSaveSuccess, onSaveError);
-            },onSaveSuccess, onSaveError);
+           // },onSaveSuccess, onSaveError);
             
             //COMENTADO TEMPORALMENTE PARA HACER LAS PRUEBAS DE VALIDACIONES, PERO ESTE IF ES EL CODIGO DE ASIGNACION AUTOMATICA
             /*if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){

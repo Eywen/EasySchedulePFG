@@ -70,9 +70,9 @@
             },
             //////////////////////////////////////
             'getlowerpriority': { 
-                method: 'POST',
+                method: 'GET',
                 isArray:true,
-                url: 'api/asignaturaprofesors/getlowerpriority',
+                url: 'api/asignaturaprofesors/getlowerpriority/:asignaturaId/:profesorId',
                 transformResponse: function (data){
                     if (data){
                         data = angular.fromJson(data);
