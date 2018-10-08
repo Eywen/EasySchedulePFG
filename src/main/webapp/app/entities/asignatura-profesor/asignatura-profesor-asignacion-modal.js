@@ -17,6 +17,8 @@
         vm.asignaturas= Asignatura.query();
         vm.datos=[];
         vm.profesoresAsignatura=[];
+        vm.lowerPriority=[];
+        vm.highestPriority=[];
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -37,21 +39,36 @@
             	vm.profesoresAsignatura = result;
             	console.log('vm.profesoresAsignatura ',vm.profesoresAsignatura);*/
                 //vm.datosgetpriority = {asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}
-            	//OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
-	            AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
-	            	console.log('getlowerpriority ',result);
-	            },onSaveSuccess, onSaveError);
-                AsignaturaProfesor.gethighestpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
-                    console.log('gethighestpriority ',result);
-                },onSaveSuccess, onSaveError);
+
+            //ESTADO 10 OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
+            AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+            	console.log('getlowerpriority ',result);
+                vm.lowerPriority = result;
+                console.log ("longitud de lower array: ",vm.lowerPriority.length);
+                //ESTADO 9 DEL DIAGRAMA DE ESTADOS DE ASIGNACION
+                if (vm.lowerPriority.length == 0){
+                    console.log("array lower vacio");
+                    alert ("No puede elegir esta asignatura. Los cursos están completos");
+                }
+            },onSaveSuccess, onSaveError);
+            //OBTENGO LA LISTA DE PRIORIDADES MAYORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
+            AsignaturaProfesor.gethighestpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+                console.log('gethighestpriority ',result);
+                if (vm.highestPriority.length == 0){
+                    console.log("array highest vacio");
+                }
+            },onSaveSuccess, onSaveError);
+           
+
+
            // },onSaveSuccess, onSaveError);
             
-            //COMENTADO TEMPORALMENTE PARA HACER LAS PRUEBAS DE VALIDACIONES, PERO ESTE IF ES EL CODIGO DE ASIGNACION AUTOMATICA
-            /*if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
+            //ESTADO 5. COMENTADO TEMPORALMENTE PARA HACER LAS PRUEBAS DE VALIDACIONES, PERO ESTE IF ES EL CODIGO DE ASIGNACION AUTOMATICA
+            if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
 		        vm.miProfesor.asignaturas.push(vm.miAsignatura);
 		        console.log('vm.profesor.asignaturas  push ',vm.miProfesor.asignaturas);
               	Profesor.update(vm.miProfesor,onSaveSuccess,onSaveError);
-            } */ 
+            } 
             
             //console.log("en guardar asignación");
            /* Profesor.get({id:   vm.miProfesor.id}, function (result) {
