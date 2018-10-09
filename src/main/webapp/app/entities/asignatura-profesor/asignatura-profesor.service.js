@@ -81,10 +81,32 @@
                     return data;
                 }
             },
+                'checkAsignaturainProfesor': { 
+                method: 'GET',
+                url: 'api/asignaturaprofesors/checkAsignaturainProfesor/:asignaturaId/:profesorId',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    console.log('checkAsignaturainProfesor ',data);
+                    return data;
+                }
+            },
             'gethighestpriority': { 
                 method: 'GET',
                 isArray:true,
                 url: 'api/asignaturaprofesors/gethighestpriority/:asignaturaId/:profesorId',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    console.log('gethighestpriority ',data);
+                    return data;
+                }
+            },
+            'countsubject': { 
+                method: 'GET',
+                url: 'api/asignaturaprofesors/countsubject/:asignaturaId/:profesorId',
                 transformResponse: function (data){
                     if (data){
                         data = angular.fromJson(data);

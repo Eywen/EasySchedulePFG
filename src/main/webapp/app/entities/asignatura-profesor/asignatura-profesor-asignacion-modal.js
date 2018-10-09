@@ -40,6 +40,18 @@
             	console.log('vm.profesoresAsignatura ',vm.profesoresAsignatura);*/
                 //vm.datosgetpriority = {asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}
 
+            //ESTADO 1. COMPROBAR SI EL PROFESOR YA TIENE ESTA ASIGNATURA ASIGNADA
+            AsignaturaProfesor.checkAsignaturainProfesor({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+                console.log ("checkAsignaturainProfesor", result);
+                vm.checkAsignaturainProfesor = result;
+            });
+
+            //ESTADO 2. OBTENER EL NUMERO DE VECES QUE UN PROFESOR TIENE ASIGNADA UNA ASIGNATURA
+            AsignaturaProfesor.countsubject({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+                console.log ("countsubject", result);
+                vm.countsubject = result;
+            });
+
             //ESTADO 10 OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
             AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
             	console.log('getlowerpriority ',result);
@@ -64,11 +76,11 @@
            // },onSaveSuccess, onSaveError);
             
             //ESTADO 5. COMENTADO TEMPORALMENTE PARA HACER LAS PRUEBAS DE VALIDACIONES, PERO ESTE IF ES EL CODIGO DE ASIGNACION AUTOMATICA
-            if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
+            /*if (vm.miAsignatura.id !== null && vm.miProfesor.id !== null ){
 		        vm.miProfesor.asignaturas.push(vm.miAsignatura);
 		        console.log('vm.profesor.asignaturas  push ',vm.miProfesor.asignaturas);
               	Profesor.update(vm.miProfesor,onSaveSuccess,onSaveError);
-            } 
+            } */
             
             //console.log("en guardar asignación");
            /* Profesor.get({id:   vm.miProfesor.id}, function (result) {
