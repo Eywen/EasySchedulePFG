@@ -50,7 +50,7 @@ public class AsignaturaProfesorResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new asignatura, or with status 400 (Bad Request) if the asignatura has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @PostMapping("/asignaturaprofesors")
+   /* @PostMapping("/asignaturaprofesors")
     public ResponseEntity<Profesor> createAsignaturaProfesor(@RequestBody Map<String, String> json) throws URISyntaxException {
         log.debug("REST request to save AsignaturaProfesor asignatura : {}", json.get("id_asignatura"));
         log.debug("REST request to save AsignaturaProfesor  profesor : {}", json.get("id_profesor"));
@@ -62,12 +62,12 @@ public class AsignaturaProfesorResource {
         Profesor profesor = profesorRepository.findOne(id_prof);
         Asignatura asignatura =asignaturaRepository.findOne(id_asig);
         log.debug("REST request to save AsignaturaProfesor asignatura  : {} prof:{}", asignatura , profesor);
-        profesor.getAsignaturas().add(asignatura);
-        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGNATURAS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< : {}", profesor.getAsignaturas());
+        profesor.getAsignaturaProfesors().add(asignatura);
+        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGNATURAS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< : {}", profesor.getAsignaturaProfesors());
         log.debug("------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>---------------------------");
         Profesor result = profesorRepository.save(profesor);
         log.debug("***********************************************************");
-        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGs---------------------------------------------------- : {}", profesor.getAsignaturas());
+        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGs---------------------------------------------------- : {}", profesor.getAsignaturaProfesors());
         return Optional.ofNullable(result)
             .map(myresult -> new ResponseEntity<>(
                 myresult,
@@ -80,7 +80,7 @@ public class AsignaturaProfesorResource {
      * @return the ResponseEntity with status 200 (OK)
      *
     */
-    @DeleteMapping("/asignaturaprofesors/deleteselection/{id_profesor}/{id_asignatura}")
+    /*@DeleteMapping("/asignaturaprofesors/deleteselection/{id_profesor}/{id_asignatura}")
     //@DeleteMapping("/asignaturaprofesors/deleteselection")
     @Timed
     public ResponseEntity<Void> deleteAsignaturaProfesors(@PathVariable Long id_profesor, @PathVariable Long id_asignatura) {
@@ -89,10 +89,10 @@ public class AsignaturaProfesorResource {
         Profesor profesor = profesorRepository.findOne(id_profesor);
         Asignatura asignatura =asignaturaRepository.findOne(id_asignatura);
         log.debug("REST request to delete AsignaturaProfesor asignatura  : {} prof:{}", profesor , asignatura);
-        profesor.getAsignaturas().remove(asignatura);
+        profesor.getAsignaturaProfesors().remove(asignatura);
         Profesor result = profesorRepository.save(profesor);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignatura.getId().toString())).build();
-    }
+    }*/
 
     /**
      * @param asignatura  to find
@@ -106,15 +106,15 @@ public class AsignaturaProfesorResource {
         List <Profesor> profesores = new ArrayList<>(); // todos los profesores
         List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
         List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
-        profesores = profesorRepository.findAll();
-        for (Profesor profesor: profesores) {
-            asignaturas = profesor.getAsignaturas();
+        //profesores = profesorRepository.findAll();
+        /*for (Profesor profesor: profesores) {
+            asignaturas = profesor.getAsignaturaProfesors();
             for (Asignatura asignaturaList: asignaturas) {
                 if (asignaturaList.getId() == asignatura.getId()){
                     profesoresList.add(profesor);
                 }
             }
-        }
+        }*/
         //ordeno los profesores por prioridad antes de devolverlos
         Collections.sort(profesoresList);
         //getLowerPriority(profesoresList)
@@ -198,7 +198,7 @@ public class AsignaturaProfesorResource {
      * @param profesorId  id del profesor que quiere hacer la selección
      * @return una lista de profesores que tienen la prioridad más baja que el profesor indicado
      */
-   @GetMapping ("/asignaturaprofesors/getlowerpriority/{asignaturaId}/{profesorId}")
+  /* @GetMapping ("/asignaturaprofesors/getlowerpriority/{asignaturaId}/{profesorId}")
    @Timed
    public ResponseEntity<List<Profesor>> getLowerPriority(@PathVariable Long asignaturaId, @PathVariable Long profesorId) {
        log.debug("REST request to get lower priority from asignaturaId: {} profesorId: {}", asignaturaId,profesorId);
@@ -210,7 +210,7 @@ public class AsignaturaProfesorResource {
        profesoresList = getProfesoresList(asignatura);
       lowerPriorityProfesor = lowerPriorityTeachers(profesoresList,prof);
        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(lowerPriorityProfesor));
-   }
+   }*/
 
     /**
      * Servicio GET
@@ -218,7 +218,7 @@ public class AsignaturaProfesorResource {
      * @param profesorId  id del profesor que quiere hacer la selección
      * @return una lista de profesores que tienen la prioridad más alta que el profesor indicado
      */
-    @GetMapping ("/asignaturaprofesors/gethighestpriority/{asignaturaId}/{profesorId}")
+   /* @GetMapping ("/asignaturaprofesors/gethighestpriority/{asignaturaId}/{profesorId}")
     @Timed
     public ResponseEntity<List<Profesor>> getHighestPriority(@PathVariable Long asignaturaId, @PathVariable Long profesorId) {
         log.debug("REST request to get highest priority from asignaturaId: {} profesorId: {}", asignaturaId,profesorId);
@@ -230,21 +230,21 @@ public class AsignaturaProfesorResource {
         profesoresList = getProfesoresList(asignatura);
         highestPriorityProfesor = highestPriorityTeachers(profesoresList,prof);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(highestPriorityProfesor));
-    }
+    }*/
 
     /**
      *
      * @param asignatura asignatura que se quiere saber quienes la tienen asignada
      * @return Arraylist de los profesores que tienen asignada una asignatura
      */
-   public List<Profesor> getProfesoresList (Asignatura asignatura){
+  /* public List<Profesor> getProfesoresList (Asignatura asignatura){
        List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
        List <Profesor> profesores = new ArrayList<>(); // todos los profesores
        List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
 
        profesores = profesorRepository.findAll();
        for (Profesor profesor: profesores) {
-           asignaturas = profesor.getAsignaturas();
+           asignaturas = profesor.getAsignaturaProfesors();
            for (Asignatura asignaturaList: asignaturas) {
                if (asignaturaList.getId() == asignatura.getId()){
                    profesoresList.add(profesor);
@@ -254,7 +254,7 @@ public class AsignaturaProfesorResource {
        //ordeno los profesores por prioridad antes de devolverlos
        Collections.sort(profesoresList);
        return profesoresList;
-   }
+   }*/
 
     /**
      *
@@ -262,7 +262,7 @@ public class AsignaturaProfesorResource {
      * @param prof profesor que quiere seleccionar dicha asignatura para impartir
      * @return Array de profesores que tienen la prioridad más baja que la del profesor que quiere hacer la elección
      */
-   public List<Profesor> lowerPriorityTeachers (List<Profesor> profesoresList, Profesor prof ){
+  /* public List<Profesor> lowerPriorityTeachers (List<Profesor> profesoresList, Profesor prof ){
        List <Profesor> lowerPriorityProfesor = new ArrayList<>();
        int cont = profesoresList.size()-1;
        //TODO revisar si el 1 es la mayor prioridad o la menor
@@ -270,13 +270,13 @@ public class AsignaturaProfesorResource {
         *que el profesore al que se quiere asignar la asignatura. prioridad grande es
         * menor, por ejemplo el q tenga prioridad 1 tiene mas prioridad que los demás
         **/
-       while (profesoresList.get(cont).getPrioridad() > prof.getPrioridad() && cont >0) {
+       /*while (profesoresList.get(cont).getPrioridad() > prof.getPrioridad() && cont >0) {
                lowerPriorityProfesor.add(profesoresList.get(cont));
            cont--;
        }
        log.debug("(LOWER PRIORITY): {} cont: {}",lowerPriorityProfesor, cont);
        return lowerPriorityProfesor;
-   }
+   }*/
 
     /**
      *
@@ -284,7 +284,7 @@ public class AsignaturaProfesorResource {
      * @param prof profesor que quiere seleccionar una asignatura para impartir
      * @return lista de los profesores con la prioridad más alta que el profesor que quiere hacerl a selección
      */
-   public List<Profesor> highestPriorityTeachers (List<Profesor> profesoresList, Profesor prof){
+   /*public List<Profesor> highestPriorityTeachers (List<Profesor> profesoresList, Profesor prof){
        List <Profesor> highestPriorityProfesor = new ArrayList<>();
        int cont = 0;
        //TODO revisar si el 1 es la mayor prioridad o la menor
@@ -292,14 +292,14 @@ public class AsignaturaProfesorResource {
         *que el profesore al que se quiere asignar la asignatura. prioridad grande es
         * menor, por ejemplo el q tenga prioridad 1 tiene mas prioridad que los demás
         **/
-       log.debug("PROFESORESlIST IN HIGHEST PRIORITY",profesoresList);
+       /*log.debug("PROFESORESlIST IN HIGHEST PRIORITY",profesoresList);
        while (profesoresList.get(cont).getPrioridad() < prof.getPrioridad() && cont  < profesoresList.size()) {
            highestPriorityProfesor.add(profesoresList.get(cont));
            cont++;
        }
        log.debug("(HIGHEST PRIORITY): {} cont: {}",highestPriorityProfesor, cont);
        return highestPriorityProfesor;
-   }
+   }*/
 
     /**
      *
@@ -307,12 +307,12 @@ public class AsignaturaProfesorResource {
      * @param profesorId id del profesor del que se quiere saber si tiene la asignatura
      * @return true o false si el profesor ya tiene asignada la asignatura
      */
-   @GetMapping ("/asignaturaprofesors/checkAsignaturainProfesor/{asignaturaId}/{profesorId}")
+  /* @GetMapping ("/asignaturaprofesors/checkAsignaturainProfesor/{asignaturaId}/{profesorId}")
    @Timed
    public ResponseEntity <Boolean> checkAsignaturainProfesor (@PathVariable Long asignaturaId,@PathVariable Long profesorId){
        log.debug("REST request to get checkAsignaturainProfesor from asignaturaId: {} profesorId: {}", asignaturaId,profesorId);
        Profesor profesor = profesorRepository.findOne(profesorId);
-       List <Asignatura> asignaturas = profesor.getAsignaturas();
+       List <Asignatura> asignaturas = profesor.getAsignaturaProfesors();
        Asignatura asignatura = asignaturaRepository.findOne(asignaturaId);
        log.debug("PROFESOR: {}",profesor);
        log.debug("ASIGNATURAS LIST: {}",asignaturas);
@@ -320,7 +320,7 @@ public class AsignaturaProfesorResource {
        Boolean ckeckAsig = asignaturas.contains(asignatura);
 
        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(ckeckAsig));
-   }
+   }*/
 
     /**
      *
@@ -328,7 +328,7 @@ public class AsignaturaProfesorResource {
      * @param profesorId profesor del que se quiere saber cuantas veces tiene asignada dicha asignatura
      * @return un Integer que contiene el número de veces que tiene asignado un profesor una asignatura
      */
-   @GetMapping ("/asignaturaprofesors/countsubject/{asignaturaId}/{profesorId}")
+   /*@GetMapping ("/asignaturaprofesors/countsubject/{asignaturaId}/{profesorId}")
    @Timed
     public ResponseEntity <Integer> countSubject (@PathVariable Long asignaturaId, @PathVariable Long profesorId){
         log.debug("REST request count subject to a teacher from asignaturaId: {} profesorId: {}", asignaturaId, profesorId);
@@ -341,5 +341,5 @@ public class AsignaturaProfesorResource {
            }
        }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cont));
-   }
+   }*/
 }

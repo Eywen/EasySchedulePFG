@@ -33,7 +33,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="asignatura in vm.asignaturas track by asignatura.id">
+                <tr ng-repeat="asignatura in vm.asignaturaProfesors track by asignatura.id">
                     <td><a ui-sref="asignatura-detail({id:asignatura.id})">{{asignatura.id}}</a></td>
                     <td>{{asignatura.nombre}}</td>
                     <td>{{asignatura.plan}}</td>

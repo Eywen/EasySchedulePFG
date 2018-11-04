@@ -59,13 +59,13 @@ class AsignaturaGatlingTest extends Simulation {
         .check(status.is(200)))
         .pause(10)
         .repeat(2) {
-            exec(http("Get all asignaturas")
-            .get("/api/asignaturas")
+            exec(http("Get all asignaturaProfesors")
+            .get("/api/asignaturaProfesors")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
             .exec(http("Create new asignatura")
-            .post("/api/asignaturas")
+            .post("/api/asignaturaProfesors")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "nombre":"SAMPLE_TEXT", "plan":"SAMPLE_TEXT", "titulacion":"SAMPLE_TEXT", "creditos":"0", "num_grupos":"0", "creditos_teoricos":"0", "creditos_practicas":"0", "num_grupos_teoricos":"0", "num_grupos_practicas":"0", "usu_alta":"SAMPLE_TEXT"}""")).asJSON
             .check(status.is(201))

@@ -1,12 +1,13 @@
 package com.pfg.easyschedule.domain;
 
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A Asignatura.
@@ -58,13 +59,20 @@ public class Asignatura implements Serializable {
     @Column(name = "usu_alta", nullable = false)
     private String usu_alta;
 
-    @ManyToMany(mappedBy = "asignaturas", fetch=FetchType.LAZY)
-    private Set<Profesor> profesors = new HashSet<>();
+   /* @ManyToMany(mappedBy = "asignaturas", fetch=FetchType.LAZY)
+    private Set<Profesor> profesors = new HashSet<>();*/
     /*@ManyToMany
     @JoinTable(name = "asignatura_profesor",
                joinColumns = @JoinColumn(name="id_asignatura", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="id_profesor", referencedColumnName="id"))
     private Set<Profesor> profesors = new HashSet<>();*/
+   @OneToMany(
+       mappedBy = "asignatura",
+       cascade = CascadeType.ALL,
+       orphanRemoval = true
+   )
+   @Fetch(FetchMode.SUBSELECT)
+   private List<AsignaturaProfesor> profesors = new ArrayList<>();
 
     public Asignatura() {
     }
@@ -207,31 +215,29 @@ public class Asignatura implements Serializable {
         this.usu_alta = usu_alta;
     }
 
-    public Set<Profesor> getProfesors() {
+    public List<AsignaturaProfesor> getProfesors() {
         return profesors;
     }
 
-    public Asignatura profesors(Set<Profesor> profesors) {
-
+    public void setProfesors(List<AsignaturaProfesor> profesors) {
         this.profesors = profesors;
-        return this;
     }
 
-    public Asignatura addProfesor(Profesor profesor) {
+    /*public Asignatura addProfesor(Profesor profesor) {
         this.profesors.add(profesor);
-        profesor.getAsignaturas().add(this);
+        profesor.getAsignaturaProfesors().add(this);
         return this;
     }
 
     public Asignatura removeProfesor(Profesor profesor) {
         this.profesors.remove(profesor);
-        profesor.getAsignaturas().remove(this);
+        profesor.getAsignaturaProfesors().remove(this);
         return this;
-    }
+    }*/
 
-    public void setProfesors(Set<Profesor> profesors) {
+    /*public void setProfesors(Set<Profesor> profesors) {
         this.profesors = profesors;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {

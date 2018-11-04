@@ -20,7 +20,7 @@
                     return data;
                 }
             },
-               'getByLogin': {
+            'getByLogin': {
                 method: 'GET',
                 url: 'api/profesors/login/:login',
                 transformResponse: function (data) {
@@ -30,6 +30,17 @@
                     return data;
                 }
             },
+            /*'getsubjects': {
+                method: 'POST',
+                url: 'api/profesors/getsubjects',
+                isArray: true,
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },*/
             'getSubjects': {
                 method: 'GET',
                 isArray: true,

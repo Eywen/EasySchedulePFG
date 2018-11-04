@@ -1,8 +1,11 @@
 package com.pfg.easyschedule.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,17 +59,28 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{
     @Column(name = "usu_alta", nullable = false)
     private String usuAlta;
 
-    @ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
+
+
+    /*@ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
     @JoinTable(
         name = "asignatura_profesor",
         joinColumns = { @JoinColumn(name = "id_profesor") },
         inverseJoinColumns = { @JoinColumn(name = "id_asignatura") }
-    )
+    )*/
 
     /*@ManyToMany(mappedBy = "profesors")
     @JsonIgnore*/
-    //private Set<Asignatura> asignaturas = new HashSet<>();
-    private List<Asignatura> asignaturas ;
+    //private Set<Asignatura> asignaturaProfesors = new HashSet<>();
+    //private List<Asignatura> asignaturaProfesors ;
+
+    @OneToMany(
+        mappedBy = "profesor",
+        cascade = CascadeType.ALL,
+        fetch = FetchType.EAGER,
+        orphanRemoval = true
+    )
+    @JsonIgnore
+    private List<AsignaturaProfesor> asignaturaProfesors;
 
     @NotNull
     @Column(name = "login", nullable = false)
@@ -208,29 +222,61 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{
         this.usuAlta = usuAlta;
     }
 
-    public List<Asignatura> getAsignaturas() {
-        return asignaturas;
+
+    public List<AsignaturaProfesor> getAsignaturaProfesors() {
+        return asignaturaProfesors;
     }
 
-    public Profesor asignaturas(List<Asignatura> asignaturas) {
-        this.asignaturas = asignaturas;
+
+
+    public void setAsignaturaProfesors(List<AsignaturaProfesor> asignaturaProfesors) {
+        this.asignaturaProfesors = asignaturaProfesors;
+    }
+
+    /*public List<Asignatura> getAsignaturaProfesors() {
+        return asignaturaProfesors;
+    }
+
+    public Profesor asignaturaProfesors(List<Asignatura> asignaturaProfesors) {
+        this.asignaturaProfesors = asignaturaProfesors;
         return this;
     }
 
     public Profesor addAsignatura(Asignatura asignatura) {
-        this.asignaturas.add(asignatura);
+        this.asignaturaProfesors.add(asignatura);
         asignatura.getProfesors().add(this);
         return this;
     }
 
     public Profesor removeAsignatura(Asignatura asignatura) {
-        this.asignaturas.remove(asignatura);
+        this.asignaturaProfesors.remove(asignatura);
         asignatura.getProfesors().remove(this);
         return this;
+    }*/
+
+    /*public void setAsignaturaProfesors(List<Asignatura> asignaturaProfesors) {
+        this.asignaturaProfesors = asignaturaProfesors;
+    }*/
+
+    public void addAsignatura(Asignatura asignatura, long num_creditos_seleccion ) {
+        AsignaturaProfesor asignaturaProfesor = new AsignaturaProfesor(this, asignatura, num_creditos_seleccion);
+        asignaturaProfesors.add(asignaturaProfesor);
+        asignatura.getProfesors().add(asignaturaProfesor);
     }
 
-    public void setAsignaturas(List<Asignatura> asignaturas) {
-        this.asignaturas = asignaturas;
+    public void removeAsignatura(Asignatura asignatura) {
+        for (Iterator<AsignaturaProfesor> iterator = asignaturaProfesors.iterator();
+             iterator.hasNext(); ) {
+            AsignaturaProfesor asignaturaProfesor = iterator.next();
+
+            if (asignaturaProfesor.getProfesor().equals(this) &&
+                asignaturaProfesor.getAsignatura().equals(asignatura)) {
+                iterator.remove();
+                asignaturaProfesor.getAsignatura().getProfesors().remove(asignaturaProfesor);
+                asignaturaProfesor.setProfesor(null);
+                asignaturaProfesor.setAsignatura(null);
+            }
+        }
     }
 
     @Override

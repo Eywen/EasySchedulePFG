@@ -1,7 +1,7 @@
 <div>
     <h2 data-translate="easyscheduleApp.asignatura.home.title">Asignaturas</h2>
     <jhi-alert></jhi-alert>
-    
+
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="asignatura in  vm.asignaturas track by asignatura.id"> <!--track by asignatura.id ng-if='asignatura == vm.asignaturasMostrar' vm.asignaturas item in items | filter:x as results -->                    
+                <tr ng-repeat="asignatura in  vm.asignaturaProfesors track by asignatura.id"> <!--track by asignatura.id ng-if='asignatura == vm.asignaturasMostrar' vm.asignaturaProfesors item in items | filter:x as results -->
                     <td>{{asignatura.id}}</td>
                     <td>{{asignatura.nombre}}</td>
                     <td>{{asignatura.plan}}</td>
