@@ -1,0 +1,26 @@
+<div>
+    <h2 data-translate="easyscheduleApp.profesor.profesor-asignatura.selecctions" translate-values="{profesor: '{{vm.profesor.nombre}} {{vm.profesor.primerApellido}} '}">Asignaturas</h2>
+    <br><br>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead> </thead>
+            <tbody>
+                <tr ng-repeat="asignatura in vm.profesor.asignaturas | orderBy:'nombre' track by asignatura.id">
+                    <td ><h4>{{asignatura.nombre}}</h4></td>
+                    <td>
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit " ui-sref="asignatura-profesor.edit({id_prof:vm.profesor.id,id_asig:asignatura.id})" class="btn btn-primary btn-sm" >
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit " ui-sref="asignatura-profesor.delete({id_prof:profesor.id,id_asig:asignatura.id})" class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

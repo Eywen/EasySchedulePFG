@@ -81,6 +81,38 @@
                 });
             }]
         })
+        .state('asignatura-profesor.detail', { //agregado para boton en cada profesor de asignaciones y ver las que tiene. ok
+            parent: 'asignatura-profesor',
+            url: '/asignaturaprofesor/{id}',
+            data: {
+                authorities: ['ROLE_USER'],
+                pageTitle: 'easyscheduleApp.asignatura.detail.title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/asignatura-profesor/asignatura-profesor-detail.html',
+                    controller: 'AsignaturasProfesorDetailController',
+                    controllerAs: 'vm'
+                }
+            },
+            resolve: {
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('asignatura');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'Profesor', function($stateParams, Profesor) {
+                    return Profesor.get({id : $stateParams.id}).$promise;
+                }],
+                previousState: ["$state", function ($state) {
+                    var currentStateData = {
+                        name: $state.current.name || 'asignatura-profesor',
+                        params: $state.params,
+                        url: $state.href($state.current.name, $state.params)
+                    };
+                    return currentStateData;
+                }]
+            }
+        })
         .state('asignatura-profesor.delete', {
             parent: 'asignatura-profesor',
             url: '/{id_prof}/delete/{id_asig}',
@@ -108,7 +140,7 @@
                 });
             }]
         })
-        .state('asignatura-profesor.edit', {
+        .state('asignatura-profesor.edit', { //
             parent: 'asignatura-profesor',
             url: '/{id_prof}/edit/{id_asig}',
             data: {
@@ -125,6 +157,7 @@
                             return {                                
                                 id_profesor: $stateParams.id_prof,
                                 id_asignatura: $stateParams.id_asig,
+                                
                             };
                         }
                     }

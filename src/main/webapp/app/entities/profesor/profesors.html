@@ -33,7 +33,8 @@
             </thead>
             <tbody>
                 <tr ng-repeat="profesor in vm.profesors track by profesor.id">
-                    <td><a ui-sref="profesor-detail({id:profesor.id})">{{profesor.id}}</a></td>
+                    <!-- <td><a ui-sref="profesor-detail({id:profesor.id})">{{profesor.id}}</a></td> -->
+                    <td>{{profesor.id}}</td>
                     <td>{{profesor.nombre}}</td>
                     <td>{{profesor.primerApellido}}</td>
                     <td>{{profesor.segundoApellido}}</td>

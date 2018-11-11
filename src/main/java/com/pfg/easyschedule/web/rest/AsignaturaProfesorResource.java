@@ -2,6 +2,7 @@ package com.pfg.easyschedule.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.pfg.easyschedule.domain.Asignatura;
+import com.pfg.easyschedule.domain.AsignaturaProfesor;
 import com.pfg.easyschedule.domain.Profesor;
 import com.pfg.easyschedule.repository.AsignaturaRepository;
 import com.pfg.easyschedule.repository.ProfesorRepository;
@@ -342,4 +343,47 @@ public class AsignaturaProfesorResource {
        }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(cont));
    }*/
+
+
+
+   ///////////////////////actualizacion automatica sin verificacion 11-11-18.
+    /**
+     * PUT  /profesors : Updates an existing profesor.
+     *
+     * @param datosModificacion the asignatura profesor to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated asignatura_profesor,
+     * or with status 400 (Bad Request) if the id profesor, id new subject, id old subject are not valid,
+     * or with status 500 (Internal Server Error) if the asgnatura_profesor couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/asignaturaprofesors")
+    @Timed
+    public ResponseEntity<AsignaturaProfesor> updateAsignaturaProfesor(@RequestBody Map<String, String> json) throws URISyntaxException {
+        log.debug("REST request to UPDATE asignaturaprofesor : {}", json);
+
+
+        log.debug("REST request to UPDATE asignaturaprofesor id_profesor : {}", json.get("id_profesor"));
+        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_nueva: {}", json.get("id_asignatura_nueva"));
+        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_antigua: {}", json.get("id_asignatura_antigua"));
+
+        String idProfesor = json.get("id_profesor");
+        String idAsignaturanueva = json.get("id_asignatura_nueva");
+        String idAsignaturavieja = json.get("id_asignatura_antigua");
+        Long id_prof= Long.parseLong(idProfesor, 10);
+        Long  id_asignatura_nueva = Long.parseLong(idAsignaturanueva, 10);
+        Long  id_asignatura_antigua = Long.parseLong(idAsignaturavieja, 10);;
+        log.debug("*******************//////////////////**********************//////////////////*****************///////");
+        log.debug("REST request to UPDATE asignaturaprofesor id_prof : {}", id_prof);
+        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_nueva: {}", id_asignatura_nueva);
+        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_antigua: {}", id_asignatura_antigua);
+        log.debug("*****************//////////////////*******************////////////////////*******************////////");
+        /* if (datosModificacion. .getId() == null) {
+            return createProfesor(profesor);
+        }
+        Profesor result = profesorRepository.save(profesor);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, profesor.getId().toString()))
+            .body(result);*/
+        return null;
+    }
 }

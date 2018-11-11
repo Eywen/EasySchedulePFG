@@ -17,46 +17,33 @@
         vm.datos=[];
         vm.witoutAsig=[];
         vm.witoutProfAsig=[];
-         vm.asigofprof =[];
+        vm.asigdeprof =[];
+         
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
 
-        vm.id_asignatura = $stateParams.id_asig;
-
         Profesor.get({id:  $stateParams.id_prof}, function (result) {
             vm.profesor = result;    
-            vm.asigofprof = vm.profesor.asignaturas;
-            vm.witoutAsig = vm.asignaturas;
-            //elimino  de la lista las asignautras que ya tiene el profesor
-            for (var z = 0; z < vm.witoutAsig.length; z ++){
-                for (var i = 0; i < vm.asigofprof.length;  i++) {
-                    if (vm.asigofprof[i].id == vm.witoutAsig[z].id){
-                        vm.witoutAsig.splice(z,1);
-                        console.log("entro ",i);
+            console.log("get profesor: ",result);
+            Profesor.getSubjects({id: $stateParams.id_prof}, function (result) {
+                console.log("asignaturas del profesor: ", result);
+                vm.asigdeprof = result;
+                console.log("todas las asignaturas : ", vm.asignaturas);
+                //elimino  de la lista a mostrar para elegir las asignautras que ya tiene el profesor.
+                //TODO.  falta comprobar que le liste una asignatura que ya tiene el número de veces que pueda seleccionarla.
+                vm.witoutAsig = vm.asignaturas;
+                for (var z = 0; z < vm.asignaturas.length; z ++){
+                    for (var i = 0; i < result.length;  i++) {
+                        console.log("result ", result[i]);
+                        if (result[i].id == vm.asignaturas[z].id){
+                            vm.witoutAsig.splice(z,1);
+                            console.log("entro ",i);
+                        }
                     }
                 }
-            }
-
-            Asignatura.get({id: vm.id_asignatura}, function (result) {
-                vm.asig = result;
-                var j=0;
-                var z=0;
-                for (var i = vm.asignaturas.length - 1; i >= 0; i--) {
-                   /* if (vm.asignaturas[i].id != vm.asig.id ){
-                        vm.witoutAsig[j] = vm.asignaturas[i];
-                        j++;
-                    }
-                    else{
-                        vm.oldAsig=vm.asignaturas[i];
-                    }*/
-                    if (vm.asignaturas[i].id == vm.asig.id ){
-                        vm.oldAsig=vm.asignaturas[i];
-                    }
-                }
-
-                console.log(" asig sin las q ya tiene el profe: ", vm.witoutProfAsig);
+                console.log("lista de asignaturas que puede elegir (sin las que ya tiene): ", vm.witoutAsig);
             });
         });
        
@@ -68,27 +55,32 @@
         function findFirstLargeNumber(element) {
           return element = vm.oldAsig;
         }
-
+        //11-11-18. se debe modificar para que se elimine directamente la asignatura de la entity asignaturaprofesor (n:m) en el backend
         function save () {            
             vm.isSaving = true;
             //elimina la asignatura actual de la lista de asignaturas del profesor para enviarlo al back ya sin ella
-            var indiceOldAsig = vm.profesor.asignaturas.findIndex(findFirstLargeNumber);
-            vm.profesor.asignaturas.splice(indiceOldAsig, 1);
+            /*var indiceOldAsig = vm.profesor.asignaturas.findIndex(findFirstLargeNumber);
+            vm.profesor.asignaturas.splice(indiceOldAsig, 1);*/
             
             console.log('profesor ',vm.profesor);
             console.log('vm.miNuevaAsig ',vm.miNuevaAsig.id);
-            console.log('vm.profesor.asignaturas  nuevo ',vm.profesor.asignaturas);
-            vm.asigAutomaticData = {
+            //console.log('vm.profesor.asignaturas  nuevo ',vm.profesor.asignaturas);
+            vm.datosmodificacion = {
                 id_profesor: vm.profesor.id,
-                id_asignatura: vm.miNuevaAsig.id,
+                id_asignatura_nueva: vm.miNuevaAsig.id,
+                id_asignatura_antigua: $stateParams.id_asig 
             };
             console.log('vm.asigAutomaticData: ',vm.asigAutomaticData);
             //AsignaturaProfesor.save(vm.asigAutomaticData,onSaveSuccess,onSaveError);
-            if (vm.miNuevaAsig.id !== null && vm.id_asignatura !== null ){
-                vm.profesor.asignaturas.push(vm.miNuevaAsig);
-                console.log('vm.profesor.asignaturas  push ',vm.profesor.asignaturas);
-                console.log('profesor ',vm.profesor);
-                Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
+            /*
+            **11-11-18. Modificacion automatica. sin verificaciones para asignar la asignatura al profesor. falta hacerlo.
+            */
+            if (vm.miNuevaAsig.id !== null /*&& vm.id_asignatura !== null */){
+                //vm.profesor.asignaturas.push(vm.miNuevaAsig);
+                //console.log('vm.profesor.asignaturas  push ',vm.profesor.asignaturas);
+                //console.log('profesor ',vm.profesor);
+                //Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
+                AsignaturaProfesor.update(vm.datosmodificacion,onSaveSuccess,onSaveError);
             }  
                
   

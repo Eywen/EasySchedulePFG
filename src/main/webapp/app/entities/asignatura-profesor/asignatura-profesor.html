@@ -4,13 +4,13 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-6 no-padding-left">
-                 <button class="btn btn-primary"   ui-sref="asignatura-profesor.new">
+                 <button class="btn btn-primary col-xs-6"   ui-sref="asignatura-profesor.new">
                     <span class="glyphicon glyphicon-plus"></span>
                     <span  data-translate="easyscheduleApp.profesor.profesor-asignatura.createLabel">
                         Create new Selection asignatura-profesor.selectsubject
                     </span>
                 </button>
-                <button class="btn btn-warning"   ui-sref="asignatura-profesor.conflictos">
+                <button class="btn btn-warning col-xs-6"   ui-sref="asignatura-profesor.conflictos">
                     <span class="glyphicon glyphicon-eye-open"></span>
                     <span  data-translate="easyscheduleApp.profesor.profesor-asignatura.conflicts">
                         Consflict in asignatura-profesor.selectsubject
@@ -21,43 +21,88 @@
     </div>
     <br/>
     <br/>
-    <!-- <div>
-        <button data-toggle="collapse" data-target="#demo">
-            Collapsible
-        </button>
-        <div id="demo" class="collapse">
-            lloorrrooo!!!
-        </div>
-    </div> -->
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <!-- <div  ng-repeat="profesor in vm.profesors | orderBy:'primerApellido' track by profesor.id "> -->
+                
+                    <thead> 
+                        
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="profesor in vm.profesors | orderBy:'primerApellido' track by profesor.id" >
+                            <td>
+                                <a  ui-sref="asignatura-profesor.detail({id:profesor.id})">
+                                    <h3>{{profesor.primerApellido}} {{profesor.segundoApellido}} {{profesor.nombre}}</h3> 
+                                </a>
+                                <!-- <h3 class=" col-md-8">{{profesor.primerApellido}} {{profesor.segundoApellido}} {{profesor.nombre}}</h3> -->
+                            </td>
+                            <td>
+                                <button type="submit"
+                                    ui-sref="asignatura-profesor.detail({id:profesor.id})"  
+                                    class="btn btn-info btn-sm    ">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                    <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                
+            
+            <!-- cuando funcionen los botones de ver,editar y eliminar asignacion para cada profesor en esta lista eliminar este codigo. la vista de botones sera como en profesores 
+                <div class="panel-footer" ng-repeat="asignatura in profesor.asignaturaProfesors | orderBy:'nombre' track by asignatura.id" >
+                <span class="col-sm-8">
+                    {{asignatura.nombre}}class="col-sm-8
+                </span>
+                <button type="submit " ui-sref="asignatura-profesor.edit({id_prof:profesor.id,id_asig:asignatura.id})"
+                    class="btn btn-primary btn-sm" >
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                </button>
+                <button type="submit " ui-sref="asignatura-profesor.delete({id_prof:profesor.id,id_asig:asignatura.id})"
+                    class="btn btn-danger btn-sm">
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                        <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                </button>
 
-    <div class="panel panel-info" ng-repeat="profesor in vm.profesors | orderBy:'primerApellido' track by profesor.id ">
-      <div class="panel-heading">
-        <h3 class="panel-title">{{profesor.primerApellido}} {{profesor.segundoApellido}} {{profesor.nombre}}</h3>
-      </div>
-      <div class="panel-footer" ng-repeat="asignatura in profesor.asignaturaProfesors | orderBy:'nombre' track by asignatura.id" >
-        <span class="col-sm-8">
-            {{asignatura.nombre}}
-        </span>
-        <button type="submit " ui-sref="asignatura-profesor.edit({id_prof:profesor.id,id_asig:asignatura.id})"
-            class="btn btn-primary btn-sm" >
-                <span class="glyphicon glyphicon-pencil"></span>
-                <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
-        </button>
-        <button type="submit " ui-sref="asignatura-profesor.delete({id_prof:profesor.id,id_asig:asignatura.id})"
-            class="btn btn-danger btn-sm">
-             <span class="glyphicon glyphicon-remove-circle"></span>
-                <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
-        </button>
-      </div>
+                ////////////////////
+
+                                <div class="btn-group flex-btn-group-container">
+                                    <button type="submit"
+                                            ui-sref="profesor-detail({id:profesor.id})"
+                                            class="btn btn-info btn-sm">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                        <span class="hidden-sm-down" data-translate="entity.action.view"></span>
+                                    </button>
+                                    <button type="submit"
+                                            ui-sref="profesor.edit({id:profesor.id})"
+                                            class="btn btn-primary btn-sm">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        <span class="hidden-sm-down" data-translate="entity.action.edit"></span>
+                                    </button>
+                                    <button type="submit"
+                                            ui-sref="profesor.getsubjects({id:profesor.id})"
+                                            class="btn btn-info btn-sm">
+                                        <span class="glyphicon glyphicon-eye-open"></span>
+                                        <span class="hidden-sm-down" data-translate="easyscheduleApp.profesor.home.selections"></span>
+                                    </button>
+                                    <button type="submit"
+                                            ui-sref="profesor.delete({id:profesor.id})"
+                                            class="btn btn-danger btn-sm">
+                                        <span class="glyphicon glyphicon-remove-circle"></span>
+                                        <span class="hidden-sm-down" data-translate="entity.action.delete"></span>
+                                    </button>
+                                </div>
+            </div> -->
+            
+            <!-- </div> -->
+        </table>
     </div>
+
+    
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
         <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
-    <button type="button" onclick="history.back()" class="btn btn-primary">
-        <span class="glyphicon glyphicon-arrow-left"></span>
-        <span class="hidden-sm-down"data-translate="entity.action.back"> Back</span>
-    </button>
 </div>
 <!--
 //////

@@ -20,8 +20,10 @@
             "profesor-asignatura": {
                 "title": "Asignaciones",
                 "deletequestion":"¿Seguro que quiere eliminar la asignación {{ profesor }} {{asignatura}}?",
+                "selecctions":"Selecciones de  {{ profesor }} ",
                 "getSubjects":"Asignaturas asignadas",
-                "createLabel":"Crear nueva Asignación"
+                "createLabel":"Crear nueva Asignación",
+                "conflicts": "Conflictos"
             },
             "nombre": "Nombre",
             "primerApellido": "Primer Apellido",

@@ -17,6 +17,7 @@
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
         vm.profesors=[];
+       // vm.AsignaturasProfesorList = [];
      
         
         loadAll();
@@ -45,17 +46,7 @@
                 vm.profesors = data;
                 vm.page = pagingParams.page;
                 var profesorId;
-                for (var i=0; i <vm.profesors.length; i++){
-                    console.log("vm.itemsPerPage[i] ",vm.profesors[i].id);
-                    /*usar este metodo para obtener las asignaturas de un profesor, no puedo usar un finad all profesor con sus asignaturas 
-                    ** pq en find all profesor de la opcion demenu profesor no se cargan las asignaturas q tiene
-                    */
-                    Profesor.getSubjects({id: vm.profesors[i].id}, function (result){
-                    console.log ("getAsignaturas: ", result);
-                    });
-                    
-                    //AsignaturaProfesor.getasignaturainprof(vm.profesors[i]);
-                }
+                console.log("Profesores: ",vm.profesors);
             }
             function onError(error) {
                 AlertService.error(error.data.message);
