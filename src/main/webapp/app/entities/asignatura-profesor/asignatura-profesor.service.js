@@ -57,8 +57,9 @@
                 }
             },
             'delete':{
-                method: 'DELETE',
-                url: 'api/asignaturaprofesors/deleteselection/:id_profesor/:id_asignatura',
+                method: 'POST',
+                url: 'api/asignaturaprofesors/deleteselection/:id_profesor/:id_asignatura/:fecha',
+                //url: 'api/asignaturaprofesors/deleteselection/asignaturaprofesors/deleteselection',
                 transformResponse: function (data) {
                     if (data) {
                         data = angular.fromJson(data);
@@ -124,6 +125,16 @@
                         data = angular.fromJson(data);
                     }
                     console.log('getconfirmacion ',data);
+                    return data;
+                }
+            },
+            'getSubject': {
+                method: 'POST',
+                url: 'api/asignaturaprofesors/getsubject',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
                     return data;
                 }
             },

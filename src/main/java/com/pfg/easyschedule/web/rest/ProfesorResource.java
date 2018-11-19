@@ -6,6 +6,7 @@ import com.pfg.easyschedule.domain.AsignaturaProfesor;
 import com.pfg.easyschedule.domain.Profesor;
 
 import com.pfg.easyschedule.repository.ProfesorRepository;
+import com.pfg.easyschedule.web.rest.util.AsignaturaProfesorFrontDto;
 import com.pfg.easyschedule.web.rest.util.HeaderUtil;
 import com.pfg.easyschedule.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -17,7 +18,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -209,6 +209,7 @@ public class ProfesorResource {
         log.debug("REST get Profesor Subjects: {}", profesor.getAsignaturaProfesors());
         List<AsignaturaProfesor> asignaturasProfesors = new ArrayList<>();
         asignaturasProfesors = profesor.getAsignaturaProfesors();
+        log.debug("asignaturasProfesors: {}", asignaturasProfesors);
         List <Asignatura> asignaturas = new ArrayList<>();
 
         for (AsignaturaProfesor as: asignaturasProfesors) {
@@ -224,6 +225,47 @@ public class ProfesorResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         // return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asigProfesor.getAsignaturaProfesors()));
+    }
+
+    /**
+     * GET  /profesors/subjects/:id : get the "asignaturasprofesor" profesor.
+     *
+     * @param id  of the profesor to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the subjects, or with status 404 (Not Found)
+     */
+    //13-11-18 creado
+    @GetMapping("/profesors/asgnaturasprofesor/{id}")
+    /*@RequestMapping(value = "/profesors/subjects/{id}",
+        method= RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)*/
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Timed
+    public ResponseEntity<List<AsignaturaProfesorFrontDto>> getAsignaturasProfesorSubjects(@PathVariable Long id) {
+        log.debug("REST request to get Profesor Subjects: {}", id);
+
+        //List<Asignatura> subjects = asignaturaProfesorRepository.getProfesorSubjects(id);
+
+        Profesor profesor = profesorRepository.findOne(id);
+        log.debug("Recuperado profesor: {} ",profesor);
+        log.debug("REST get Profesor Subjects: {}", profesor.getAsignaturaProfesors());
+        List<AsignaturaProfesor> asignaturasProfesors = new ArrayList<>();
+        asignaturasProfesors = profesor.getAsignaturaProfesors();
+        log.debug("asignaturasProfesors: {}", asignaturasProfesors);
+        List <AsignaturaProfesorFrontDto> asigprof = new ArrayList<>();
+        for (AsignaturaProfesor asigp: asignaturasProfesors
+             ) {
+            asigprof.add(new AsignaturaProfesorFrontDto(asigp.getProfAsigpk().getId_profesor(),
+                asigp.getProfAsigpk().getId_asignatura(),asigp.getProfAsigpk().getFechaSeleccion().toString(),
+                asigp.getNum_creditos()));
+        }
+
+           // asig.add(asignaturasProfesors.get(0).toString());
+        //return Optional.ofNullable(asignaturasProfesors)
+         /*   .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));*/
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asigprof));
     }
     /**
      * POST  /profesors/getsubjects : get the "asignaturas" of a taacher.

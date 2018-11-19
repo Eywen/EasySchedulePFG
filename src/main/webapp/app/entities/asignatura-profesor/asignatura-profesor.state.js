@@ -115,7 +115,7 @@
         })
         .state('asignatura-profesor.delete', {
             parent: 'asignatura-profesor',
-            url: '/{id_prof}/delete/{id_asig}',
+            url: '/{id_prof}/delete/{id_asig}/{fechaSeleccion}',
             data: {
                 authorities: ['ROLE_ADMIN']
             },
@@ -130,6 +130,7 @@
                             return {                                
                                 id_profesor: $stateParams.id_prof,
                                 id_asignatura: $stateParams.id_asig,
+                                fecha_seleccion: $stateParams.fechaSeleccion,
                             };
                         }
                     }
@@ -142,7 +143,7 @@
         })
         .state('asignatura-profesor.edit', { //
             parent: 'asignatura-profesor',
-            url: '/{id_prof}/edit/{id_asig}',
+            url: '/{id_prof}/edit/{id_asig}/{fechaSeleccion}',
             data: {
                 authorities: ['ROLE_ADMIN']
             },
@@ -157,7 +158,7 @@
                             return {                                
                                 id_profesor: $stateParams.id_prof,
                                 id_asignatura: $stateParams.id_asig,
-                                
+                                fecha_seleccion: $stateParams.fechaSeleccion,
                             };
                         }
                     }

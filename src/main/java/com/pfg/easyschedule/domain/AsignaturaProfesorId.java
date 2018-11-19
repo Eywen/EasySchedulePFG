@@ -30,6 +30,12 @@ public class AsignaturaProfesorId implements Serializable {
     public AsignaturaProfesorId() {
     }
 
+    public AsignaturaProfesorId(long id_profesor, long id_asig, Date fecha_seleccion) {
+        this.id_profesor = id_profesor;
+        this.id_asig = id_asig;
+        this.fecha_seleccion = fecha_seleccion;
+    }
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }

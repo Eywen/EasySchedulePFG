@@ -30,17 +30,19 @@
                     return data;
                 }
             },
-            /*'getsubjects': {
-                method: 'POST',
-                url: 'api/profesors/getsubjects',
+            'getAsignaturasProfesor': {
+                method: 'GET',
                 isArray: true,
+                url: 'api/profesors/asgnaturasprofesor/:id',
                 transformResponse: function (data) {
+                    console.log("return service data getAsignaturasProfesor: ", data);
                     if (data) {
                         data = angular.fromJson(data);
                     }
+                    console.log("return service fromJson(data) getAsignaturasProfesor: ", data);
                     return data;
                 }
-            },*/
+            },
             'getSubjects': {
                 method: 'GET',
                 isArray: true,

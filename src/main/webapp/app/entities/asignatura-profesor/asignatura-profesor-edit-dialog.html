@@ -14,15 +14,17 @@
             <select id="subject" class="form-control"   ng-model="vm.miNuevaAsig" ng-options="woasig as woasig.nombre for woasig in vm.witoutAsig | orderBy:'nombre' track by woasig.id " >
                 <option value="">Elige opción</option>
             </select>
+            <!-- <input type="number" ng-model="vm.miNuevaAsig" placeholder="Número de créditos"/> -->
           </div><!--/col-->
         </div><!--/row-->
+        <input type="number" ng-model="vm.misNuevosCreditos" placeholder="Número de créditos"/>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" ng-disabled="editForm.$invalid" class="btn btn-primary">
-            <span class=""glyphicon glyphicon-save""></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
     </div>
 </form

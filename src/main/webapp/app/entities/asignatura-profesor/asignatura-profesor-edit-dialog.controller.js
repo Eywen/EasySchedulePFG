@@ -18,6 +18,11 @@
         vm.witoutAsig=[];
         vm.witoutProfAsig=[];
         vm.asigdeprof =[];
+        vm.asignaturaProfesor=[];
+        vm.fechaSeleccion =null;
+        vm.asignaturaAntigua = null;
+        vm.profesorId = null;
+        vm.num_creditos = null;
          
 
         $timeout(function (){
@@ -27,6 +32,7 @@
         Profesor.get({id:  $stateParams.id_prof}, function (result) {
             vm.profesor = result;    
             console.log("get profesor: ",result);
+            
             Profesor.getSubjects({id: $stateParams.id_prof}, function (result) {
                 console.log("asignaturas del profesor: ", result);
                 vm.asigdeprof = result;
@@ -55,7 +61,7 @@
         function findFirstLargeNumber(element) {
           return element = vm.oldAsig;
         }
-        //11-11-18. se debe modificar para que se elimine directamente la asignatura de la entity asignaturaprofesor (n:m) en el backend
+        
         function save () {            
             vm.isSaving = true;
             //elimina la asignatura actual de la lista de asignaturas del profesor para enviarlo al back ya sin ella
@@ -65,23 +71,51 @@
             console.log('profesor ',vm.profesor);
             console.log('vm.miNuevaAsig ',vm.miNuevaAsig.id);
             //console.log('vm.profesor.asignaturas  nuevo ',vm.profesor.asignaturas);
-            vm.datosmodificacion = {
-                id_profesor: vm.profesor.id,
-                id_asignatura_nueva: vm.miNuevaAsig.id,
-                id_asignatura_antigua: $stateParams.id_asig 
-            };
-            console.log('vm.asigAutomaticData: ',vm.asigAutomaticData);
-            //AsignaturaProfesor.save(vm.asigAutomaticData,onSaveSuccess,onSaveError);
-            /*
-            **11-11-18. Modificacion automatica. sin verificaciones para asignar la asignatura al profesor. falta hacerlo.
-            */
-            if (vm.miNuevaAsig.id !== null /*&& vm.id_asignatura !== null */){
-                //vm.profesor.asignaturas.push(vm.miNuevaAsig);
-                //console.log('vm.profesor.asignaturas  push ',vm.profesor.asignaturas);
-                //console.log('profesor ',vm.profesor);
-                //Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
-                AsignaturaProfesor.update(vm.datosmodificacion,onSaveSuccess,onSaveError);
-            }  
+            /**
+             * Esta llamada es necesaria para obtener los datos de la asignaturas ya que al modificar una o eliminarla hay q mandar la pk: idprofesor, idasignatura, fechaseleccion
+             */
+
+            Profesor.getAsignaturasProfesor({id: vm.profesor.id}, function (result){
+                console.log ("getAsignaturasProfesor: ", result);
+                vm.asignaturaProfesor = result;
+                var i =0;
+                var encontrado = false;
+                console.log ("vm.asignaturaProfesor: ", result);
+                while (i < vm.asignaturaProfesor.length && !encontrado){
+                    if (vm.asignaturaProfesor[i].id_profesor == vm.profesor.id){
+                        encontrado = true;
+                        vm.fechaSeleccion =vm.asignaturaProfesor[i].fecha_seleccion;
+                        vm.asignaturaAntigua = vm.asignaturaProfesor[i].id_asig;
+                        vm.profesorId = vm.asignaturaProfesor[i].id_profesor;
+                        vm.num_creditos = vm.asignaturaProfesor[i].num_creditos;
+                    }
+                }
+                vm.datosmodificacion = {
+                    id_profesor:vm.profesor.id,//vm.asignaturaProfesor.profAsigpk.id_profesor,
+                    id_asignatura_nueva: vm.miNuevaAsig.id,
+                    id_asignatura_antigua: vm.asignaturaAntigua, //vm.asignaturaProfesor.profAsigpk.id_asignatura,
+                    fecha_seleccion: vm.fechaSeleccion,//vm.asignaturaProfesor.profAsigpk.fechaSeleccion
+                    num_creditos: vm.num_creditos
+                };
+                console.log("id_profesor ",vm.datosmodificacion.id_profesor);
+                console.log("id_asignatura_nueva ",vm.datosmodificacion.id_asignatura_nueva);
+                console.log("id_asignatura_antigua ",vm.datosmodificacion.id_asignatura_antigua);
+                console.log("fecha_seleccion ",vm.datosmodificacion.fecha_seleccion);
+                //console.log('vm.asigAutomaticData: ',vm.asigAutomaticData);
+                //AsignaturaProfesor.save(vm.asigAutomaticData,onSaveSuccess,onSaveError);
+                /*
+                **11-11-18. Modificacion automatica. sin verificaciones para asignar la asignatura al profesor. falta hacerlo.
+                */
+                if (vm.miNuevaAsig.id !== null /*&& vm.id_asignatura !== null */){
+                    //vm.profesor.asignaturas.push(vm.miNuevaAsig);
+                    //console.log('vm.profesor.asignaturas  push ',vm.profesor.asignaturas);
+                    //console.log('profesor ',vm.profesor);
+                    //Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
+                    AsignaturaProfesor.update(vm.datosmodificacion,onSaveSuccess,onSaveError);
+                }  
+            });
+            
+            
                
   
                /* AsignaturaProfesor.getconfirmacion({id_asignatura: vm.miNuevaAsig.id,prioridad_profesor: vm.profesor.prioridad},

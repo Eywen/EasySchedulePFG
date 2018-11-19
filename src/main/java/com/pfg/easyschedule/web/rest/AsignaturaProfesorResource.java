@@ -3,25 +3,29 @@ package com.pfg.easyschedule.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.pfg.easyschedule.domain.Asignatura;
 import com.pfg.easyschedule.domain.AsignaturaProfesor;
+import com.pfg.easyschedule.domain.AsignaturaProfesorId;
 import com.pfg.easyschedule.domain.Profesor;
+import com.pfg.easyschedule.repository.AsignaturaProfesorRepository;
 import com.pfg.easyschedule.repository.AsignaturaRepository;
 import com.pfg.easyschedule.repository.ProfesorRepository;
+import com.pfg.easyschedule.web.rest.util.AsignaturaFrontDto;
+import com.pfg.easyschedule.web.rest.util.AsignaturaProfesorFrontDto;
 import com.pfg.easyschedule.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
-import javax.validation.Valid;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -36,12 +40,14 @@ public class AsignaturaProfesorResource {
     private static final String ENTITY_NAME = "asignaturaProfesor";
     private final ProfesorRepository profesorRepository;
     private final AsignaturaRepository asignaturaRepository;
+    private final AsignaturaProfesorRepository asignaturaProfesorRepository;
     @Autowired
     EntityManager entityManager;
 
-    public AsignaturaProfesorResource(AsignaturaRepository asignaturaRepository, ProfesorRepository profesorRepository ) {
+    public AsignaturaProfesorResource(AsignaturaRepository asignaturaRepository, ProfesorRepository profesorRepository, AsignaturaProfesorRepository asignaturaProfesorRepository) {
         this.profesorRepository = profesorRepository;
         this.asignaturaRepository = asignaturaRepository;
+        this.asignaturaProfesorRepository = asignaturaProfesorRepository;
     }
 
     /**
@@ -74,27 +80,43 @@ public class AsignaturaProfesorResource {
                 myresult,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
-/////////////////////////////
+    }*/
+///////////////////////////// desarrollo 16-11-18. con n:m.  OK
     /**
     *DELETE  /asignaturaprofesors/delete the  asignaturaProfesors.
      * @return the ResponseEntity with status 200 (OK)
      *
     */
-    /*@DeleteMapping("/asignaturaprofesors/deleteselection/{id_profesor}/{id_asignatura}")
-    //@DeleteMapping("/asignaturaprofesors/deleteselection")
+    @PostMapping (value = "/asignaturaprofesors/deleteselection")
+    //@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     @Timed
-    public ResponseEntity<Void> deleteAsignaturaProfesors(@PathVariable Long id_profesor, @PathVariable Long id_asignatura) {
-        log.debug("REST request to delete AsignaturaProfesors id_profesor : {}", id_profesor );
-        log.debug("REST request to delete AsignaturaProfesors id_asignatura : {}", id_asignatura );
-        Profesor profesor = profesorRepository.findOne(id_profesor);
-        Asignatura asignatura =asignaturaRepository.findOne(id_asignatura);
-        log.debug("REST request to delete AsignaturaProfesor asignatura  : {} prof:{}", profesor , asignatura);
-        profesor.getAsignaturaProfesors().remove(asignatura);
-        Profesor result = profesorRepository.save(profesor);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignatura.getId().toString())).build();
-    }*/
+    public ResponseEntity<AsignaturaFrontDto> deleteAsignaturaProfesors(@RequestBody Map<String, String> asignaturaborrar) {
+        log.debug("REST POST getProfesorSubjects: {}", asignaturaborrar);
+        Asignatura asignatura = new Asignatura();
+        AsignaturaFrontDto asignaturaFrontDto = new AsignaturaFrontDto();
+        String idProfesor = asignaturaborrar.get("id_profesor");
+        String idAsignatura = asignaturaborrar.get("id_asignatura");
+        String fechaseleccion = asignaturaborrar.get("fecha_seleccion");
+        log.debug("REST request to delete AsignaturaProfesors fecha : {}", fechaseleccion );
+        java.sql.Timestamp timeStampDate = null;
+        Long id_prof= Long.parseLong(idProfesor, 10);
+        Long  id_asignatura = Long.parseLong(idAsignatura, 10);
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            Date date = formatter.parse(fechaseleccion);
+            timeStampDate = new Timestamp(date.getTime());
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        AsignaturaProfesorId asignaturaProfesorIdBorrar = new AsignaturaProfesorId(id_prof,id_asignatura,timeStampDate);
+        if (asignaturaProfesorRepository.exists(asignaturaProfesorIdBorrar)){
+            log.debug("asignaturaProfesorIdBorrar (asignaturaProfesorId) EXISTIS {}",asignaturaProfesorRepository.findOne(asignaturaProfesorIdBorrar));
+            asignaturaProfesorRepository.delete(asignaturaProfesorIdBorrar);
+        }
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignaturaProfesorIdBorrar.toString())).build();
+    }
+//////////////////////////////////////////////////
     /**
      * @param asignatura  to find
      * @return the ResponseEntity with status 200 (OK) and with body the profesors, or with status 404 (Not Found)
@@ -346,11 +368,11 @@ public class AsignaturaProfesorResource {
 
 
 
-   ///////////////////////actualizacion automatica sin verificacion 11-11-18.
+   ///////////////////////actualizacion automatica sin verificacion 11-11-18. OK
     /**
      * PUT  /profesors : Updates an existing profesor.
      *
-     * @param datosModificacion the asignatura profesor to update
+     * @param asignaturaActualizar the asignatura profesor to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated asignatura_profesor,
      * or with status 400 (Bad Request) if the id profesor, id new subject, id old subject are not valid,
      * or with status 500 (Internal Server Error) if the asgnatura_profesor couldnt be updated
@@ -358,32 +380,96 @@ public class AsignaturaProfesorResource {
      */
     @PutMapping("/asignaturaprofesors")
     @Timed
-    public ResponseEntity<AsignaturaProfesor> updateAsignaturaProfesor(@RequestBody Map<String, String> json) throws URISyntaxException {
-        log.debug("REST request to UPDATE asignaturaprofesor : {}", json);
+    public ResponseEntity<AsignaturaProfesor> updateAsignaturaProfesor(@RequestBody Map<String, String> asignaturaActualizar) throws URISyntaxException {
+        log.debug("REST request to UPDATE asignaturaprofesor : {}", asignaturaActualizar);
+        String idProfesor = asignaturaActualizar.get("id_profesor");
+        String idAsignaturanueva = asignaturaActualizar.get("id_asignatura_nueva");
+        String idAsignaturavieja = asignaturaActualizar.get("id_asignatura_antigua");
+        String fechaseleccion = asignaturaActualizar.get("fecha_seleccion");
+        String num_creditos = asignaturaActualizar.get("num_creditos");
 
-
-        log.debug("REST request to UPDATE asignaturaprofesor id_profesor : {}", json.get("id_profesor"));
-        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_nueva: {}", json.get("id_asignatura_nueva"));
-        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_antigua: {}", json.get("id_asignatura_antigua"));
-
-        String idProfesor = json.get("id_profesor");
-        String idAsignaturanueva = json.get("id_asignatura_nueva");
-        String idAsignaturavieja = json.get("id_asignatura_antigua");
+        java.sql.Timestamp timeStampDate = null;
         Long id_prof= Long.parseLong(idProfesor, 10);
         Long  id_asignatura_nueva = Long.parseLong(idAsignaturanueva, 10);
-        Long  id_asignatura_antigua = Long.parseLong(idAsignaturavieja, 10);;
-        log.debug("*******************//////////////////**********************//////////////////*****************///////");
-        log.debug("REST request to UPDATE asignaturaprofesor id_prof : {}", id_prof);
-        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_nueva: {}", id_asignatura_nueva);
-        log.debug("REST request to UPDATE asignaturaprofesor id_asignatura_antigua: {}", id_asignatura_antigua);
-        log.debug("*****************//////////////////*******************////////////////////*******************////////");
-        /* if (datosModificacion. .getId() == null) {
-            return createProfesor(profesor);
+        Long  id_asignatura_antigua = Long.parseLong(idAsignaturavieja, 10);
+        Long numCreditos= Long.parseLong(num_creditos, 10);
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            Date date = formatter.parse(fechaseleccion);
+            timeStampDate = new Timestamp(date.getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        Profesor result = profesorRepository.save(profesor);
+        AsignaturaProfesor asigProf = new AsignaturaProfesor();
+        AsignaturaProfesorId asignaturaProfesorIdAgregar = new AsignaturaProfesorId(id_prof,id_asignatura_nueva,new Date());
+        AsignaturaProfesor asignaturaProfesornueva = new AsignaturaProfesor(asignaturaProfesorIdAgregar,numCreditos);
+
+        if (id_prof != null && id_asignatura_nueva != null && id_asignatura_antigua != null
+            && timeStampDate!= null) {
+            AsignaturaProfesorId asignaturaProfesorIdBorrar = new AsignaturaProfesorId(id_prof,id_asignatura_antigua,timeStampDate);
+            log.debug("AsignaturaProfesorId: {}", asignaturaProfesorIdBorrar);
+            log.debug("asignaturaProfesorRepository.findOne(asignaturaProfesorId): {}", asignaturaProfesorRepository.findOne(asignaturaProfesorIdBorrar));
+            if (asignaturaProfesorRepository.exists(asignaturaProfesorIdBorrar)){
+                log.debug("asignaturaProfesorIdBorrar (asignaturaProfesorId) EXISTIS");
+                asignaturaProfesorRepository.delete(asignaturaProfesorIdBorrar);
+                asigProf = asignaturaProfesorRepository.save(asignaturaProfesornueva);
+            }
+        }
+
+        //Profesor result = profesorRepository.save(profesor);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, profesor.getId().toString()))
-            .body(result);*/
-        return null;
+            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, asignaturaProfesornueva.getProfAsigpk().toString() .toString()))
+            .body(asigProf);
+
+    }
+    /**
+     * POST  /asignaturaprofesors/getsubject : get the "asignatura" of asignaturaProfesor in a taacher.
+     *
+     * @param json
+     * @return the ResponseEntity with status 200 (OK) and with body the subjects of a teacher, or with status 404 (Not Found)
+     */
+    @PostMapping (value = "/asignaturaprofesors/getsubject")
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Timed
+    public ResponseEntity<AsignaturaFrontDto> getProfesorAsignaturas(@RequestBody Map<String, String> json) {
+        log.debug("REST POST getProfesorSubjects: {}", json);
+        Asignatura asignatura = new Asignatura();
+        AsignaturaFrontDto asignaturaFrontDto = new AsignaturaFrontDto();
+
+        String idProfesor = json.get("id_profesor");
+        String idAsignatura = json.get("id_asignatura");
+       // String idAsignaturavieja = json.get("id_asignatura_antigua");
+        String fechaseleccion = json.get("fecha_seleccion");
+        //String num_creditos = json.get("num_creditos");
+
+        Timestamp timeStampDate = null;
+        Long id_prof= Long.parseLong(idProfesor, 10);
+        Long  id_asignatura = Long.parseLong(idAsignatura, 10);
+        //Long numCreditos= Long.parseLong(num_creditos, 10);
+
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            Date date = formatter.parse(fechaseleccion);
+            timeStampDate = new Timestamp(date.getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (id_prof != null && id_asignatura != null && timeStampDate!= null) {
+            AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(id_prof, id_asignatura, timeStampDate);
+            AsignaturaProfesor asignaturaProfesor = asignaturaProfesorRepository.findOne(asignaturaProfesorId);
+            if (asignaturaProfesorRepository.exists(asignaturaProfesorId)) {
+                log.debug("asignaturaProfesorId (asignaturaProfesorId) EXISTIS");
+                asignatura = asignaturaProfesor.getAsignatura();
+                log.debug("asignaturaProfesor.getAsignatura() {}", asignatura);
+                AsignaturaFrontDto asigFrontDto= new AsignaturaFrontDto(asignatura.getId(), asignatura.getNombre(), asignatura.getPlan(),
+                asignatura.getTitulacion(), asignatura.getCreditos(),asignatura.getNum_grupos(),
+                asignatura.getCreditos_teoricos(), asignatura.getCreditos_practicas(),asignatura.getNum_grupos_teoricos(),
+                asignatura.getNum_grupos_practicas(), asignatura.getUsu_alta(), timeStampDate.toString());
+                asignaturaFrontDto = asigFrontDto;
+            }
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaFrontDto));
     }
 }

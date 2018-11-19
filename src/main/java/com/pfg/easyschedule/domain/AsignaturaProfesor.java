@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -38,8 +39,6 @@ public class AsignaturaProfesor implements Serializable {
     @JsonIgnore
     private Asignatura asignatura;
 
-
-
     public AsignaturaProfesor() {
     }
 
@@ -57,6 +56,8 @@ public class AsignaturaProfesor implements Serializable {
     public AsignaturaProfesorId getProfAsigpk() {
         return profasigpk;
     }
+
+
 
     public void setProfAsigpk(AsignaturaProfesorId profAsigpk) {
         this.profasigpk = profAsigpk;
