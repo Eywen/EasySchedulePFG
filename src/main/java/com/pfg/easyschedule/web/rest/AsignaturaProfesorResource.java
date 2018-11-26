@@ -321,7 +321,7 @@ public class AsignaturaProfesorResource {
      * @return Array de profesores que tienen la prioridad más baja que la del profesor que quiere hacer la elección
      */
     @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
-    public List<Profesor> getLowerPriority (List<Profesor> profesoresList, Profesor prof ){
+    public List<Profesor> lowerPriorityTeachers (List<Profesor> profesoresList, Profesor prof ){
         List <Profesor> lowerPriorityProfesor = new ArrayList<>();
         //TODO revisar si el 1 es la mayor prioridad o la menor
         /** agrega a un array todos los profesores que tienen menor prioridad
