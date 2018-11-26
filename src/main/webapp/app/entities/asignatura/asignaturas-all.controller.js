@@ -10,8 +10,8 @@
     function AsignaturasAll( $state, $stateParams, Asignatura, Profesor, ParseLinks, AlertService, paginationConstants, pagingParams) {
 
         var vm = this;
-
-        vm.loadPage = loadPage;
+        console.log ("asignatura.all")
+        /*vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
@@ -54,7 +54,7 @@
                     }
                     
                 }*/
-                console.log('vm.asignaturasMostrar ',vm.asignaturasMostrar);
+              /*  console.log('vm.asignaturasMostrar ',vm.asignaturasMostrar);
                 vm.page = pagingParams.page;
             }
             function onError(error) {
@@ -85,7 +85,7 @@
             });
         };    */
 
-        function loadPage(page) {
+     /*   function loadPage(page) {
             vm.page = page;
             vm.transition();
         }
@@ -96,7 +96,7 @@
                 sort: vm.predicate + ',' + (vm.reverse ? 'asc' : 'desc'),
                 search: vm.currentSearch
             });
-        }
+        }*/
     }
 })();
  

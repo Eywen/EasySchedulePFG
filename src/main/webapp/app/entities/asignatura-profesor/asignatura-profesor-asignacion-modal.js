@@ -7,7 +7,7 @@
 
     NewAsignacionDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Asignatura', 'Profesor','AsignaturaProfesor'];
 
-    function NewAsignacionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Asignatura, Profesor, AsignaturaProfesor) {
+    function NewAsignacionDialogController ($timeout, $scope, $stateParams,  $uibModalInstance, entity, Asignatura, Profesor, AsignaturaProfesor) {
         var vm = this;
 
         //vm.asignatura = entity;
@@ -40,30 +40,31 @@
             	console.log('vm.profesoresAsignatura ',vm.profesoresAsignatura);*/
                 //vm.datosgetpriority = {asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}
 
-            //ESTADO 1. COMPROBAR SI EL PROFESOR YA TIENE ESTA ASIGNATURA ASIGNADA
+            //--26-11-18 n:m OK-- ESTADO 1. COMPROBAR SI EL PROFESOR YA TIENE ESTA ASIGNATURA ASIGNADA 
             AsignaturaProfesor.checkAsignaturainProfesor({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
                 console.log ("checkAsignaturainProfesor", result);
                 vm.checkAsignaturainProfesor = result;
             });
 
-            //ESTADO 2. OBTENER EL NUMERO DE VECES QUE UN PROFESOR TIENE ASIGNADA UNA ASIGNATURA
+            //--26-11-18 n:m OK-- ESTADO 2. OBTENER EL NUMERO DE VECES QUE UN PROFESOR TIENE ASIGNADA UNA ASIGNATURA
             AsignaturaProfesor.countsubject({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
                 console.log ("countsubject", result);
                 vm.countsubject = result;
             });
 
-            //ESTADO 10 OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
+            //--26-11-18 n:m OK-- ESTADO 10 OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
             AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
             	console.log('getlowerpriority ',result);
                 vm.lowerPriority = result;
                 console.log ("longitud de lower array: ",vm.lowerPriority.length);
-                //ESTADO 9 DEL DIAGRAMA DE ESTADOS DE ASIGNACION
+                //--26-11-18 n:m OK-- ESTADO 9 DEL DIAGRAMA DE ESTADOS DE ASIGNACION 
+                //--26-11-18 n:m -- ahora mismo sale aunque el frupo no este lleno, solo con q no haya nadiecon menos prioridad. revisar
                 if (vm.lowerPriority.length == 0){
                     console.log("array lower vacio");
                     alert ("No puede elegir esta asignatura. Los cursos están completos");
                 }
             },onSaveSuccess, onSaveError);
-            //OBTENGO LA LISTA DE PRIORIDADES MAYORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
+            //ESTADO 8 OBTENGO LA LISTA DE PRIORIDADES MAYORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
             AsignaturaProfesor.gethighestpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
                 console.log('gethighestpriority ',result);
                 if (vm.highestPriority.length == 0){

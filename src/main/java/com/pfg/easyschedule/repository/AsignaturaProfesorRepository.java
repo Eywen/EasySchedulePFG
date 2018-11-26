@@ -12,4 +12,6 @@ public interface AsignaturaProfesorRepository extends JpaRepository <AsignaturaP
 
     //@Query("SELECT ap.profAsigpk.asignatura FROM AsignaturaProfesor ap WHERE ap.profAsigpk.profesor.id =  ?1")
     //public List<Asignatura> getProfesorSubjects(Long idProfesor);
+    @Query("SELECT ap FROM AsignaturaProfesor ap WHERE ap.profasigpk.id_profesor =  ?1 and ap.profasigpk.id_asig = ?2")
+    List<AsignaturaProfesor> findByprofyasig(Long id_profesor, Long id_asignatura);
 }

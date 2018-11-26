@@ -33,6 +33,7 @@
                 return result;
             }
             function onSuccess(data, headers) {
+                console.log ("asignatura controller find all data: ",data);
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;

@@ -81,7 +81,7 @@
                     console.log('getlowerpriority ',data);
                     return data;
                 }
-            },
+            }, //ok 26-11-18
                 'checkAsignaturainProfesor': { 
                 method: 'GET',
                 url: 'api/asignaturaprofesors/checkAsignaturainProfesor/:asignaturaId/:profesorId',
