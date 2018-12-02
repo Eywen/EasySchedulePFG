@@ -390,7 +390,7 @@ public class AsignaturaProfesorResource {
         log.debug("RETURN PROFESORESlIST highestPriorityProfesor {}",highestPriorityProfesor);
         return highestPriorityProfesor;
     }
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////probada el 02-12-18 OK. estado 7
     /**
      * @param asignatura  to find
      * @return the ResponseEntity with status 200 (OK) and with body the profesors, or with status 404 (Not Found)
@@ -400,24 +400,89 @@ public class AsignaturaProfesorResource {
     @Timed
     public ResponseEntity<List<Profesor>> getSubjectInProfesores(@RequestBody Asignatura asignatura) {
         log.debug("REST request to get asignatura in Profesors: {}", asignatura);
-        List <Profesor> profesores = new ArrayList<>(); // todos los profesores
-        List <Asignatura> asignaturas = new ArrayList<>(); //asignaturas que tiene asignadas un profesor
         List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
-        //profesores = profesorRepository.findAll();
-        /*for (Profesor profesor: profesores) {
-            asignaturas = profesor.getAsignaturaProfesors();
-            for (Asignatura asignaturaList: asignaturas) {
-                if (asignaturaList.getId() == asignatura.getId()){
-                    profesoresList.add(profesor);
-                }
-            }
-        }*/
+        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByAsignatura(asignatura.getId());
+
+        for (AsignaturaProfesor asigProf: asignaturaProfesorList
+             ) {
+            profesoresList.add(asigProf.getProfesor());
+        }
+        log.debug(" PROFESORES CON LA ASIGNATURA profesoresList: {}", profesoresList);
         //ordeno los profesores por prioridad antes de devolverlos
         Collections.sort(profesoresList);
         //getLowerPriority(profesoresList)
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesoresList));
     }
+///////////////////////////////////////////////////02-12-18 OK
+    /**
+     * Servicio GET
+     * @param profesorId  id del profesor
+     * @return numero de creditos restantes para cubrir el total de creditos a impartir por el profesor
+     */
+    @GetMapping ("/asignaturaprofesors/creditosdisponibles/{profesorId}")
+    @Timed
+    public ResponseEntity<Long> getHighestPriority(@PathVariable Long profesorId) {
+        log.debug("REST request to get highest priority from  profesorId: {}", profesorId);
 
+        Profesor profesor = profesorRepository.findOne(profesorId);
+        Integer creditosTotales = profesor.getNumCreditosImpartir();
+        long creditosSeleccionados = 0;
+        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByProfesor(profesorId);
+        for (AsignaturaProfesor asignaturaProfesor: asignaturaProfesorList
+             ) {
+            creditosSeleccionados = creditosSeleccionados + asignaturaProfesor.getNum_creditos();
+        }
+
+        long creditosDisponibles = creditosTotales - creditosSeleccionados;
+        log.debug("creditosDisponibles: {}", creditosDisponibles);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(creditosDisponibles));
+    }
+
+    ///////////////////////reasignacion/:profmenorprioridadId/:profesorid
+    /**
+     * Servicio POST
+     * Borra al profesor de menor prioridad la asignatura que tiene asignada y se la asigna al profesor que tiene mayor prioridad
+     * @param datos  Map con los datos del id de los profesores de menor y mayor prioridad, el id de la asignatura y el número de creditos
+     * para la reasignacion de una asignatura     * @return numero de creditos restantes para cubrir el total de creditos a impartir por el profesor
+     */
+    @PostMapping ("/asignaturaprofesors/reasignacion")
+    @Timed
+    public ResponseEntity<Boolean> reasignacion(@RequestBody Map<String, String> datos) {
+        log.debug("REST POST reasignacion datos: {} ",datos);
+        String profMenorPrioridadId = datos.get("profmenorprioridadId");
+        String profMayorPrioridadId = datos.get("profesorid");
+        String asignaturaId = datos.get("asignaturaId");
+        String num_creditos = datos.get("num_creditos");
+        Long idProfMenorPrioridad= Long.parseLong(profMenorPrioridadId, 10);
+        Long  idProfMayorPrioridad = Long.parseLong(profMayorPrioridadId, 10);
+        Long  id_asignatura = Long.parseLong(asignaturaId, 10);
+        Long  numCreditos = Long.parseLong(num_creditos, 10);
+
+        Profesor profesorMenorPrioridad = profesorRepository.findOne(idProfMenorPrioridad);
+        Profesor profesorMayorPrioridad = profesorRepository.findOne(idProfMayorPrioridad);
+        //obtengo la lista de las asignaciones que tiene el profesor de menor prioridad para un asignatura
+        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByProfesor(profesorMenorPrioridad.getId());
+        AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(idProfMayorPrioridad,id_asignatura,new Date());
+        AsignaturaProfesor nuevaAsignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId,numCreditos);
+        int contador= asignaturaProfesorList.size();
+        AsignaturaProfesor asignaturaProfesor = null;
+        boolean agregado = false;
+        while (contador > 0 && asignaturaProfesor  == null){
+            if (asignaturaProfesorList.get(contador).getNum_creditos() == numCreditos){
+                asignaturaProfesor = asignaturaProfesorList.get(contador);
+            }
+            contador --;
+        }
+        if (asignaturaProfesor != null){
+            asignaturaProfesorRepository.delete(asignaturaProfesor);
+            log.debug("eliminada asignacion menor prioridad: {} Exist: {}",asignaturaProfesor);
+            asignaturaProfesorRepository.save(nuevaAsignaturaProfesor);
+            agregado=true;
+        }else{
+            log.debug("NO SE HA ENCONTRADO LA ASIGNACION DEL PROFESOR DE MENOR PRIORIDAD: {}",asignaturaProfesor);
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(agregado));
+    }
 /*
     /**
      * @param datos  list of teachers to find their prioritys and priority actual  teacher

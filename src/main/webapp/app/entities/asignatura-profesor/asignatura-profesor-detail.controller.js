@@ -25,7 +25,7 @@
         });*/
 
          /**
-         * Esta llamada es necesaria para obtener los datos de la asignaturas ya que al modificar una o eliminarla hay q mandar la pk: idprofesor, idasignatura, fechaseleccion
+         * Esta llamada es necesaria para obtener los datos de laS asignaturas ya que al modificar una o eliminarla hay q mandar la pk: idprofesor, idasignatura, fechaseleccion
          */
         Profesor.getAsignaturasProfesor({id: vm.profesor.id}, function (result){
             console.log ("getAsignaturasProfesor: ", result);

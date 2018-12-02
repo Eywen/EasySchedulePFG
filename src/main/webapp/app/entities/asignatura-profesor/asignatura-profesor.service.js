@@ -128,6 +128,26 @@
                     return data;
                 }
             },
+            'getcreditosdisponibles': {
+                method: 'GET',
+                url: 'api/asignaturaprofesors/creditosdisponibles/:profesorId',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'reasignacion': {
+                method: 'POST',
+                url: 'api/asignaturaprofesors/reasignacion',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
             'getSubject': {
                 method: 'POST',
                 url: 'api/asignaturaprofesors/getsubject',
