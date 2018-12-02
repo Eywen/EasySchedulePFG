@@ -33,7 +33,7 @@
 
         function save () {            
             vm.isSaving = true;
-            //ESTADO 7---OBTENGO LA LISTA DE LOS PROFESORES QUE TIENEN UNA ASIGNATURA
+            //02-12-18--ESTADO 7---OBTENGO LA LISTA DE LOS PROFESORES QUE TIENEN UNA ASIGNATURA
             AsignaturaProfesor.getasignaturainprof(vm.miAsignatura, function (result){
             	console.log('getasignaturainprof ',result);
             	vm.profesoresAsignatura = result;
