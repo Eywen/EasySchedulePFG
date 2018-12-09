@@ -21,7 +21,7 @@
                 }
             },
             'update': { method:'PUT' },
-            'checkAsignaturainProfesor': { 
+            'checkAsignaturainProfesor': { //ok 09-12-08
                 method: 'GET',
                 url: 'api/asignaturaprofesors/checkAsignaturainProfesor/:asignaturaId/:profesorId',
                 transformResponse: function (data){
@@ -29,7 +29,7 @@
                     return data; 
                 }
             },
-            'countsubject': { 
+            'countsubject': {//ok 09-12-08 
                 method: 'GET',
                 url: 'api/asignaturaprofesors/countsubject/:asignaturaId/:profesorId',
                 transformResponse: function (data){
@@ -37,7 +37,7 @@
                     return data;
                 }
             },
-            'getcreditosdisponibles': {
+            'getcreditosdisponibles': {//ok 09-12-08
                 method: 'GET',
                 url: 'api/asignaturaprofesors/creditosdisponibles/:profesorId',
                 transformResponse: function (data) {
@@ -56,7 +56,7 @@
                     return data;
                 }
             },
-            'gethighestpriority': { 
+            'gethighestpriority': { //ok 09-12-08
                 method: 'GET',
                 isArray:true,
                 url: 'api/asignaturaprofesors/gethighestpriority/:asignaturaId/:profesorId',
@@ -68,7 +68,7 @@
                     return data;
                 }
             },
-            'getlowerpriority': { 
+            'getlowerpriority': {//ok 09-12-08 
                 method: 'GET',
                 isArray:true,
                 url: 'api/asignaturaprofesors/getlowerpriority/:asignaturaId/:profesorId',
@@ -89,6 +89,28 @@
                     }
                     return data;
                 }
+            },
+            'getSubject': {
+                method: 'POST',
+                url: 'api/asignaturaprofesors/getsubject',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'delete':{//OK 09-12-18
+                method: 'POST',
+                url: 'api/asignaturaprofesors/deleteselection/:id_profesor/:id_asignatura/:fecha',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    console.log('After from Jsondata delete selection: ',data);
+                    return data;
+                }
+
             },
         });
     }
