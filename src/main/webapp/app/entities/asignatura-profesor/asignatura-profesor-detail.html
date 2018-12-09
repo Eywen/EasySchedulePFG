@@ -5,8 +5,9 @@
         <table class="jh-table table table-striped">
             <thead> </thead>
             <tbody>
-                <tr ng-repeat="asignatura in vm.profesor.asignaturas | orderBy:'nombre' track by asignatura.id">
+                <tr ng-repeat="asignatura in vm.profesor.asignaturas | orderBy:'nombre' track by asignatura.fecha_seleccion">
                     <td ><h4>{{asignatura.nombre}} </h4></td>
+                    <td ><h4>{{asignatura.fecha_seleccion}} </h4></td>
                     <td>
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit " ui-sref="asignatura-profesor.edit({id_prof:vm.profesor.id, id_asig:asignatura.id, fechaSeleccion:asignatura.fecha_seleccion})" class="btn btn-primary btn-sm" >
