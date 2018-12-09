@@ -9,12 +9,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+
 /**
  * A Profesor.
  */
 @Entity
 @Table(name = "profesor")
-public class Profesor implements Serializable ,  Comparable<Profesor>{
+public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparator<Profesor>
 
     private static final long serialVersionUID = 1L;
 
@@ -279,7 +280,7 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{
         }
     }
 
-    @Override
+    /*@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -292,7 +293,11 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{
             return false;
         }
         return Objects.equals(id, profesor.id);
-    }
+    }*/
+
+
+
+
 
     @Override
     public int hashCode() {
@@ -325,4 +330,26 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{
             ", usuAlta='" + usuAlta + "'" +
             '}';
     }
+
+    /*public enum Order {PRIORIDAD, NOMBRE, ID}
+
+    private Order sortingBy = PRIORIDAD;
+    @Override
+    public int compare(Profesor p1, Profesor p2) {
+
+
+            switch(sortingBy) {
+                case PRIORIDAD: return p1.getPrioridad().compareTo(p2.getPrioridad());
+                case NOMBRE: return p1.getNombre().compareTo(p2.getNombre());
+                case ID: return p1.getId().compareTo(p2.getId());
+            }
+            throw new RuntimeException("Practically unreachable code, can't be thrown");
+
+
+       // return 0;
+    }
+
+    public void setSortingBy(Order sortBy) {
+        this.sortingBy = sortingBy;
+    }*/
 }

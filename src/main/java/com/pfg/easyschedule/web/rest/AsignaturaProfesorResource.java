@@ -15,12 +15,14 @@ import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -51,52 +53,39 @@ public class AsignaturaProfesorResource {
     }
 
     /**
-     * POST  /subjectsprofesors : to assign one subject to teacher.
+     * POST  /asignaturaprofesors : to assign one subject to teacher.
      *
-     * @param ,  the id_prof,id_asig to assign a subject to teacher
+     * @param ,  the id_prof,id_asig and subject´s points to assign a subject to teacher
      * @return the ResponseEntity with status 201 (Created) and with body the new asignatura, or with status 400 (Bad Request) if the asignatura has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-   /* @PostMapping("/asignaturaprofesors")
-    public ResponseEntity<Profesor> createAsignaturaProfesor(@RequestBody Map<String, String> json) throws URISyntaxException {
-        log.debug("REST request to save AsignaturaProfesor asignatura : {}", json.get("id_asignatura"));
-        log.debug("REST request to save AsignaturaProfesor  profesor : {}", json.get("id_profesor"));
-        String idProfesor = json.get("id_profesor");
-        String idAsignatura = json.get("id_asignatura");
+    @PostMapping("/asignaturaprofesors")
+    public ResponseEntity<AsignaturaProfesor> createAsignaturaProfesor(@RequestBody Map<String, String> datos) throws URISyntaxException {
+        log.debug("REST request to save AsignaturaProfesor asignatura : {}", datos.get("asignaturaId"));
+        log.debug("REST request to save AsignaturaProfesor  profesor : {}", datos.get("profesorid"));
+        log.debug("REST request to save AsignaturaProfesor  profesor : {}", datos.get("num_creditos"));
+        String idProfesor = datos.get("profesorid");
+        String idAsignatura = datos.get("asignaturaId");
+        String numCreditos = datos.get("num_creditos");
         Long id_prof= Long.parseLong(idProfesor, 10);
-        Long  id_asig = Long.parseLong(idAsignatura, 10);;
+        Long  id_asig = Long.parseLong(idAsignatura, 10);
+        Long  num_creditos = Long.parseLong(numCreditos, 10);
 
-        /////////
-        Timestamp timeStampDate = null;
-        try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
-            Date date = formatter.parse(new Timestamp(System.currentTimeMillis()).toString());
-            timeStampDate = new Timestamp(date.getTime());
+        AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(id_prof, id_asig, new Date());
+        AsignaturaProfesor asignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId,num_creditos);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (asignaturaProfesorRepository.exists(asignaturaProfesorId)){
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new asignatura profesor cannot already have an ID")).body(null);
+        }else{
+            AsignaturaProfesor result = asignaturaProfesorRepository.save(asignaturaProfesor);
+            log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGNATURAS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
+            return Optional.ofNullable(result)
+                .map(myresult -> new ResponseEntity<>(
+                    myresult,
+                    HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
-        log.debug("FECHA: {}",timeStampDate);
-        AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(profesorId, asignaturaId, timeStampDate);
-        AsignaturaProfesor asignaturaProfesor = asignaturaProfesorRepository.findOne(asignaturaProfesorId);
-        log.debug("asignaturaProfesor  A CHECKEAR : {}",asignaturaProfesor);
-        /////////
-
-        Profesor profesor = profesorRepository.findOne(id_prof);
-        Asignatura asignatura =asignaturaRepository.findOne(id_asig);
-        log.debug("REST request to save AsignaturaProfesor asignatura  : {} prof:{}", asignatura , profesor);
-        profesor.getAsignaturaProfesors().add(asignatura);
-        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGNATURAS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< : {}", profesor.getAsignaturaProfesors());
-        log.debug("------------------------>>>>>>>>>>>>>>>>>>>>>>>>>>>---------------------------");
-        Profesor result = profesorRepository.save(profesor);
-        log.debug("***********************************************************");
-        log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGs---------------------------------------------------- : {}", profesor.getAsignaturaProfesors());
-        return Optional.ofNullable(result)
-            .map(myresult -> new ResponseEntity<>(
-                myresult,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
+    }
 ///////////////////////////// desarrollo 16-11-18. con n:m.  OK
     /**
     *DELETE  /asignaturaprofesors/delete the  asignaturaProfesors.
@@ -245,20 +234,20 @@ public class AsignaturaProfesorResource {
      *
      * @param asignaturaId id de la asignatura que se quiere buscar
      * @param profesorId id del profesor del que se quiere saber si tiene la asignatura
-     * @return true o false si el profesor ya tiene asignada la asignatura
+     * @return 1 (true) o 0(false) si el profesor ya tiene asignada la asignatura
      */
     @GetMapping ("/asignaturaprofesors/checkAsignaturainProfesor/{asignaturaId}/{profesorId}")
     @Timed
-    public ResponseEntity <Boolean> checkAsignaturainProfesor (@PathVariable Long asignaturaId,@PathVariable Long profesorId){
+    public ResponseEntity <Integer> checkAsignaturainProfesor (@PathVariable Long asignaturaId,@PathVariable Long profesorId){
         log.debug("REST request to get checkAsignaturainProfesor from asignaturaId: {} profesorId: {}", asignaturaId,profesorId);
 
         log.debug("PROFESOR: {}",profesorId);
         log.debug("ASIGNATURA: {}",asignaturaId);
-        boolean exist = false;
+        Integer exist = 0;
         List <AsignaturaProfesor> asignaturaProfesorList = null;
         asignaturaProfesorList = asignaturaProfesorRepository.findByprofyasig(profesorId,asignaturaId);
         if (asignaturaProfesorList !=null && !asignaturaProfesorList.isEmpty()){
-            exist = true;
+            exist = 1;
         }
         log.debug("ASIGNATURA CHECK: {}",asignaturaProfesorList);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(exist));
@@ -334,6 +323,8 @@ public class AsignaturaProfesorResource {
                 lowerPriorityProfesor.add(profesor);
             }
         }
+        //ordeno los profesores por prioridad antes de devolverlos
+        profesoresList.sort(Comparator.comparing(Profesor::getPrioridad));
        log.debug("(LOWER PRIORITY): {} ",lowerPriorityProfesor);
        return lowerPriorityProfesor;
     }
@@ -387,6 +378,8 @@ public class AsignaturaProfesorResource {
                 highestPriorityProfesor.add(profesor);
             }
         }
+        //ordeno los profesores por prioridad antes de devolverlos
+        profesoresList.sort(Comparator.comparing(Profesor::getPrioridad));
         log.debug("RETURN PROFESORESlIST highestPriorityProfesor {}",highestPriorityProfesor);
         return highestPriorityProfesor;
     }
@@ -409,10 +402,20 @@ public class AsignaturaProfesorResource {
         }
         log.debug(" PROFESORES CON LA ASIGNATURA profesoresList: {}", profesoresList);
         //ordeno los profesores por prioridad antes de devolverlos
-        Collections.sort(profesoresList);
+        profesoresList.sort(Comparator.comparing(Profesor::getPrioridad));
+       // Collections.sort(profesoresList);
+        log.debug(" PROFESORES  profesoresList ORDENADA: {}", profesoresList);
         //getLowerPriority(profesoresList)
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesoresList));
     }
+
+    /*public void sortProfesorBy(Profesor.Order sortingBy) {
+        List<Profesor> profesorList = this.profesoresList;  // useless line, just for clarification
+        FlexiblePersonComparator comparator = new FlexiblePersonComparator();
+        comparator.setSortingBy(sortingBy);
+        Collections.sort(persons, comparator); // now we have a sorted list
+    }*/
+
 ///////////////////////////////////////////////////02-12-18 OK
     /**
      * Servicio GET
@@ -464,23 +467,31 @@ public class AsignaturaProfesorResource {
         List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByProfesor(profesorMenorPrioridad.getId());
         AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(idProfMayorPrioridad,id_asignatura,new Date());
         AsignaturaProfesor nuevaAsignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId,numCreditos);
-        int contador= asignaturaProfesorList.size();
+        int contador= asignaturaProfesorList.size() - 1;
         AsignaturaProfesor asignaturaProfesor = null;
         boolean agregado = false;
         while (contador > 0 && asignaturaProfesor  == null){
+            log.debug("asignaturaProfesorList.get(contador).getNum_creditos(): {}",asignaturaProfesorList.get(contador).getNum_creditos());
             if (asignaturaProfesorList.get(contador).getNum_creditos() == numCreditos){
                 asignaturaProfesor = asignaturaProfesorList.get(contador);
             }
             contador --;
         }
+        //Borro la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
         if (asignaturaProfesor != null){
             asignaturaProfesorRepository.delete(asignaturaProfesor);
-            log.debug("eliminada asignacion menor prioridad: {} Exist: {}",asignaturaProfesor);
-            asignaturaProfesorRepository.save(nuevaAsignaturaProfesor);
-            agregado=true;
+            log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor);
+
         }else{
+            //si no hay una asignación que tenga el mismo de creditos, elimino la primera asignación de la lista.
             log.debug("NO SE HA ENCONTRADO LA ASIGNACION DEL PROFESOR DE MENOR PRIORIDAD: {}",asignaturaProfesor);
+            asignaturaProfesorRepository.delete(asignaturaProfesorList.get(0).getProfAsigpk());
+            log.debug("asignaturaProfesorList.get(0).getProfAsigpk(): {} ",asignaturaProfesorList.get(0).getProfAsigpk());
+            //asignaturaProfesorRepository.delete(asignaturaProfesorList.get(0));
+            //log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesorList.get(0));
         }
+        asignaturaProfesorRepository.save(nuevaAsignaturaProfesor);
+        agregado=true;
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(agregado));
     }
 /*
