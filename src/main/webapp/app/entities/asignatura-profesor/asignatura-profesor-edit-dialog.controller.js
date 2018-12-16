@@ -200,7 +200,7 @@
                                                    console.log("borrada asignatura antigua", vm.asignaturaAntigua);
                                                   
                                                 });
-                                        });
+                                        },onSaveSuccess, onSaveError);
                                         
                                     }     
                                 });

@@ -479,8 +479,8 @@ public class AsignaturaProfesorResource {
         }
         //Borro la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
         if (asignaturaProfesor != null){
-            asignaturaProfesorRepository.delete(asignaturaProfesor);
-            log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor);
+            asignaturaProfesorRepository.delete(asignaturaProfesor.getProfAsigpk());
+            log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
 
         }else{
             //si no hay una asignación que tenga el mismo de creditos, elimino la primera asignación de la lista.
