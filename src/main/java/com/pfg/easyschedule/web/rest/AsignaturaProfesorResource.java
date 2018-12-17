@@ -8,6 +8,7 @@ import com.pfg.easyschedule.domain.Profesor;
 import com.pfg.easyschedule.repository.AsignaturaProfesorRepository;
 import com.pfg.easyschedule.repository.AsignaturaRepository;
 import com.pfg.easyschedule.repository.ProfesorRepository;
+import com.pfg.easyschedule.service.MailService;
 import com.pfg.easyschedule.web.rest.util.AsignaturaFrontDto;
 import com.pfg.easyschedule.web.rest.util.AsignaturaProfesorFrontDto;
 import com.pfg.easyschedule.web.rest.util.HeaderUtil;
@@ -45,6 +46,8 @@ public class AsignaturaProfesorResource {
     private final AsignaturaProfesorRepository asignaturaProfesorRepository;
     @Autowired
     EntityManager entityManager;
+    @Autowired
+    MailService mailService;
 
     public AsignaturaProfesorResource(AsignaturaRepository asignaturaRepository, ProfesorRepository profesorRepository, AsignaturaProfesorRepository asignaturaProfesorRepository) {
         this.profesorRepository = profesorRepository;
@@ -465,6 +468,7 @@ public class AsignaturaProfesorResource {
         Profesor profesorMayorPrioridad = profesorRepository.findOne(idProfMayorPrioridad);
         //obtengo la lista de las asignaciones que tiene el profesor de menor prioridad para un asignatura
         List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByProfesor(profesorMenorPrioridad.getId());
+        log.debug("ASIGNATURA POR PROFESOR: {}", asignaturaProfesorList);
         AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(idProfMayorPrioridad,id_asignatura,new Date());
         AsignaturaProfesor nuevaAsignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId,numCreditos);
         int contador= asignaturaProfesorList.size() - 1;
@@ -477,11 +481,22 @@ public class AsignaturaProfesorResource {
             }
             contador --;
         }
+        log.debug("MENOR PRIORIDAD PROFESORLIST: {}", asignaturaProfesor);
         //Borro la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
+        /*"Este messaje de prueba para avisar que se le ha quitado la asignatura: "+asignaturaProfesor.getAsignatura()+
+                    " seleccionada el dia: " + asignaturaProfesor.getProfAsigpk().getFechaSeleccion()+" con el número e créditos: "+
+                    asignaturaProfesor.getNum_creditos()*/
         if (asignaturaProfesor != null){
             asignaturaProfesorRepository.delete(asignaturaProfesor.getProfAsigpk());
             log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
-
+            log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
+            mailService.sendEmail(
+                "blk20100@gmail.com",
+                "Mensaje de prueba desde spring",
+                "prueba de mail sender",
+                true,
+                true
+            );
         }else{
             //si no hay una asignación que tenga el mismo de creditos, elimino la primera asignación de la lista.
             log.debug("NO SE HA ENCONTRADO LA ASIGNACION DEL PROFESOR DE MENOR PRIORIDAD: {}",asignaturaProfesor);
@@ -489,9 +504,24 @@ public class AsignaturaProfesorResource {
             log.debug("asignaturaProfesorList.get(0).getProfAsigpk(): {} ",asignaturaProfesorList.get(0).getProfAsigpk());
             //asignaturaProfesorRepository.delete(asignaturaProfesorList.get(0));
             //log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesorList.get(0));
+            log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
+
+            mailService.sendEmail(
+                "blk20100@gmail.com",
+                "Mensaje de prueba desde spring",
+                "prueba de mail sender",
+                true,
+                true
+            );
         }
+        /*
+        "Este messaje de prueba para avisar que se le ha quitado la asignatura: "+asignaturaProfesor.getAsignatura()+
+                    " seleccionada el dia: " + asignaturaProfesor.getProfAsigpk().getFechaSeleccion()+" con el número e créditos: "+
+                    asignaturaProfesor.getNum_creditos(),
+         */
         asignaturaProfesorRepository.save(nuevaAsignaturaProfesor);
         agregado=true;
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(agregado));
     }
 /*
