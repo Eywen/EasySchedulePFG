@@ -97,7 +97,8 @@
                     if (data) {
                         data = angular.fromJson(data);
                     }
-                    return data;
+                    console.log("service get subject: ", data);
+                    return data; 
                 }
             },
             'delete':{//OK 09-12-18

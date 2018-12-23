@@ -81,6 +81,8 @@ public class AsignaturaProfesorResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new asignatura profesor cannot already have an ID")).body(null);
         }else{
             AsignaturaProfesor result = asignaturaProfesorRepository.save(asignaturaProfesor);
+
+            //AsignaturaProfesorFrontDto asignaturaProfesorFrontDto = new AsignaturaProfesorFrontDto(asignaturaProfesor);
             log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>ASIGNATURAS<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ");
             return Optional.ofNullable(result)
                 .map(myresult -> new ResponseEntity<>(
@@ -110,7 +112,7 @@ public class AsignaturaProfesorResource {
         Long id_prof= Long.parseLong(idProfesor, 10);
         Long  id_asignatura = Long.parseLong(idAsignatura, 10);
         try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
             Date date = formatter.parse(fechaseleccion);
             timeStampDate = new Timestamp(date.getTime());
 
@@ -151,7 +153,7 @@ public class AsignaturaProfesorResource {
         Long  id_asignatura_antigua = Long.parseLong(idAsignaturavieja, 10);
         Long numCreditos= Long.parseLong(num_creditos, 10);
         try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
             Date date = formatter.parse(fechaseleccion);
             timeStampDate = new Timestamp(date.getTime());
 
@@ -200,22 +202,42 @@ public class AsignaturaProfesorResource {
         String fechaseleccion = json.get("fecha_seleccion");
         //String num_creditos = json.get("num_creditos");
 
-        Timestamp timeStampDate = null;
+        //log.debug("STRINGS DEL MAP PARAMETER EN GETSUBJECT: idProfesor:{} idAsignatura:{} fechaseleccion:{}",idProfesor , idAsignatura,fechaseleccion);
+        //Timestamp timeStampDate = null;
         Long id_prof= Long.parseLong(idProfesor, 10);
         Long  id_asignatura = Long.parseLong(idAsignatura, 10);
         //Long numCreditos= Long.parseLong(num_creditos, 10);
+       // AsignaturaProfesorFrontDto asignaturaProfesorFrontDto = new AsignaturaProfesorFrontDto(id_prof, id_asignatura,fechaseleccion);
+        //log.debug("AsignaturaProfesorFrontDto: {}",asignaturaProfesorFrontDto);
+        ///
+        java.sql.Timestamp timeStampDate = null;
 
         try {
-            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            //Date date = formatter.parse(fechaseleccion);
             Date date = formatter.parse(fechaseleccion);
+            log.debug("date fecha de seleccion: {}", date);
             timeStampDate = new Timestamp(date.getTime());
+            log.debug("timeStampDate fecha de seleccion: {}", timeStampDate);
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        //
+
+       /* try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+          /*  Date date = formatter.parse(fechaseleccion);
+            timeStampDate = new Timestamp(date.getTime());
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }*/
         if (id_prof != null && id_asignatura != null && timeStampDate!= null) {
             AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(id_prof, id_asignatura, timeStampDate);
+            log.debug("asignaturaprofesor id  en getsubjct:  {}",asignaturaProfesorId);
             AsignaturaProfesor asignaturaProfesor = asignaturaProfesorRepository.findOne(asignaturaProfesorId);
+            log.debug("asignaturaprofesor  a buscar en getsubjct:  {}, EXIST: {}",asignaturaProfesor , asignaturaProfesorRepository.exists(asignaturaProfesorId));
             if (asignaturaProfesorRepository.exists(asignaturaProfesorId)) {
                 log.debug("asignaturaProfesorId (asignaturaProfesorId) EXISTIS");
                 asignatura = asignaturaProfesor.getAsignatura();
@@ -472,8 +494,17 @@ public class AsignaturaProfesorResource {
         AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(idProfMayorPrioridad,id_asignatura,new Date());
         AsignaturaProfesor nuevaAsignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId,numCreditos);
         int contador= asignaturaProfesorList.size() - 1;
+        log.debug("asignaturaProfesorList.size() ",asignaturaProfesorList.size());
+        log.debug("CONTADOR",contador);
         AsignaturaProfesor asignaturaProfesor = null;
         boolean agregado = false;
+
+        if (contador == 0) { //cuando solo hay uno con menor prioridad que la del profesor que esta seleccionando la asignatura
+            if (asignaturaProfesorList.get(contador).getNum_creditos() == numCreditos){
+                asignaturaProfesor = asignaturaProfesorList.get(contador);
+            }
+        }
+
         while (contador > 0 && asignaturaProfesor  == null){
             log.debug("asignaturaProfesorList.get(contador).getNum_creditos(): {}",asignaturaProfesorList.get(contador).getNum_creditos());
             if (asignaturaProfesorList.get(contador).getNum_creditos() == numCreditos){
@@ -481,15 +512,20 @@ public class AsignaturaProfesorResource {
             }
             contador --;
         }
+
         log.debug("MENOR PRIORIDAD PROFESORLIST: {}", asignaturaProfesor);
-        //Borro la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
-        String mensaje = "Se le ha desasignado la asignatura: "
-            +asignaturaProfesor.getAsignatura().getNombre()+
-            " seleccionada el dia: " + asignaturaProfesor.getProfAsigpk().getFechaSeleccion()+
-            " con el número e créditos: "+
-            asignaturaProfesor.getNum_creditos()
-            +" Debe entrar nuevamente a la aplicaciçon y seleccionar una asignatura nueva.";
+
+
+
+
         if (asignaturaProfesor != null){
+            String mensaje = "Se le ha desasignado la asignatura: "
+                +asignaturaProfesor.getAsignatura().getNombre()+
+                " seleccionada el dia: " + asignaturaProfesor.getProfAsigpk().getFechaSeleccion()+
+                " con el número de créditos: "+
+                asignaturaProfesor.getNum_creditos()
+                +" Debe entrar nuevamente a la aplicación y seleccionar una asignatura nueva.";
+            //Borra la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
             asignaturaProfesorRepository.delete(asignaturaProfesor.getProfAsigpk());
             log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
             log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
@@ -508,6 +544,13 @@ public class AsignaturaProfesorResource {
             //asignaturaProfesorRepository.delete(asignaturaProfesorList.get(0));
             //log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesorList.get(0));
             log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
+
+            String mensaje = "Se le ha desasignado la asignatura: "
+                +asignaturaProfesorList.get(0).getAsignatura().getNombre()+
+                " seleccionada el dia: " + asignaturaProfesorList.get(0).getProfAsigpk().getFechaSeleccion()+
+                " con el número de créditos: "+
+                asignaturaProfesorList.get(0).getNum_creditos()
+                +" Debe entrar nuevamente a la aplicación y seleccionar una asignatura nueva.";
 
             mailService.sendEmail(
                 "blk20100@gmail.com",
