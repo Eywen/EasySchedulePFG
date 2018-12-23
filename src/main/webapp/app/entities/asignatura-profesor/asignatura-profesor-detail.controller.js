@@ -72,7 +72,7 @@
                 fecha_seleccion: vm.fechaSeleccion,//vm.asignaturaProfesor.profAsigpk.fechaSeleccion
                 num_creditos: vm.num_creditos
             };*/
-            console.log("id_profesor ",vm.datosmodificacion.id_profesor);
+            /*console.log("id_profesor ",vm.datosmodificacion.id_profesor);
             console.log("id_asignatura_nueva ",vm.datosmodificacion.id_asignatura_nueva);
             console.log("id_asignatura_antigua ",vm.datosmodificacion.id_asignatura_antigua);
             console.log("fecha_seleccion ",vm.datosmodificacion.fecha_seleccion);
