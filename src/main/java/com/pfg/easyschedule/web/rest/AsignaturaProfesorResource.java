@@ -483,9 +483,12 @@ public class AsignaturaProfesorResource {
         }
         log.debug("MENOR PRIORIDAD PROFESORLIST: {}", asignaturaProfesor);
         //Borro la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
-        /*"Este messaje de prueba para avisar que se le ha quitado la asignatura: "+asignaturaProfesor.getAsignatura()+
-                    " seleccionada el dia: " + asignaturaProfesor.getProfAsigpk().getFechaSeleccion()+" con el número e créditos: "+
-                    asignaturaProfesor.getNum_creditos()*/
+        String mensaje = "Se le ha desasignado la asignatura: "
+            +asignaturaProfesor.getAsignatura().getNombre()+
+            " seleccionada el dia: " + asignaturaProfesor.getProfAsigpk().getFechaSeleccion()+
+            " con el número e créditos: "+
+            asignaturaProfesor.getNum_creditos()
+            +" Debe entrar nuevamente a la aplicaciçon y seleccionar una asignatura nueva.";
         if (asignaturaProfesor != null){
             asignaturaProfesorRepository.delete(asignaturaProfesor.getProfAsigpk());
             log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
@@ -493,7 +496,7 @@ public class AsignaturaProfesorResource {
             mailService.sendEmail(
                 "blk20100@gmail.com",
                 "Mensaje de prueba desde spring",
-                "prueba de mail sender",
+                mensaje,
                 true,
                 true
             );
@@ -509,7 +512,7 @@ public class AsignaturaProfesorResource {
             mailService.sendEmail(
                 "blk20100@gmail.com",
                 "Mensaje de prueba desde spring",
-                "prueba de mail sender",
+                mensaje,
                 true,
                 true
             );
