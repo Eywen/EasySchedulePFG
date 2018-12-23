@@ -3,8 +3,14 @@
     <br><br>
     <div class="table-responsive">
         <table class="jh-table table table-striped">
-            <thead> </thead>
+            <thead> 
+                    <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                        <th jh-sort-by="nombre"><span >Asignatura</span></th>
+                        <th jh-sort-by="fecha_seleccion"><span >Fecha de selección</span></th>
+                    </tr>
+            </thead>
             <tbody>
+
                 <tr ng-repeat="asignatura in vm.profesor.asignaturas | orderBy:'nombre' track by asignatura.fecha_seleccion">
                     <td ><h4>{{asignatura.nombre}} </h4></td>
                     <td ><h4>{{asignatura.fecha_seleccion}} </h4></td>
