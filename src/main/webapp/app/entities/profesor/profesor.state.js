@@ -205,33 +205,68 @@
                 }]
             }
         })
-        /*.state('profesor.selectsubject', {
+        .state('list_profesor_info', {
             parent: 'home',
-            url: '/{id_prof}/selectsubject/{id_asig}',
+            url: '/listinginfoteacher',
             data: {
-                authorities: ['ROLE_USER']
+                authorities: ['ROLE_ADMIN'],
+                pageTitle: 'easyscheduleApp.asignatura.home.title'
             },
-            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
-                $uibModal.open({
-                    templateUrl: 'app/entities/profesor/profesor-select-subject.html',
-                    controller: 'ProfesorSelectSubjectController',
-                    controllerAs: 'vm',
-                    backdrop: 'static',
-                    size: 'lg',
-                    resolve: {
-                        entity: function () {
-                            return {
-                                
-                            };
-                        }
-                    }
-                }).result.then(function() {
-                    $state.go('asignatura.all', null, { reload: 'asignatura.all' });
-                }, function() {
-                    $state.go('asignatura.all');
-                });
-            }]
-        })*/
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/profesor/profesor-listado-completo.html',
+                    controller: 'ProfesorListadoCompletoController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('asignatura');
+                    $translatePartialLoader.addPart('profesor');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'Profesor', function($stateParams, Profesor) {
+                    var listado = [];
+                    /*Profesor.query(function(response){
+                        response.forEach(profesor => {
+                            Profesor.getAsignaturasProfesor({id: profesor.id}, function (result){
+                                console.log ("getAsignaturasProfesor: ", result);
+                                var asignaturaProf = result;
+                                var datosListado = {
+                                    prof : profesor,
+                                    asigProf : asignaturaProf
+                                }
+                                listado.push (datosListado);
+                            });
+                        });
+                    });
+                    return  listado;*/
+                    
+                    return Profesor.query().$promise;
+                }]
+            }
+        })
         .state('profesor.delete', {
             parent: 'profesor',
             url: '/{id}/delete',

@@ -13,6 +13,10 @@
                 "asignatura-profesor" : "Asignaciones",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
+            "lists":{
+                "list": "Listados",
+                "info_teacher": "Listado por profesor"
+            },
             "account": {
                 "main": "Cuenta",
                 "settings": "Ajustes",
