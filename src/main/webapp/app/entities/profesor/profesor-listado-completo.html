@@ -3,9 +3,9 @@
     <BR>
 <div class="row">
     <div class="col-md-3"><h3 >Profesor</h3></div>
-    <div class="col-md-2"><h3 >creditos totales</h3></div>
-    <div class="col-md-2"><h3 >creditos cubiertos</h3></div>
-    <div class="col-md-2"><h3 >creditos por cubrir</h3></div>
+    <div class="col-md-2"><h3 >Creditos totales</h3></div>
+    <div class="col-md-2"><h3 >Creditos cubiertos</h3></div>
+    <div class="col-md-2"><h3 >Creditos por cubrir</h3></div>
 </div>
 <div class="panel panel-footer">
     <div class="panel-heading" >
@@ -25,15 +25,13 @@
                             <b class="caret"></b>
                         </span>
                     </a>
-                    <ul class="dropdown-menu" uib-dropdown-menu>
-                        <li ui-sref-active="active" class="row">
-                            <span class="col-md-4">prueba</span>
-                            <span class="col-md-4">3</span>
-                        </li>
-                        <li role="presentation" class="row">
-                            <span class="col-md-4">prueba </span>
-                            <span class="col-md-4">1</span>
-                        </li>
+                    <ul class="dropdown-menu " uib-dropdown-menu >
+                        <li ui-sref-active="active" class="row panel-body" ng-repeat="asignatura in vm.asignaturaProfesorListDto | orderBy:'nombre_asig' track by $index">
+                            <span class="col-md-8" ng-if="asignatura.id_profesor == profesor.prof.id">{{asignatura.nombre_asig}}</span>
+                            <span class="col-md-4" ng-if="asignatura.id_profesor == profesor.prof.id">{{asignatura.num_creditos}}</span>
+                            <span class="col-md-4" ng-else ng-hide="true"></span>
+                        </li >
+                       
                     </ul>
                 </li>
             </div>

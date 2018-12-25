@@ -17,6 +17,7 @@
                     if (data) {
                         data = angular.fromJson(data);
                     }
+                    console.log("profesor: ",data);
                     return data;
                 }
             },
@@ -35,7 +36,7 @@
                 isArray: true,
                 url: 'api/profesors/asgnaturasprofesor/:id',
                 transformResponse: function (data) {
-                    console.log("return service data getAsignaturasProfesor: ", data);
+                    //console.log("return service data getAsignaturasProfesor: ", data);
                     if (data) {
                         data = angular.fromJson(data);
                     }
@@ -43,7 +44,19 @@
                     return data;
                 }
             },
-            'getSubjects': {
+            'getAsignaturas': {
+                method: 'GET',
+                isArray: true,
+                url: 'api/profesors/asignaturas/:id',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    //console.log("service asignaturas profesor listado dto: ", data);
+                    return data;
+                }
+            },
+            'getSubjects': {//obtine los registros asignaturaProfesor de un porfesor
                 method: 'GET',
                 isArray: true,
                 url: 'api/profesors/subjects/:id',
