@@ -40,7 +40,7 @@
                     if (data) {
                         data = angular.fromJson(data);
                     }
-                    console.log("return service fromJson(data) getAsignaturasProfesor: ", data);
+                    //console.log("return service fromJson(data) getAsignaturasProfesor: ", data);
                     return data;
                 }
             },
