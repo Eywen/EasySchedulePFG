@@ -210,7 +210,7 @@
             url: '/listinginfoteacher',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'easyscheduleApp.asignatura.home.title'
+                pageTitle: 'global.menu.lists.list'
             },
             views: {
                 'content@': {
