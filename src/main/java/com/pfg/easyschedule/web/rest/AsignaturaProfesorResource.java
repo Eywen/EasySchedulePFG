@@ -126,6 +126,21 @@ public class AsignaturaProfesorResource {
         }
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignaturaProfesorIdBorrar.toString())).build();
     }
+    //////////05-01-19
+    /**
+     * GET  /asignaturas : get all the asignaturas.
+     *
+     * @param
+     * @return the ResponseEntity with status 200 (OK) and with body the asignaturaProfesors, or with status 404 (Not Found)
+     */
+    @GetMapping("/asignaturaprofesors")
+    @Timed
+    public ResponseEntity<List<AsignaturaProfesor>> getAllAsignaturasProfesor() {
+        log.debug("REST request to get  getAllAsignaturasProfesor");
+        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findAll();
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorList));
+    }
 
     ///////////////////////actualizacion automatica sin verificacion 11-11-18. OK
     /**

@@ -195,6 +195,98 @@
                 });
             }]
         })
+        .state('list_used_points_info', {
+            parent: 'home',
+            url: '/listingpointsinfo',
+            data: {
+                authorities: ['ROLE_ADMIN'],
+                pageTitle: 'global.menu.lists.points_used_list_title'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/asignatura-profesor/asignatura-profesor-total-creditos-cubiertos.html',
+                    controller: 'ProfesorListadoCreditosCubiertosController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('asignatura');
+                    $translatePartialLoader.addPart('profesor');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'AsignaturaProfesor', function($stateParams, AsignaturaProfesor) {
+                    return AsignaturaProfesor.query().$promise;
+                }]
+            }
+        })
+        .state('list_subject_coverage', {
+            parent: 'home',
+            url: '/listingsubjectscoverage',
+            data: {
+                authorities: ['ROLE_ADMIN'],
+                pageTitle: 'global.menu.lists.coverage_asignaturas'
+            },
+            views: {
+                'content@': {
+                    templateUrl: 'app/entities/asignatura-profesor/asignatura-profesor-listado-cobertura-asignaturas.html',
+                    controller: 'AsignaturasListadoCoberturaController',
+                    controllerAs: 'vm'
+                }
+            },
+            params: {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            },
+            resolve: {
+                pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
+                    return {
+                        page: PaginationUtil.parsePage($stateParams.page),
+                        sort: $stateParams.sort,
+                        predicate: PaginationUtil.parsePredicate($stateParams.sort),
+                        ascending: PaginationUtil.parseAscending($stateParams.sort),
+                        search: $stateParams.search
+                    };
+                }],
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('asignatura');
+                    $translatePartialLoader.addPart('profesor');
+                    $translatePartialLoader.addPart('global');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'AsignaturaProfesor', function($stateParams, AsignaturaProfesor) {
+                    return AsignaturaProfesor.query().$promise;
+                }]
+            }
+        })
         .state('asignatura-profesor.new', {
             parent: 'asignatura-profesor',
             url: '/new',

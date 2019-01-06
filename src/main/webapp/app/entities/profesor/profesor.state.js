@@ -248,20 +248,6 @@
                 }],
                 entity: ['$stateParams', 'Profesor', function($stateParams, Profesor) {
                     var listado = [];
-                    /*Profesor.query(function(response){
-                        response.forEach(profesor => {
-                            Profesor.getAsignaturasProfesor({id: profesor.id}, function (result){
-                                console.log ("getAsignaturasProfesor: ", result);
-                                var asignaturaProf = result;
-                                var datosListado = {
-                                    prof : profesor,
-                                    asigProf : asignaturaProf
-                                }
-                                listado.push (datosListado);
-                            });
-                        });
-                    });
-                    return  listado;*/
                     
                     return Profesor.query().$promise;
                 }]
