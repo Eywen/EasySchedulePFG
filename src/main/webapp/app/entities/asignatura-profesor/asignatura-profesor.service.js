@@ -25,7 +25,7 @@
                 method: 'GET',
                 url: 'api/asignaturaprofesors/checkAsignaturainProfesor/:asignaturaId/:profesorId',
                 transformResponse: function (data){
-                    console.log('service  ',data); 
+                    //console.log('service  ',data); 
                     return data; 
                 }
             },
@@ -33,7 +33,7 @@
                 method: 'GET',
                 url: 'api/asignaturaprofesors/countsubject/:asignaturaId/:profesorId',
                 transformResponse: function (data){
-                    console.log('service  countsubject ',data);
+                    //console.log('service  countsubject ',data);
                     return data;
                 }
             },
@@ -52,7 +52,7 @@
                     if (data){
                         data = angular.fromJson(data);
                     }
-                    console.log('getconfirmacion ',data);
+                    //console.log('getconfirmacion ',data);
                     return data;
                 }
             },
@@ -64,7 +64,7 @@
                     if (data){
                         data = angular.fromJson(data);
                     }
-                    console.log('gethighestpriority ',data);
+                    //console.log('gethighestpriority ',data);
                     return data;
                 }
             },
@@ -76,7 +76,7 @@
                     if (data){
                         data = angular.fromJson(data);
                     }
-                    console.log('SERVICE  getlowerpriority ',data);
+                    //console.log('SERVICE  getlowerpriority ',data);
                     return data;
                 }
             }, 
@@ -97,7 +97,18 @@
                     if (data) {
                         data = angular.fromJson(data);
                     }
-                    console.log("service get subject: ", data);
+                    //console.log("service get subject: ", data);
+                    return data; 
+                }
+            },
+            'getasigprof': {//devuelve un asignaturafrontdto con sus datos mas el nombre del profesor y la asignatura
+                method: 'POST',
+                url: 'api/asignaturaprofesors/getasigprof',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    //console.log("service get subject: ", data);
                     return data; 
                 }
             },
@@ -108,7 +119,7 @@
                     if (data) {
                         data = angular.fromJson(data);
                     }
-                    console.log('After from Jsondata delete selection: ',data);
+                    //console.log('After from Jsondata delete selection: ',data);
                     return data;
                 }
 

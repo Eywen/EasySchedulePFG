@@ -1,0 +1,41 @@
+<h2>Listado de información de profesores</h2>
+<BR>
+    <BR>
+<div class="row">
+    <div class="col-md-3"><h3 >Profesor</h3></div>
+    <div class="col-md-2"><h3 >Créditos totales</h3></div>
+    <div class="col-md-2"><h3 >Créditos cubiertos</h3></div>
+    <div class="col-md-2"><h3 >Créditos por cubrir</h3></div>
+</div>
+<div class="panel panel-footer">
+    <div class="panel-heading" >
+        <div class="row panel-title"  ng-repeat="profesor in vm.listado | orderBy:'prof.primerApellido' track by profesor.prof.id" >
+            <div class="col-md-3"><h3 >{{profesor.prof.primerApellido}} {{profesor.prof.segundoApellido}} {{profesor.prof.nombre}}</h3></div>
+            <div class="col-md-2"><h3 >{{profesor.credTotalesImpartir}}</h3></div>
+            <div class="col-md-2"><h3 >{{profesor.credCubiertos}}</h3></div>
+            <div class="col-md-2"><h3 >{{profesor.credCubrir}}</h3></div>
+            <div class="col-md-3"><BR>
+                <li  uib-dropdown class="dropdown list-unstyled " > 
+                    <a class="dropdown-toggle" uib-dropdown-toggle href="" id="list-menu">
+                        <span>
+                            <span class="glyphicon glyphicon-th-list"></span>
+                            <span class="hidden-sm" data-translate="easyscheduleApp.asignatura.home.title">
+                                Listings
+                            </span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu " uib-dropdown-menu >
+                        <li ui-sref-active="active" class="row panel-body" ng-repeat="asignatura in vm.asignaturaProfesorListDto | orderBy:'nombre_asig' track by $index">
+                            <span class="col-md-8" ng-if="asignatura.id_profesor == profesor.prof.id">{{asignatura.nombre_asig}}</span>
+                            <span class="col-md-4" ng-if="asignatura.id_profesor == profesor.prof.id">{{asignatura.num_creditos}}</span>
+                            <span class="col-md-4" ng-else ng-hide="true"></span>
+                        </li >
+                       
+                    </ul>
+                </li>
+            </div>
+        </div>
+    </div>
+   
+</div>

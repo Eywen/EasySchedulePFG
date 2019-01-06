@@ -126,6 +126,21 @@ public class AsignaturaProfesorResource {
         }
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, asignaturaProfesorIdBorrar.toString())).build();
     }
+    //////////05-01-19
+    /**
+     * GET  /asignaturas : get all the asignaturas.
+     *
+     * @param
+     * @return the ResponseEntity with status 200 (OK) and with body the asignaturaProfesors, or with status 404 (Not Found)
+     */
+    @GetMapping("/asignaturaprofesors")
+    @Timed
+    public ResponseEntity<List<AsignaturaProfesor>> getAllAsignaturasProfesor() {
+        log.debug("REST request to get  getAllAsignaturasProfesor");
+        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findAll();
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorList));
+    }
 
     ///////////////////////actualizacion automatica sin verificacion 11-11-18. OK
     /**
@@ -251,10 +266,7 @@ public class AsignaturaProfesorResource {
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaFrontDto));
     }
-
-
  /////////////////////////////////////modificacion a n:m  25-11-208- OK
-
     /**
      *
      * @param asignaturaId id de la asignatura que se quiere buscar
@@ -277,8 +289,6 @@ public class AsignaturaProfesorResource {
         log.debug("ASIGNATURA CHECK: {}",asignaturaProfesorList);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(exist));
     }
-
-
     //////////////////////////////////////modificacion a n:m  26-11-208- OK
     /**
      *
@@ -295,9 +305,7 @@ public class AsignaturaProfesorResource {
 
        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorList.size()));
    }
-
 //////////////////////////////modificacion a n:m  26-11-208- OK
-
     /**
      * Servicio GET
      * @param asignaturaId id de la asignatura a buscar
@@ -326,7 +334,6 @@ public class AsignaturaProfesorResource {
        lowerPriorityProfesor = lowerPriorityTeachers(profesoresList,prof);
        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(lowerPriorityProfesor));
    }
-
 ////////////////////////////////////modificacion a n:m  26-11-208- OK
     /**
      *
@@ -353,9 +360,7 @@ public class AsignaturaProfesorResource {
        log.debug("(LOWER PRIORITY): {} ",lowerPriorityProfesor);
        return lowerPriorityProfesor;
     }
-
     ////////////////////////////////modificacion a n:m  26-11-208- OK
-
     /**
      * Servicio GET
      * @param asignaturaId id de la asignatura a buscar
@@ -381,6 +386,7 @@ public class AsignaturaProfesorResource {
         highestPriorityProfesor = highestPriorityTeachers(profesoresList,prof);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(highestPriorityProfesor));
     }
+
 //////////////////////////////////////modificacion a n:m  26-11-208- OK
     /**
      *
@@ -433,14 +439,13 @@ public class AsignaturaProfesorResource {
         //getLowerPriority(profesoresList)
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesoresList));
     }
-
+    //////////
     /*public void sortProfesorBy(Profesor.Order sortingBy) {
         List<Profesor> profesorList = this.profesoresList;  // useless line, just for clarification
         FlexiblePersonComparator comparator = new FlexiblePersonComparator();
         comparator.setSortingBy(sortingBy);
         Collections.sort(persons, comparator); // now we have a sorted list
     }*/
-
 ///////////////////////////////////////////////////02-12-18 OK
     /**
      * Servicio GET
@@ -465,7 +470,6 @@ public class AsignaturaProfesorResource {
         log.debug("creditosDisponibles: {}", creditosDisponibles);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(creditosDisponibles));
     }
-
     ///////////////////////reasignacion/:profmenorprioridadId/:profesorid
     /**
      * Servicio POST
@@ -569,6 +573,62 @@ public class AsignaturaProfesorResource {
         agregado=true;
 
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(agregado));
+    }
+
+    ////////creado 25-12-18
+    /**
+     * POST  /asignaturaprofesors/getasigprof : get the "asignaturaProfesor" con nombre de profesor, nombre de asignatura y numero de creditos elegidos
+     * of asignaturaProfesor para un profesor.
+     *
+     * @param json
+     * @return the ResponseEntity  con AsignaturaProfesorFrontDto with status 200 (OK) and with body the subjects of a teacher, or with status 404 (Not Found)
+     */
+    @PostMapping (value = "/asignaturaprofesors/getasigprof")
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Timed
+    public ResponseEntity<AsignaturaProfesorFrontDto> getAsignaturaProfesorFrontDto(@RequestBody Map<String, String> json) {
+        log.debug("REST POST getProfesorSubjects: {}", json);
+        Asignatura asignatura = new Asignatura();
+        AsignaturaProfesorFrontDto asignaturaProfesorFrontDto = new AsignaturaProfesorFrontDto();
+        AsignaturaFrontDto asignaturaFrontDto = new AsignaturaFrontDto();
+
+        String idProfesor = json.get("id_profesor");
+        String idAsignatura = json.get("id_asignatura");
+        String fechaseleccion = json.get("fecha_seleccion");
+
+        Long id_prof= Long.parseLong(idProfesor, 10);
+        Long  id_asignatura = Long.parseLong(idAsignatura, 10);
+        java.sql.Timestamp timeStampDate = null;
+
+        try {
+            DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");/*yyyy-MM-dd'T'hh:mm:ss.SSS*/
+            //Date date = formatter.parse(fechaseleccion);
+            Date date = formatter.parse(fechaseleccion);
+            log.debug("date fecha de seleccion: {}", date);
+            timeStampDate = new Timestamp(date.getTime());
+            log.debug("timeStampDate fecha de seleccion: {}", timeStampDate);
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        if (id_prof != null && id_asignatura != null && timeStampDate!= null) {
+            AsignaturaProfesorId asignaturaProfesorId = new AsignaturaProfesorId(id_prof, id_asignatura, timeStampDate);
+            log.debug("asignaturaprofesor id  en getsubjct:  {}",asignaturaProfesorId);
+            Profesor profesor = profesorRepository.findOne(id_prof);
+            AsignaturaProfesor asignaturaProfesor = asignaturaProfesorRepository.findOne(asignaturaProfesorId);
+            log.debug("asignaturaprofesor  a buscar en getsubjct:  {}, EXIST: {}",asignaturaProfesor , asignaturaProfesorRepository.exists(asignaturaProfesorId));
+            if (asignaturaProfesorRepository.exists(asignaturaProfesorId)) {
+                log.debug("asignaturaProfesorId (asignaturaProfesorId) EXISTIS");
+                asignatura = asignaturaProfesor.getAsignatura();
+                log.debug("asignaturaProfesor.getAsignatura() {}", asignatura);
+                log.debug("asignaturaProfesor.getProfesor() {}", profesor);
+                asignaturaProfesorFrontDto = new AsignaturaProfesorFrontDto(asignaturaProfesor, profesor.getPrimerApellido()+" "+profesor.getSegundoApellido()+" "+
+                    profesor.getNombre(),asignatura.getNombre());
+                log.debug("asignaturaProfesorFrontDto  {}", asignaturaProfesorFrontDto);
+            }
+        }
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorFrontDto));
     }
 /*
     /**

@@ -13,6 +13,20 @@
                 "asignatura-profesor" : "Asignaciones",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
+            "lists":{
+                "list": "Listados",
+                "info_teacher": "Listado por profesor",
+                "points_used_list": "Listado creditos cubiertos",
+                "points_used_list_title":"Listado Creditos",
+                "total_used_points": "Número total de créditos cubiertos por el departamento: ",
+                "logged": {
+                    "message": "Número total de créditos cubiertos por el departamento:    {{num_creditos}}"
+                },
+                "coverage_asignaturas": "Listado cobertura de asignaturas",
+                "teacher_witout-subjects": "Listado profesores sin selección",
+                "subjects_more-sellections": "Listado de asignaturas que sobrepasan los créditos totales de selección"
+                
+            },
             "account": {
                 "main": "Cuenta",
                 "settings": "Ajustes",

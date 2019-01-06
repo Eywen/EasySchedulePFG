@@ -25,6 +25,9 @@
                 "createLabel":"Crear nueva Asignación",
                 "conflicts": "Conflictos"
             },
+            "list": {
+                "info_teacher_asig": "Listado de asignaturas por profesor"
+            },
             "nombre": "Nombre",
             "primerApellido": "Primer Apellido",
             "segundoApellido": "Segundo Apellido",

@@ -32,12 +32,12 @@
 
         Profesor.get({id:  $stateParams.id_prof}, function (result) {
             vm.profesor = result;    
-            console.log("get profesor: ",result);
+            //console.log("get profesor: ",result);
             
             Profesor.getSubjects({id: $stateParams.id_prof}, function (result) {
-                console.log("asignaturas del profesor: ", result);
+                //console.log("asignaturas del profesor: ", result);
                 vm.asigdeprof = result;
-                console.log("todas las asignaturas : ", vm.asignaturas);
+                //console.log("todas las asignaturas : ", vm.asignaturas);
                 //elimino  de la lista a mostrar para elegir la asignautra que esta modificando el profesor.
                 
                 //vm.witoutAsig = vm.asignaturas;
@@ -53,7 +53,7 @@
                         }
                     }*/
                 }
-                console.log("lista de asignaturas que puede elegir (si la que está modificando): ", vm.witoutAsig);
+                //console.log("lista de asignaturas que puede elegir (si la que está modificando): ", vm.witoutAsig);
             });
         });
        
@@ -72,19 +72,19 @@
             /*var indiceOldAsig = vm.profesor.asignaturas.findIndex(findFirstLargeNumber);
             vm.profesor.asignaturas.splice(indiceOldAsig, 1);*/
             
-            console.log('profesor ',vm.profesor);
-            console.log('vm.miNuevaAsig ',vm.miNuevaAsig.id);
+            //console.log('profesor ',vm.profesor);
+            //console.log('vm.miNuevaAsig ',vm.miNuevaAsig.id);
             //console.log('vm.profesor.asignaturas  nuevo ',vm.profesor.asignaturas);
             /**
              * Esta llamada es necesaria para obtener los datos de la asignaturas ya que al modificar una o eliminarla hay q mandar la pk: idprofesor, idasignatura, fechaseleccion
              */
 
             Profesor.getAsignaturasProfesor({id: vm.profesor.id}, function (result){
-                console.log ("getAsignaturasProfesor: ", result);
+                //console.log ("getAsignaturasProfesor: ", result);
                 vm.asignaturaProfesor = result;
                 var i =0;
                 var encontrado = false;
-                console.log ("vm.asignaturaProfesor: ", result);
+                //console.log ("vm.asignaturaProfesor: ", result);
                 while (i < vm.asignaturaProfesor.length && !encontrado){
                     if (vm.asignaturaProfesor[i].id_profesor == vm.profesor.id){
                         encontrado = true;
@@ -102,10 +102,10 @@
                     fecha_seleccion: vm.fechaSeleccion,//vm.asignaturaProfesor.profAsigpk.fechaSeleccion
                     num_creditos: vm.num_creditos
                 };
-                console.log("id_profesor ",vm.datosmodificacion.id_profesor);
-                console.log("id_asignatura_nueva ",vm.datosmodificacion.id_asignatura_nueva);
-                console.log("id_asignatura_antigua ",vm.datosmodificacion.id_asignatura_antigua);
-                console.log("fecha_seleccion ",vm.datosmodificacion.fecha_seleccion);
+                //console.log("id_profesor ",vm.datosmodificacion.id_profesor);
+                //console.log("id_asignatura_nueva ",vm.datosmodificacion.id_asignatura_nueva);
+                //console.log("id_asignatura_antigua ",vm.datosmodificacion.id_asignatura_antigua);
+                //console.log("fecha_seleccion ",vm.datosmodificacion.fecha_seleccion);
                 //console.log('vm.asigAutomaticData: ',vm.asigAutomaticData);
                 //AsignaturaProfesor.save(vm.asigAutomaticData,onSaveSuccess,onSaveError);
                 /*
@@ -130,16 +130,16 @@
         function numGrupos (){
             //--0612-18--  ESTADO 4. NUMERO GRUPOS COMPLETO? 
             AsignaturaProfesor.getasignaturainprof( vm.miNuevaAsig, function (result){
-                console.log("getasignaturainprof para sabe cuantos grupos hay ocupados de esta asignatura ", result);
+                //console.log("getasignaturainprof para sabe cuantos grupos hay ocupados de esta asignatura ", result);
                 vm.asignaturainprofesors = result;        
                 if (vm.miNuevaAsig.num_grupos > vm.asignaturainprofesors.length){
-                    console.log("num de grupo de asignatura no está completo, asignación automatica entonces ", vm.asignaturainprofesors.length);
+                    //console.log("num de grupo de asignatura no está completo, asignación automatica entonces ", vm.asignaturainprofesors.length);
                     //asignacionAutomatica();
                     AsignaturaProfesor.update(vm.datosmodificacion,onSaveSuccess,onSaveError);
                 }else{
                     //ESTADO 8 OBTENGO LA LISTA DE PRIORIDADES MAYORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
                     AsignaturaProfesor.gethighestpriority({asignaturaId: vm.miNuevaAsig.id, profesorId: vm.profesor.id}, function (result){
-                        console.log('gethighestpriority ',result);
+                        //console.log('gethighestpriority ',result);
                         vm.highestPriority = result;
                         var menorMayorPriridad = vm.highestPriority.length - 1;
                         if (vm.highestPriority.length == 0){
@@ -148,7 +148,7 @@
                         }
                         // si la longitud del attay de prioridades mayores a la del profesor es igual al numero de grupos de la asignatura. todas las prioridades son mayores
                         if (vm.highestPriority.length >= vm.miNuevaAsig.num_grupos){
-                            console.log("todas las prioridades son mayores a la del profesor");
+                            //console.log("todas las prioridades son mayores a la del profesor");
                             //--PRUEBA 09-12-18 OK--26-11-18 n:m OK-- ESTADO 9 DEL DIAGRAMA DE ESTADOS DE ASIGNACION 
                             alert ("No puede elegir esta asignatura. Los cursos están completos");
                         }else {
@@ -170,9 +170,9 @@
                             }else{
                                 //--26-11-18 n:m OK-- ESTADO 10 OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
                                 AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miNuevaAsig.id, profesorId: vm.profesor.id}, function (result){
-                                    console.log('getlowerpriority ',result);
+                                    //console.log('getlowerpriority ',result);
                                     vm.lowerPriority = result;
-                                    console.log ("longitud de lower array: ",vm.lowerPriority.length);
+                                   // console.log ("longitud de lower array: ",vm.lowerPriority.length);
                                     //--26-11-18 n:m -- ahora mismo sale aunque el frupo no este lleno, solo con q no haya nadiecon menos prioridad. revisar
                                     if (vm.lowerPriority.length == 0){
                                         console.log("array lower vacio");
@@ -194,10 +194,10 @@
                                         };
                                         
                                         AsignaturaProfesor.reasignacion(vm.datosReasignacion, function (result){
-                                            console.log("reasignación ", result);
+                                            //console.log("reasignación ", result);
                                             AsignaturaProfesor.delete(vm.datoseliminar,
                                                 function () {
-                                                   console.log("borrada asignatura antigua", vm.asignaturaAntigua);
+                                                  // console.log("borrada asignatura antigua", vm.asignaturaAntigua);
                                                   
                                                 });
                                         },onSaveSuccess, onSaveError);

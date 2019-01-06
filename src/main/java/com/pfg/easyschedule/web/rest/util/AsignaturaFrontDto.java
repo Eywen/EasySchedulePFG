@@ -1,5 +1,7 @@
 package com.pfg.easyschedule.web.rest.util;
 
+import com.pfg.easyschedule.domain.Asignatura;
+
 import java.io.Serializable;
 
 public class AsignaturaFrontDto implements Serializable {
@@ -38,6 +40,21 @@ public class AsignaturaFrontDto implements Serializable {
         this.num_grupos_teoricos = num_grupos_teoricos;
         this.num_grupos_practicas = num_grupos_practicas;
         this.usu_alta = usu_alta;
+        this.fecha_seleccion = fecha_seleccion;
+    }
+
+    public AsignaturaFrontDto (Asignatura asignatura, String fecha_seleccion){
+        this.id = asignatura.getId();
+        this.nombre = asignatura.getNombre();
+        this.plan = asignatura.getPlan();
+        this.titulacion = asignatura.getTitulacion();
+        this.creditos = asignatura.getCreditos();
+        this.num_grupos = asignatura.getNum_grupos();
+        this.creditos_teoricos = asignatura.getCreditos_teoricos();
+        this.creditos_practicas = asignatura.getCreditos_practicas();
+        this.num_grupos_teoricos = asignatura.getNum_grupos_teoricos();
+        this.num_grupos_practicas = asignatura.getNum_grupos_practicas();
+        this.usu_alta = asignatura.getUsu_alta();
         this.fecha_seleccion = fecha_seleccion;
     }
 

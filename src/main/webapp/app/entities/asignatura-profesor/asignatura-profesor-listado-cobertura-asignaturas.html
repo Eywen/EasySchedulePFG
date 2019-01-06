@@ -1,0 +1,30 @@
+<div ng-class="{active: vm.$state.includes('admin')}"   has-authority="ROLE_ADMIN">
+    <h2 data-translate="global.menu.lists.coverage_asignaturas">subject's coverage list</h2>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead> 
+                <tr>
+                    <th>Asignatura</th>
+                    <th>Créditos cubiertos</th>
+                    <th>Créditos totales</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="asig in vm.asigCreditosTotalNoCubiertos | orderBy:'asignatura.nombre' track by asig.asignatura.id" >
+                    <td>{{asig.asignatura.nombre}}</td>
+                    <td>{{asig.creditosCubiertos}}</td>
+                    <td>{{asig.creditosPermitidos}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount" items-per-page="vm.itemsPerPage"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" items-per-page="vm.itemsPerPage" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+    </div>
+</div>

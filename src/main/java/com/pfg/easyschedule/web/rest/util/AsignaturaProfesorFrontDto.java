@@ -9,21 +9,27 @@ public class AsignaturaProfesorFrontDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private long id_profesor;
+    private String nombre_profesor;
     private long id_asig;
+    private String nombre_asig;
     private String fecha_seleccion;
     private  Long num_creditos;
 
-    public AsignaturaProfesorFrontDto(long id_profesor, long id_asig, String fecha_seleccion, Long num_creditos) {
+    public AsignaturaProfesorFrontDto(long id_profesor, long id_asig, String fecha_seleccion, Long num_creditos, String nombre_profesor, String nombre_asig) {
         this.id_profesor = id_profesor;
         this.id_asig = id_asig;
         this.fecha_seleccion = fecha_seleccion;
         this.num_creditos = num_creditos;
+        this.nombre_profesor = nombre_profesor;
+        this.nombre_asig = nombre_asig;
     }
-    public AsignaturaProfesorFrontDto (AsignaturaProfesor asignaturaProfesor){
+    public AsignaturaProfesorFrontDto (AsignaturaProfesor asignaturaProfesor, String nombre_profesor, String nombre_asig){
         this.id_profesor = asignaturaProfesor.getProfAsigpk().getId_profesor();
         this.id_asig = asignaturaProfesor.getProfAsigpk().getId_asignatura();
         this.fecha_seleccion = asignaturaProfesor.getProfAsigpk().getFechaSeleccion().toString();
         this.num_creditos = asignaturaProfesor.getNum_creditos();
+        this.nombre_profesor = nombre_profesor;
+        this.nombre_asig = nombre_asig;
     }
 
     public AsignaturaProfesorFrontDto(Long id_prof, Long id_asignatura, String fechaseleccion) {
@@ -66,6 +72,22 @@ public class AsignaturaProfesorFrontDto implements Serializable {
 
     public void setNum_creditos(Long num_creditos) {
         this.num_creditos = num_creditos;
+    }
+
+    public String getNombre_profesor() {
+        return nombre_profesor;
+    }
+
+    public void setNombre_profesor(String nombre_profesor) {
+        this.nombre_profesor = nombre_profesor;
+    }
+
+    public String getNombre_asig() {
+        return nombre_asig;
+    }
+
+    public void setNombre_asig(String nombre_asig) {
+        this.nombre_asig = nombre_asig;
     }
 
     @Override
