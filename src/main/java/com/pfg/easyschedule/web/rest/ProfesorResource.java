@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.validation.Valid;
 import java.net.URI;
@@ -43,15 +44,14 @@ public class ProfesorResource {
     private final Logger log = LoggerFactory.getLogger(ProfesorResource.class);
 
     private static final String ENTITY_NAME = "profesor";
-
-    private final ProfesorRepository profesorRepository;
-    private final AsignaturaRepository asignaturaRepository;
+    @Inject
+    private  ProfesorRepository profesorRepository;
+    @Inject
+    private  AsignaturaRepository asignaturaRepository;
     @Autowired
     EntityManager em;
 
-    public ProfesorResource(ProfesorRepository profesorRepository, AsignaturaRepository asignaturaRepository) {
-        this.profesorRepository = profesorRepository;
-        this.asignaturaRepository = asignaturaRepository;
+    public ProfesorResource(){
     }
 
     /**

@@ -37,7 +37,8 @@
             "numCreditosImpartir": "Creditos Impartir",
             "prioridad": "Prioridad",
             "usuAlta": "Usu Alta",
-            "asignatura": "Asignatura"
+            "asignatura": "Asignatura",
+            "login": "Login"
         }
     }
 }

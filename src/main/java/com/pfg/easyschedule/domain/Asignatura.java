@@ -68,8 +68,8 @@ public class Asignatura implements Serializable {
     private Set<Profesor> profesors = new HashSet<>();*/
    @OneToMany(
        mappedBy = "asignatura",
-       cascade = CascadeType.ALL,
-       orphanRemoval = true
+       cascade = CascadeType.ALL
+       //orphanRemoval = true
    )
    @Fetch(FetchMode.SUBSELECT)
    private List<AsignaturaProfesor> profesors = new ArrayList<>();

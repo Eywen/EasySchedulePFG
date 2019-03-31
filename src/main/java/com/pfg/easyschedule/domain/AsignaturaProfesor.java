@@ -57,10 +57,12 @@ public class AsignaturaProfesor implements Serializable {
         return profasigpk;
     }
 
-
-
     public void setProfAsigpk(AsignaturaProfesorId profAsigpk) {
         this.profasigpk = profAsigpk;
+    }
+    public AsignaturaProfesor profasigpk (AsignaturaProfesorId profasigpk) {
+        this.profasigpk = profasigpk;
+        return this;
     }
 
     public Long getNum_creditos() {
@@ -70,7 +72,10 @@ public class AsignaturaProfesor implements Serializable {
     public void setNum_creditos(Long num_creditos) {
         this.num_creditos = num_creditos;
     }
-
+    public AsignaturaProfesor num_creditos (Long num_creditos) {
+        this.num_creditos = num_creditos;
+        return this;
+    }
     public Profesor getProfesor() {
         return profesor;
     }

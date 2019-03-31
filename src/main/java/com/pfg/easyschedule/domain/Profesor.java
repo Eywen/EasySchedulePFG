@@ -36,7 +36,7 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparat
     private String segundoApellido;
 
     @NotNull
-    @Max(value = 3)
+    //@Max(value = 3)
     @Column(name = "cod_profesor", nullable = false)
     private Integer codProfesor;
 
@@ -52,7 +52,7 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparat
     private Integer numCreditosImpartir;
 
     @NotNull
-    @Max(value = 2)
+    //@Max(value = 2)
     @Column(name = "prioridad", nullable = false)
     private Integer prioridad;
 
@@ -60,38 +60,30 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparat
     @Column(name = "usu_alta", nullable = false)
     private String usuAlta;
 
-
-
-    /*@ManyToMany(cascade = { CascadeType.ALL }, fetch=FetchType.EAGER)
-    @JoinTable(
-        name = "asignatura_profesor",
-        joinColumns = { @JoinColumn(name = "id_profesor") },
-        inverseJoinColumns = { @JoinColumn(name = "id_asignatura") }
-    )*/
-
-    /*@ManyToMany(mappedBy = "profesors")
-    @JsonIgnore*/
-    //private Set<Asignatura> asignaturaProfesors = new HashSet<>();
-    //private List<Asignatura> asignaturaProfesors ;
+    @NotNull
+    @Column(name = "login", nullable = false)
+    private String login;
 
     @OneToMany(
         mappedBy = "profesor",
         cascade = CascadeType.ALL,
-        fetch = FetchType.EAGER,
-        orphanRemoval = true
+        fetch = FetchType.EAGER
+        //orphanRemoval = true
     )
     @JsonIgnore
     private List<AsignaturaProfesor> asignaturaProfesors;
 
-    @NotNull
-    @Column(name = "login", nullable = false)
-    private String login;
 
     public Profesor() {
     }
 
     public String getLogin() {
         return login;
+    }
+
+    public Profesor login(String login) {
+        this.login = login;
+        return this;
     }
 
     public void setLogin(String login) {
