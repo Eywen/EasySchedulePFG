@@ -66,7 +66,7 @@
                     creditos(result, profesor, asignaturas);
                 },onSuccess, onError);
             }); 
-           
+           console.log('profesor', vm.profesors);
         }
 
         function creditos(asigProf, profesor, asignaturas){
@@ -110,7 +110,7 @@
            // console.log ("push: ", datosListado);
             
             vm.listado.push (datosListado);
-            //console.log("listado: ",vm.listado);
+            console.log("listado: ",vm.listado);
         }
 
         function onSuccess(data) {
