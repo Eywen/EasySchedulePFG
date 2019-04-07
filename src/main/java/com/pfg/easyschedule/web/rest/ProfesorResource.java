@@ -115,6 +115,9 @@ public class ProfesorResource {
         for (Profesor profesor: listaprofesores) {
             log.debug("++++++++++++++++++++LISTA ASIGNATURA PROFESOR {} ++++++++++++++++++",profesor.getAsignaturaProfesors());
         }
+        for (Profesor pag: page) {
+            log.debug("xxxxxxxxxxxxxxxxxx LISTA ASIGNATURA PROFESOR PAGE{} xxxxxxxxxxxx",pag);
+        }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/profesors");
         log.debug("Page all Profesors"+page);
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);

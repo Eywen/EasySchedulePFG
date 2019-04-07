@@ -22,7 +22,7 @@
                 "logged": {
                     "message": "Número total de créditos cubiertos por el departamento:    {{num_creditos}}"
                 },
-                "coverage_asignaturas": "Listado cobertura de asignaturas",
+                "coverage_asignaturas": "Listado asignaturas seleccionadas sin el total de cobertura",
                 "teacher_witout-subjects": "Listado profesores sin selección",
                 "subjects_more-sellections": "Listado de asignaturas que sobrepasan los créditos totales de selección"
                 
