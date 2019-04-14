@@ -10,7 +10,14 @@
         var resourceUrl =  'api/asignaturaprofesors';
 
         return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
+            'query': { method: 'GET', isArray: true, transformResponse: function (data) {
+                if (data) {
+                    data = angular.fromJson(data);
+                   // console.log('service AsignaturaProfesor all: ', data);
+                }
+                
+                return data;
+            }},
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

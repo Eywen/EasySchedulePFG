@@ -1,6 +1,9 @@
 package com.pfg.easyschedule.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.pfg.easyschedule.web.rest.ProfesorResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -18,6 +21,7 @@ import java.util.Objects;
 public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparator<Profesor>
 
     private static final long serialVersionUID = 1L;
+    //private final Logger log = LoggerFactory.getLogger(Profesor.class);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -217,6 +221,7 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparat
 
 
     public List<AsignaturaProfesor> getAsignaturaProfesors() {
+       // log.debug("............................................{}",asignaturaProfesors);
         return asignaturaProfesors;
     }
 

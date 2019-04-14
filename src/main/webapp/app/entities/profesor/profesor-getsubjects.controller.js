@@ -11,7 +11,8 @@
     function ProfesorGetSubjectsController($scope, $rootScope, $stateParams, entity, Profesor, Asignatura,
         AlertService, paginationConstants, pagingParams,previousState) {
         var vm = this;
-        vm.asigprof = entity;
+        //vm.asigprof = entity;
+        vm.asigprof = [];
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
@@ -58,7 +59,17 @@
             });
         }
         var vm = this;
-        vm.asigprof = entity;
+        vm.asigp = entity;
+        var indice = 1;
+       vm.asigp.forEach(element => {
+            var datos = {
+                index : indice,
+                asig : element
+            }
+            vm.asigprof.push(datos);
+            indice++;
+        });
+        //vm.asigprof = entity;
         vm.previousState = previousState.name;
         console.log('vm: ',vm.asigprof);
 
