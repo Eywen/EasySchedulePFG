@@ -55,6 +55,9 @@ public class Asignatura implements Serializable {
     @Column(name = "num_grupos_practicas")
     private Integer num_grupos_practicas;
 
+    @Column (name = "creditos_totales")
+    private Integer creditos_totales;
+
     @NotNull
     @Column(name = "usu_alta", nullable = false)
     private String usu_alta;
@@ -200,6 +203,19 @@ public class Asignatura implements Serializable {
 
     public void setNum_grupos_practicas(Integer num_grupos_practicas) {
         this.num_grupos_practicas = num_grupos_practicas;
+    }
+
+    public Integer getCreditos_totales() {
+        return creditos_totales;
+    }
+
+    public void setCreditos_totales(Integer creditos_totales) {
+        this.creditos_totales = creditos_totales;
+    }
+
+    public Asignatura creditos_totales(Integer creditos_totales) {
+        this.creditos_totales = creditos_totales;
+        return this;
     }
 
     public String getUsu_alta() {
