@@ -18,17 +18,17 @@
 	            </tr>
 	        </thead>
 		    <tbody>
-		    <tr  ng-repeat="asignatura in vm.asigprof track by asignatura.id">
-		        	<td>{{asignatura.id}}</td>
-		        	<td>{{asignatura.nombre}}</td>
-		        	<td>{{asignatura.plan}}</td>
-                    <td>{{asignatura.titulacion}}</td>
-                    <td>{{asignatura.creditos}}</td>
-                    <td>{{asignatura.num_grupos}}</td>
-                    <td>{{asignatura.creditos_teoricos}}</td>
-                    <td>{{asignatura.creditos_practicas}}</td>
-                    <td>{{asignatura.num_grupos_teoricos}}</td>
-                    <td>{{asignatura.num_grupos_practicas}}</td>
+		    <tr  ng-repeat="asignatura in vm.asigprof track by asignatura.index">
+		        	<td>{{asignatura.asig.id}}</td>
+		        	<td>{{asignatura.asig.nombre}}</td>
+		        	<td>{{asignatura.asig.plan}}</td>
+                    <td>{{asignatura.asig.titulacion}}</td>
+                    <td>{{asignatura.asig.creditos}}</td>
+                    <td>{{asignatura.asig.num_grupos}}</td>
+                    <td>{{asignatura.asig.creditos_teoricos}}</td>
+                    <td>{{asignatura.asig.creditos_practicas}}</td>
+                    <td>{{asignatura.asig.num_grupos_teoricos}}</td>
+                    <td>{{asignatura.asig.num_grupos_practicas}}</td>
 		        </tr>
 		    </tbody>
 	     </table>
