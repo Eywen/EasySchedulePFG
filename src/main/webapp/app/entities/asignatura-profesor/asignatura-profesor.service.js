@@ -28,7 +28,7 @@
                 }
             },
             'update': { method:'PUT' },
-            'checkAsignaturainProfesor': { //ok 09-12-08
+            'checkAsignaturainProfesor': { //ok 09-12-18
                 method: 'GET',
                 url: 'api/asignaturaprofesors/checkAsignaturainProfesor/:asignaturaId/:profesorId',
                 transformResponse: function (data){
@@ -36,22 +36,28 @@
                     return data; 
                 }
             },
-            'countsubject': {//ok 09-12-08 
+            'countsubject': {//ok 09-12-18 
                 method: 'GET',
                 url: 'api/asignaturaprofesors/countsubject/:asignaturaId/:profesorId',
                 transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
                     //console.log('service  countsubject ',data);
                     return data;
                 }
             },
-            'getcreditosdisponibles': {//ok 09-12-08
+            'getcreditosdisponibles': {//ok 09-12-18
                 method: 'GET',
                 url: 'api/asignaturaprofesors/creditosdisponibles/:profesorId',
                 transformResponse: function (data) {
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
                     return data;
                 }
             },
-            'getasignaturainprof': { //ok 09-12-08
+            'getasignaturainprof': { //ok 09-12-18
                 method: 'POST',
                 isArray:true,
                 url: 'api/asignaturaprofesors/asignaturainprof',
@@ -63,7 +69,7 @@
                     return data;
                 }
             },
-            'gethighestpriority': { //ok 09-12-08
+            'gethighestpriority': { //ok 09-12-18
                 method: 'GET',
                 isArray:true,
                 url: 'api/asignaturaprofesors/gethighestpriority/:asignaturaId/:profesorId',
@@ -75,7 +81,7 @@
                     return data;
                 }
             },
-            'getlowerpriority': {//ok 09-12-08 
+            'getlowerpriority': {//ok 09-12-18 
                 method: 'GET',
                 isArray:true,
                 url: 'api/asignaturaprofesors/getlowerpriority/:asignaturaId/:profesorId',
@@ -87,6 +93,16 @@
                     return data;
                 }
             }, 
+            'getNumCredAsigSeleccionados': { //21-04-19
+                method: 'POST',
+                url: 'api/asignaturaprofesors/numCreditosSeleccionadosAsignatura',
+                transformResponse: function (data){
+                    if (data){
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
             'reasignacion': { //OK 09-12-18
                 method: 'POST',
                 url: 'api/asignaturaprofesors/reasignacion',

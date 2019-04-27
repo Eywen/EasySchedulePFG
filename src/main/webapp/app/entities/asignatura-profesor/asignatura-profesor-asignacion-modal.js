@@ -35,6 +35,7 @@
            
                 console.log ("fuera de save", result);
                 if (result = "1"){
+                    ///CAMINO SI DEL ESTADO 1
                     vm.checkAsignaturainProfesor  = true;
                     //--26-11-18 n:m OK-- ESTADO 2. OBTENER EL NUMERO DE VECES QUE UN PROFESOR TIENE ASIGNADA UNA ASIGNATURA
                     AsignaturaProfesor.countsubject({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (resultcount){
@@ -42,18 +43,25 @@
 
                         //--02-12-18--  ESTADO 3. COMPROBAR SI EL PROFESOR TIENE EL MAXIMO DE ASIGNATURAS PERMITIDAS
                         AsignaturaProfesor.getcreditosdisponibles({profesorId: vm.miProfesor.id}, function (resultcreditosdisponibles){
-                            vm.maxAsignaturas = parseInt(resultcreditosdisponibles[0]);
+                            // 210419 ---vm.maxAsignaturas = parseInt(resultcreditosdisponibles[0]);
+                            vm.profNumCreditosLibres = resultcreditosdisponibles.creditosLibres;
                             //--02-12-18-- ESTADO 6 . NO PUEDE ELEGIR MAS ESTA ASIGNATURA NO TIENE LOS CREDITOS LIBRES SUFICIENTES PARA ELEGIRLA
-                            if (vm.maxAsignaturas == 0){
+                            //210419----if (vm.maxAsignaturas == 0){
+                            if (vm.profNumCreditosLibres == 0 || vm.profNumCreditosLibres < vm.miAsignatura.creditos){
+                                //210419--CAMINO SI DEL ESTADO 3
                                 alert ("No puede elegir esta asignatura. No tiene los créditos libres suficientes para elegirla");
                             }else{
                                 //ESTADO 4
-                                numGrupos();
+                                //210419----numGrupos();
+                                //210419--CAMINO NO DEL ESTADO 3
+                                numCreditosTotalesAsig();
                             }
                         });
+
+                        //new Estado 3. COMPROBAR SI EL PROFESOR TIENE CREDITOS DISPONIBLES PARA SELECCIONAR LA ASIGNATURA
                     });
                 }else{
-                    //ESTADO 4
+                    //CAMINO NO DEL ESTADO 1. ESTADO 4
                     numGrupos();
                 }
             });
@@ -78,7 +86,7 @@
                             console.log("no hay prioridades mayores a la del profesor");
                             
                         }
-                        // si la longitud del attay de prioridades mayores a la del profesor es igual al numero de grupos de la asignatura. todas las prioridades son mayores
+                        // si la longitud del array de prioridades mayores a la del profesor es igual al numero de grupos de la asignatura. todas las prioridades son mayores
                         if (vm.highestPriority.length >= vm.miAsignatura.num_grupos){
                             console.log("todas las prioridades son mayores a la del profesor");
                             //--PRUEBA 09-12-18 OK--26-11-18 n:m OK-- ESTADO 9 DEL DIAGRAMA DE ESTADOS DE ASIGNACION 
@@ -147,8 +155,26 @@
                 } 
         }
 
-        /////////
+        /////////14-14-19
+        function numCreditosTotalesAsig (){
+            console.log("nueva comprobacion por num creditos totales");
+            ///210419---- ESTADO 4.  Numero de creditos totales de la asignatura cubierto?
+            AsignaturaProfesor.getNumCredAsigSeleccionados(vm.miAsignatura, function (result){
+                console.log(" para saber cuantos creditos hay libres de esta asignatura ", result);
+                //var numCreditosAsignaturaCubiertos =  parseInt(result[0]);
+                var numCreditosAsignaturaCubiertos = result.numCreditosSeleccionadosAsignatura;
+                if (numCreditosAsignaturaCubiertos < (vm.miAsignatura.creditos_totales-vm.miAsignatura.creditos)){
+                    console.log("num de creditos de asignatura no está completo, asignación automatica entonces ", numCreditosAsignaturaCubiertos);
+                    asignacionAutomatica();
+                }else{
+                    console.log("num de creditos de asignatura completo. Hay que comprobar prioridades de profesores por si hay que reasignar");
+                }
+            },onSaveSuccess, onSaveError)
+             ///210419---- ESTADO 3.
+             
 
+        }
+        ////
         function onSaveSuccess (result) {
             $scope.$emit('easyscheduleApp:asignaturaUpdate', result);
             $uibModalInstance.close(result);
@@ -158,6 +184,8 @@
         function onSaveError () {
             vm.isSaving = false;
         }
+
+        
 
     };
 })

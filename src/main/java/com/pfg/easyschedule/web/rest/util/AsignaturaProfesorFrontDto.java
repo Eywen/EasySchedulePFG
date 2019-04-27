@@ -13,7 +13,18 @@ public class AsignaturaProfesorFrontDto implements Serializable {
     private long id_asig;
     private String nombre_asig;
     private String fecha_seleccion;
+    private Long numVecesAsigSeleccionada;
+
+    public Long getNumCreditosSeleccionadosAsignatura() {
+        return numCreditosSeleccionadosAsignatura;
+    }
+
+    public void setNumCreditosSeleccionadosAsignatura(Long numCreditosSeleccionadosAsignatura) {
+        this.numCreditosSeleccionadosAsignatura = numCreditosSeleccionadosAsignatura;
+    }
+
     private  Long num_creditos;
+    private Long numCreditosSeleccionadosAsignatura;//almacena el numero de creditos seleccionados en una asignatura
 
     public AsignaturaProfesorFrontDto(long id_profesor, long id_asig, String fecha_seleccion, Long num_creditos, String nombre_profesor, String nombre_asig) {
         this.id_profesor = id_profesor;
@@ -88,6 +99,14 @@ public class AsignaturaProfesorFrontDto implements Serializable {
 
     public void setNombre_asig(String nombre_asig) {
         this.nombre_asig = nombre_asig;
+    }
+
+    public Long getNumVecesAsigSeleccionada() {
+        return numVecesAsigSeleccionada;
+    }
+
+    public void setNumVecesAsigSeleccionada(Long numVecesAsigSeleccionada) {
+        this.numVecesAsigSeleccionada = numVecesAsigSeleccionada;
     }
 
     @Override
