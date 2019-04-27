@@ -54,6 +54,7 @@ public class AsignaturaResource {
         if (asignatura.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert(ENTITY_NAME, "idexists", "A new asignatura cannot already have an ID")).body(null);
         }
+        asignatura.setCreditos_totales(asignatura.getCreditos() * asignatura.getNum_grupos());
         Asignatura result = asignaturaRepository.save(asignatura);
         return ResponseEntity.created(new URI("/api/asignaturas/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

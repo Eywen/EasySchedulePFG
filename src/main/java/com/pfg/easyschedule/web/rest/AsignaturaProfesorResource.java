@@ -12,18 +12,19 @@ import com.pfg.easyschedule.service.MailService;
 import com.pfg.easyschedule.web.rest.util.AsignaturaFrontDto;
 import com.pfg.easyschedule.web.rest.util.AsignaturaProfesorFrontDto;
 import com.pfg.easyschedule.web.rest.util.HeaderUtil;
+import com.pfg.easyschedule.web.rest.util.ProfesorFrontDto;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -294,16 +295,18 @@ public class AsignaturaProfesorResource {
      *
      * @param asignaturaId asignatura que se desea buscar
      * @param profesorId profesor del que se quiere saber cuantas veces tiene asignada dicha asignatura
-     * @return un Integer que contiene el número de veces que tiene asignado un profesor una asignatura
+     * @return AsignaturaProfesorFrontDto. Contiene el atributo numVecesAsigSeleccionada.
+     * Éste es el número de veces que tiene asignado un profesor una asignatura
      */
    @GetMapping ("/asignaturaprofesors/countsubject/{asignaturaId}/{profesorId}")
    @Timed
-    public ResponseEntity <Integer> countSubject (@PathVariable Long asignaturaId, @PathVariable Long profesorId){
+    public ResponseEntity <AsignaturaProfesorFrontDto> countSubject (@PathVariable Long asignaturaId, @PathVariable Long profesorId){
        log.debug("REST request count subject to a teacher from asignaturaId: {} profesorId: {}", asignaturaId, profesorId);
        List <AsignaturaProfesor> asignaturaProfesorList = null;
        asignaturaProfesorList = asignaturaProfesorRepository.findByprofyasig(profesorId,asignaturaId);
-
-       return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorList.size()));
+       AsignaturaProfesorFrontDto asignaturaProfesorFrontDto = new AsignaturaProfesorFrontDto();
+       asignaturaProfesorFrontDto.setNumVecesAsigSeleccionada((long) asignaturaProfesorList.size());
+       return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorFrontDto));
    }
 //////////////////////////////modificacion a n:m  26-11-208- OK
     /**
@@ -450,11 +453,12 @@ public class AsignaturaProfesorResource {
     /**
      * Servicio GET
      * @param profesorId  id del profesor
-     * @return numero de creditos restantes para cubrir el total de creditos a impartir por el profesor
+     * @return ProfesorFrontDto. Contiene un atributo que indica el número de creditos restantes
+     * para cubrir el total de creditos a impartir por el profesor
      */
     @GetMapping ("/asignaturaprofesors/creditosdisponibles/{profesorId}")
     @Timed
-    public ResponseEntity<Long> getHighestPriority(@PathVariable Long profesorId) {
+    public ResponseEntity<ProfesorFrontDto> getCreditosdisponibles(@PathVariable Long profesorId) {
         log.debug("REST request to get highest priority from  profesorId: {}", profesorId);
 
         Profesor profesor = profesorRepository.findOne(profesorId);
@@ -468,7 +472,9 @@ public class AsignaturaProfesorResource {
 
         long creditosDisponibles = creditosTotales - creditosSeleccionados;
         log.debug("creditosDisponibles: {}", creditosDisponibles);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(creditosDisponibles));
+        ProfesorFrontDto profesorFrontDto = new ProfesorFrontDto();
+        profesorFrontDto.setCreditosLibres(creditosDisponibles);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(profesorFrontDto));
     }
     ///////////////////////reasignacion/:profmenorprioridadId/:profesorid
     /**
@@ -630,7 +636,30 @@ public class AsignaturaProfesorResource {
         }
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorFrontDto));
     }
-/*
+
+
+    /**
+     * @param asignatura  to find
+     * @return the ResponseEntity with status 200 (OK) and with body the profesors, or with status 404 (Not Found)
+     */
+    @PostMapping (value  = "/asignaturaprofesors/numCreditosSeleccionadosAsignatura",
+        produces = { MediaType.APPLICATION_JSON_VALUE })
+    @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
+    @Timed
+    public ResponseEntity<AsignaturaProfesorFrontDto> getNumCreditosSeleccionadosAsignatura(@RequestBody Asignatura asignatura) {
+        log.debug("REST request to get getNumCreditosSeleccionadosAsignatura: {}", asignatura);
+        List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
+        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByAsignatura(asignatura.getId());
+        Long numCreditosSeleccionados = Long.valueOf(0);
+        for (AsignaturaProfesor asigProf: asignaturaProfesorList ) {
+            //profesoresList.add(asigProf.getProfesor());
+            numCreditosSeleccionados= numCreditosSeleccionados + asigProf.getNum_creditos();
+        }
+        log.debug(" CREDITOS SELECCIONADOS DE ASIGNATURA : {} = ", asignatura, numCreditosSeleccionados);
+        AsignaturaProfesorFrontDto asignaturaProfesorFrontDto = new AsignaturaProfesorFrontDto();
+        asignaturaProfesorFrontDto.setNumCreditosSeleccionadosAsignatura(numCreditosSeleccionados);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(asignaturaProfesorFrontDto));
+    }
     /**
      * @param datos  list of teachers to find their prioritys and priority actual  teacher
      * @return the ResponseEntity with status 200 (OK) and with body the profesors lower prioritys, or with status 404 (Not Found)
