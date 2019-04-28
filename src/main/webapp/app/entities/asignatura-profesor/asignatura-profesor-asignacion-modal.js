@@ -168,7 +168,74 @@
                     asignacionAutomatica();
                 }else{
                     console.log("num de creditos de asignatura completo. Hay que comprobar prioridades de profesores por si hay que reasignar");
+                    //CAMINO DE NO DEL ESTADO 4, VA AL ESTADO 7: BUSCAR ASIGNATURA EN PROFESORES
+                    //ESTADO 8 OBTENGO LA LISTA DE PRIORIDADES MAYORES A LA DEL PROFESOR QUE SE QUIERE HACER LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
+                    AsignaturaProfesor.gethighestpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+                        console.log('gethighestpriority ',result);
+                        vm.highestPriority = result;
+                        var menorMayorPriridad = vm.highestPriority.length - 1;
+                        if (vm.highestPriority.length <= 0){
+                            console.log("no hay prioridades mayores a la del profesor");
+                            
+                        }
+                        // si la longitud del array de prioridades mayores a la del profesor es igual al numero de grupos de la asignatura. 
+                        //todas las prioridades son mayores
+                        if (vm.highestPriority.length >= vm.miAsignatura.num_grupos){
+                            console.log("todas las prioridades son mayores a la del profesor");
+                            //--PRUEBA 09-12-18 OK--26-11-18 n:m OK-- ESTADO 9 DEL DIAGRAMA DE ESTADOS DE ASIGNACION 
+                            alert ("No puede elegir esta asignatura. Los cursos están completos");
+                        }else {
+                            //getasignaturainprof para sabe cuantos grupos hay ocupados de esta asignatura
+                            AsignaturaProfesor.getasignaturainprof( vm.miAsignatura, function (result){
+                                console.log("getasignaturainprof para sabe cuantos grupos hay ocupados de esta asignatura ", result);
+                                //si todas los grupos están llenos y los tiene asignados el profesor que esta haciendo la seleccion
+                                vm.asignaturainprofesors = result;
+                                vm.prioridadIgual = true;
+                                vm.asignaturainprofesors.forEach(profesor => {
+                                    if (profesor.id != vm.miProfesor.id){
+                                        vm.prioridadIgual = false;
+                                    }
+                                });
+                                //si estan todos los cursos asignados, el profesor tiene un cursos de esos asignado y todos los demas que tiene seleccionada la
+                                //asignatura tiene mas prioridad que el profesor
+                                var ultimaPosicion = vm.asignaturainprofesors.length - 1;
+                                if (vm.asignaturainprofesors[ultimaPosicion].id == vm.miProfesor.id && vm.prioridadIgual === false){
+                                    alert ("No puede elegir esta asignatura. Los cursos están completos ");
+                                }
+                                if (vm.prioridadIgual === true){
+                                    alert ("No puede elegir esta asignatura. Los cursos están completos y están todos asignados a usted");
+                                }else{
+                                    //--26-11-18 n:m OK-- ESTADO 10 OBTENGO LA LISTA DE PRIORIDADES MENORES A LA DEL PROFESOR QUE SE QUIERE HACER 
+                                    //LA ASIGNACION DE LA LISTA DE PROFESORES QUE TIENEN UNA ASIGNATURA
+                                    AsignaturaProfesor.getlowerpriority({asignaturaId: vm.miAsignatura.id, profesorId: vm.miProfesor.id}, function (result){
+                                        console.log('getlowerpriority ',result);
+                                        vm.lowerPriority = result;
+                                        console.log ("longitud de lower array: ",vm.lowerPriority.length);
+                                        //--26-11-18 n:m -- ahora mismo sale aunque el frupo no este lleno, solo con q no haya nadiecon menos prioridad. revisar
+                                        if (vm.lowerPriority.length == 0){
+                                            console.log("array lower vacio");
+                                            //alert ("No puede elegir esta asignatura. Los cursos están completos");
+                                        }else{
+                                            var menorPriridad = vm.lowerPriority.length - 1;
+                                            //--02-12-18-- ESTADO 11 Y 12-- borrar asignatura al profesor con prioridad menor en la lista lowerpriority y asignarsela al profesor que está haciendo la selección
+                                            vm.datosReasignacion = {
+                                                profmenorprioridadId: vm.lowerPriority[menorPriridad].id, 
+                                                profesorid: vm.miProfesor.id,
+                                                asignaturaId: vm.miAsignatura.id,
+                                                num_creditos: vm.numCreditos,
+                                            };
+                                            AsignaturaProfesor.reasignacion(vm.datosReasignacion, function (result){
+                                                console.log("reasignación ", result);
+                                            });
+                                            
+                                        }     
+                                    });
+                                }
+                            });
+                        }
+                    });
                 }
+                
             },onSaveSuccess, onSaveError)
              ///210419---- ESTADO 3.
              
