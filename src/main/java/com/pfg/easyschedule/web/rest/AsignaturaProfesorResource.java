@@ -488,7 +488,8 @@ public class AsignaturaProfesorResource {
     ///////////////////////reasignacion/:profmenorprioridadId/:profesorid
     /**
      * Servicio POST
-     * Borra al profesor de menor prioridad la asignatura que tiene asignada y se la asigna al profesor que tiene mayor prioridad
+     * Borra al profesor de menor prioridad la asignatura que tiene asignada y se la asigna al
+     * profesor que tiene mayor prioridad
      * @param datos  Map con los datos del id de los profesores de menor y mayor prioridad, el id de la asignatura y el número de creditos
      * para la reasignacion de una asignatura     * @return numero de creditos restantes para cubrir el total de creditos a impartir por el profesor
      */
@@ -592,7 +593,8 @@ public class AsignaturaProfesorResource {
 
     ////////creado 25-12-18
     /**
-     * POST  /asignaturaprofesors/getasigprof : get the "asignaturaProfesor" con nombre de profesor, nombre de asignatura y numero de creditos elegidos
+     * POST  /asignaturaprofesors/getasigprof : get the "asignaturaProfesor" con nombre de profesor,
+     * nombre de asignatura y numero de creditos elegidos
      * of asignaturaProfesor para un profesor.
      *
      * @param json

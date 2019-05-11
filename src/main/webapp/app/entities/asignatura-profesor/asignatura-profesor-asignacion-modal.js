@@ -62,13 +62,14 @@
                     });
                 }else{
                     //CAMINO NO DEL ESTADO 1. ESTADO 4
-                    numGrupos();
+                    //numGrupos();
+                    numCreditosTotalesAsig();
                 }
             });
         }
         ///////////
 
-        function numGrupos (){
+      /*  function numGrupos (){
             //--0612-18--  ESTADO 4. NUMERO GRUPOS COMPLETO? 
             AsignaturaProfesor.getasignaturainprof( vm.miAsignatura, function (result){
                 console.log("getasignaturainprof para sabe cuantos grupos hay ocupados de esta asignatura ", result);
@@ -137,7 +138,7 @@
                     });
                 }
             },onSaveSuccess, onSaveError);
-        }
+        }*/
         
         function asignacionAutomatica (){
                 //ESTADO 5.  ASIGNACION AUTOMATICA

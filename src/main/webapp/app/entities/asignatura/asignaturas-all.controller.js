@@ -11,6 +11,7 @@
 
         var vm = this;
         console.log ("asignatura.all")
+        vm.asignaturasMostrar = Asignatura.query();;
         /*vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
