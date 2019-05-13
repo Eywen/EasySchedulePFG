@@ -27,15 +27,15 @@
         loadAll();
 
         function loadAll () {
-            Profesor.get({id: vm.profesor}, function (result) {
-                vm.prof = result;
-                Asignatura.query({
-                    page: pagingParams.page - 1,
-                    size: vm.itemsPerPage,
-                    sort: sort()
-                }, onSuccess, onError);
-            });
-
+            // Profesor.get({id: vm.profesor}, function (result) {
+            //     vm.prof = result;
+                
+            // });
+            Asignatura.query({
+                page: pagingParams.page - 1,
+                size: vm.itemsPerPage,
+                sort: sort()
+            }, onSuccess, onError);
             function onSuccess(data, headers) {
                 console.log('asignatura query all ',data);
                 vm.links = ParseLinks.parse(headers('link'));
