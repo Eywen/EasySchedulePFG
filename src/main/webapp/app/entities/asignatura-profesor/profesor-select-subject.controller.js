@@ -160,14 +160,15 @@
         }*/
         function asignacionAutomatica (){
             //ESTADO 5.  ASIGNACION AUTOMATICA
+            console.log('vm.numCreditos',vm.numCreditos);
             if (vm.miAsignatura.id !== null && vm.datos.id_profesor !== null ){
                 vm.datosAsignacion = {
                     profesorid:  vm.profesorId,
                     asignaturaId: vm.miAsignatura.id,
                     num_creditos: vm.numCreditos
                 };
-                //metodo sin implementar
-                AsignaturaProfesor.save(vm.datos, onSaveSuccess, onSaveError);
+                console.log('vm.datosAsignacion',vm.datosAsignacion);
+                AsignaturaProfesor.save(vm.datosAsignacion, onSaveSuccess, onSaveError);
                 /*vm.miProfesor.asignaturas.push(vm.miAsignatura);
                 console.log('vm.profesor.asignaturas  push ',vm.miProfesor.asignaturas);
                 Profesor.update(vm.miProfesor,onSaveSuccess,onSaveError);*/
@@ -245,14 +246,14 @@
                                         };
                                         AsignaturaProfesor.reasignacion(vm.datosReasignacion, function (result){
                                             console.log("reasignación ", result);
-                                        }, onSaveSuccess, onSaveError);
+                                        });
                                         
                                     }     
-                                }, onSaveSuccess, onSaveError);
+                                });
                             }
-                        }, onSaveSuccess, onSaveError);
+                        });
                     }
-                }, onSaveSuccess, onSaveError);
+                });
             }
             
         },onSaveSuccess, onSaveError)
