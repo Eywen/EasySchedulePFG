@@ -10,7 +10,7 @@
     function EditAsignacionDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Asignatura, Profesor, AsignaturaProfesor) {
         var vm = this;
 
-        //vm.asignatura = entity;
+        vm.asignatura = entity;
         vm.clear = clear;
         vm.save = save;
         vm.asignaturas= Asignatura.query();
@@ -84,7 +84,8 @@
                 vm.asignaturaProfesor = result;
                 var i =0;
                 var encontrado = false;
-                //console.log ("vm.asignaturaProfesor: ", result);
+                console.log ("vm.asignaturaProfesor: ", result);
+                console.log("vm.asignatura: ",vm.asignatura);
                 while (i < vm.asignaturaProfesor.length && !encontrado){
                     if (vm.asignaturaProfesor[i].id_profesor == vm.profesor.id){
                         encontrado = true;
@@ -102,6 +103,7 @@
                     fecha_seleccion: vm.fechaSeleccion,//vm.asignaturaProfesor.profAsigpk.fechaSeleccion
                     num_creditos: vm.num_creditos
                 };
+                console.log('vm.datosmodificacion',vm.datosmodificacion);
                 //console.log("id_profesor ",vm.profesor.id);
                 //console.log("id_asignatura_nueva ",vm.datosmodificacion.id_asignatura_nueva);
                 //console.log("id_asignatura_antigua ",vm.datosmodificacion.id_asignatura_antigua);
@@ -317,21 +319,20 @@
                                                 asignaturaId: vm.miNuevaAsig.id,
                                                 num_creditos: vm.misNuevosCreditos,
                                             };
-                                            
-                                           /* vm.datoseliminar = {
-                                                id_profesor:vm.lowerPriority[menorPriridad].id, //se le borra al profesor de menor prioridad
+                                            //datos de la asgnatura modificada que se deben borrar
+                                         /*    vm.datoseliminar = {
+                                                id_profesor:vm.profesor.id, 
                                                 id_asignatura: vm.asignaturaAntiguaId, 
                                                 fecha_seleccion: vm.fechaSeleccion,
-                                            };*/
+                                            }; */
                                             AsignaturaProfesor.reasignacion(vm.datosReasignacion, function (result){
                                                 console.log("reasignación ", result);
-                                                AsignaturaProfesor.delete(vm.datoseliminar,
+                                                AsignaturaProfesor.delete(vm.asignatura,
                                                     function () {
-                                                    // console.log("borrada asignatura antigua", vm.asignaturaAntigua);
+                                                     console.log("borrada asignatura antigua", vm.asignaturaAntigua);
                                                     
                                                 });
-                                            });
-                                            
+                                            });                                            
                                         }     
                                     });
                                 }

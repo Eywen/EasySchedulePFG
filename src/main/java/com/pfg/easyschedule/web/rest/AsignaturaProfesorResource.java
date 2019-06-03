@@ -102,7 +102,7 @@ public class AsignaturaProfesorResource {
     //@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     @Timed
     public ResponseEntity<AsignaturaFrontDto> deleteAsignaturaProfesors(@RequestBody Map<String, String> asignaturaborrar) {
-        log.debug("REST POST getProfesorSubjects: {}", asignaturaborrar);
+        log.debug("REST POST deleteAsignaturaProfesors: {}", asignaturaborrar);
         Asignatura asignatura = new Asignatura();
         AsignaturaFrontDto asignaturaFrontDto = new AsignaturaFrontDto();
         String idProfesor = asignaturaborrar.get("id_profesor");
@@ -494,7 +494,7 @@ public class AsignaturaProfesorResource {
      * para la reasignacion de una asignatura     * @return numero de creditos restantes para cubrir el total de creditos a impartir por el profesor
      */
     @PostMapping ("/asignaturaprofesors/reasignacion")
-    @Timed
+    //@Timed
     public ResponseEntity<Boolean> reasignacion(@RequestBody Map<String, String> datos) {
         log.debug("REST POST reasignacion datos: {} ",datos);
         String profMenorPrioridadId = datos.get("profmenorprioridadId");
@@ -547,12 +547,13 @@ public class AsignaturaProfesorResource {
                 +" Debe entrar nuevamente a la aplicación y seleccionar una asignatura nueva.";
             //Borra la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
             asignaturaProfesorRepository.delete(asignaturaProfesor.getProfAsigpk());
+            log.debug("exist asig borrada: {} ",asignaturaProfesorRepository.exists(asignaturaProfesor.getProfAsigpk()));
             log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
             log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
             mailService.sendEmail(
                 "blk20100@gmail.com",
                 "Mensaje de prueba desde spring",
-                mensaje,
+                "prueba de mail sender",
                 true,
                 true
             );
@@ -575,7 +576,7 @@ public class AsignaturaProfesorResource {
             mailService.sendEmail(
                 "blk20100@gmail.com",
                 "Mensaje de prueba desde spring",
-                mensaje,
+                "prueba de mail sender",
                 true,
                 true
             );
