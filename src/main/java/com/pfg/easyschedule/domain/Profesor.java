@@ -81,6 +81,23 @@ public class Profesor implements Serializable ,  Comparable<Profesor>{//Comparat
     public Profesor() {
     }
 
+    public Profesor(Long id, String nombre, String primerApellido, String segundoApellido,
+                    Integer codProfesor, String email, String categoria, Integer numCreditosImpartir,
+                    Integer prioridad, String usuAlta, String login) {
+        this.id = id;
+        this.nombre = nombre;
+        this.primerApellido = primerApellido;
+        this.segundoApellido = segundoApellido;
+        this.codProfesor = codProfesor;
+        this.email = email;
+        this.categoria = categoria;
+        this.numCreditosImpartir = numCreditosImpartir;
+        this.prioridad = prioridad;
+        this.usuAlta = usuAlta;
+        this.login = login;
+        this.asignaturaProfesors = asignaturaProfesors;
+    }
+
     public String getLogin() {
         return login;
     }

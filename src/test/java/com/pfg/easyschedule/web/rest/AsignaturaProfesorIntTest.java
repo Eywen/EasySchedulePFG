@@ -1,6 +1,7 @@
 package com.pfg.easyschedule.web.rest;
 
 import com.pfg.easyschedule.EasyscheduleApp;
+import com.pfg.easyschedule.domain.Asignatura;
 import com.pfg.easyschedule.domain.AsignaturaProfesor;
 import com.pfg.easyschedule.domain.AsignaturaProfesorId;
 import com.pfg.easyschedule.domain.Profesor;
@@ -8,6 +9,7 @@ import com.pfg.easyschedule.repository.AsignaturaProfesorRepository;
 import com.pfg.easyschedule.repository.AsignaturaRepository;
 import com.pfg.easyschedule.repository.ProfesorRepository;
 import com.pfg.easyschedule.web.rest.errors.ExceptionTranslator;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,11 +43,47 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = EasyscheduleApp.class)
 public class AsignaturaProfesorIntTest {
-    private static final Long DEFAULT_NUM_CREDITOS = Long.valueOf(3);
+   /* private static final Long DEFAULT_NUM_CREDITOS = Long.valueOf(3);
     private  static final Date fecha_seleccion = new Date();
     private static final long id_asig = 1;
-    private static final long id_profesor = 2;
+    private static final long id_profesor = 2;*/
     private static final Long num_creditos = Long.valueOf(6);
+////
+    private static final String DEFAULT_NOMBRE = "AAAAAAAAAA";
+    private static final String UPDATED_NOMBRE = "BBBBBBBBBB";
+
+    private static final String DEFAULT_PRIMER_APELLIDO = "AAAAAAAAAA";
+    private static final String UPDATED_PRIMER_APELLIDO = "BBBBBBBBBB";
+
+    private static final String DEFAULT_SEGUNDO_APELLIDO = "AAAAAAAAAA";
+    private static final String UPDATED_SEGUNDO_APELLIDO = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_COD_PROFESOR = 3;
+    private static final Integer UPDATED_COD_PROFESOR = 2;
+
+    private static final String DEFAULT_EMAIL = "AAAAAAAAAA";
+    private static final String UPDATED_EMAIL = "BBBBBBBBBB";
+
+    private static final String DEFAULT_CATEGORIA = "AAAAAAAAAA";
+    private static final String UPDATED_CATEGORIA = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_NUM_CREDITOS_IMPARTIR = 1;
+    private static final Integer UPDATED_NUM_CREDITOS_IMPARTIR = 2;
+
+    private static final Integer DEFAULT_PRIORIDAD = 2;
+    private static final Integer UPDATED_PRIORIDAD = 1;
+
+    private static final String DEFAULT_LOGIN = "CCCCC";
+    private static final String UPDATED_LOGIN = "FFFFFF";
+
+    private static final String DEFAULT_USU_ALTA = "AAAAAAAAAA";
+    private static final String UPDATED_USU_ALTA = "BBBBBBBBBB";
+
+
+    private  static final Date fecha_seleccion = new Date();
+    private static final long id_asig = 1L;
+    private static final long id_profesor = 2L;
+    private static final Long DEFAULT_NUM_CREDITOS = Long.valueOf(6);
 
 
 
@@ -74,12 +112,18 @@ public class AsignaturaProfesorIntTest {
 
     private AsignaturaProfesor asignaturaProfesor;
     private AsignaturaProfesorId asignaturaProfesorId;
-
+    private MockMvc restProfesorMockMvc;
 
 
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
+        Profesor profesor = new Profesor(1L, "aaa", "bbb", "ccc",
+            1, "ddd", "A", 6,
+            1, "eee", "fff");
+        Asignatura asignatura = new Asignatura(1L, "aaa", "bbb", "ccc", 6,
+            1, 1, 1, 1, 1,
+            1, "ddd");
         asignaturaProfesorId = new AsignaturaProfesorId(id_profesor, id_asig, fecha_seleccion);
         AsignaturaProfesor asignaturaProfesor = new AsignaturaProfesor(asignaturaProfesorId, num_creditos);
         this.restAsignaturaProfesorMockMvc = MockMvcBuilders.standaloneSetup(asignaturaProfesor)
@@ -97,9 +141,14 @@ public class AsignaturaProfesorIntTest {
     public static AsignaturaProfesor createEntity(EntityManager em) {
         AsignaturaProfesor asignaturaProfesor = new AsignaturaProfesor()
             .profasigpk(new AsignaturaProfesorId(id_profesor, id_asig, fecha_seleccion))
-            .num_creditos(num_creditos)
+            .num_creditos(DEFAULT_NUM_CREDITOS)
             ;
         return asignaturaProfesor;
+    }
+
+    @Before
+    public void before() throws Exception {
+        Assume.assumeTrue("someValue".equals(System.getProperty("some.property")));
     }
 
     @Before
@@ -154,23 +203,24 @@ public class AsignaturaProfesorIntTest {
         assertThat(profesorList).hasSize(databaseSizeBeforeCreate);
     }*/
 
-    /*@Test
+    @Test
     @Transactional
-    public void checkNombreIsRequired() throws Exception {
-        int databaseSizeBeforeTest = profesorRepository.findAll().size();
+    public void checkNumCreditosIsRequired() throws Exception {
+        int databaseSizeBeforeTest = asignaturaProfesorRepository.findAll().size();
         // set the field null
-        asignaturaProfesor.setNombre(null);
+        asignaturaProfesor.setNum_creditos(null);
 
         // Create the Profesor, which fails.
 
-        restProfesorMockMvc.perform(post("/api/profesors")
+        restAsignaturaProfesorMockMvc.perform(post("/api/asignaturaprofesors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(asignaturaProfesor)))
             .andExpect(status().isBadRequest());
+            //.andExpect(status().isOk());
 
-        List<Profesor> profesorList = profesorRepository.findAll();
-        assertThat(profesorList).hasSize(databaseSizeBeforeTest);
-    }*/
+        List<AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findAll();
+        assertThat(asignaturaProfesorList).hasSize(databaseSizeBeforeTest);
+    }
 
     /*@Test
     @Transactional
@@ -208,7 +258,7 @@ public class AsignaturaProfesorIntTest {
         assertThat(profesorList).hasSize(databaseSizeBeforeTest);
     }*/
 
-    /*@Test
+   /* @Test
     @Transactional
     public void checkCodProfesorIsRequired() throws Exception {
         int databaseSizeBeforeTest = profesorRepository.findAll().size();
@@ -226,7 +276,7 @@ public class AsignaturaProfesorIntTest {
         assertThat(profesorList).hasSize(databaseSizeBeforeTest);
     }*/
 
-   /* @Test
+    /*@Test
     @Transactional
     public void checkEmailIsRequired() throws Exception {
         int databaseSizeBeforeTest = profesorRepository.findAll().size();
@@ -244,7 +294,7 @@ public class AsignaturaProfesorIntTest {
         assertThat(profesorList).hasSize(databaseSizeBeforeTest);
     }*/
 
-   /* @Test
+    /*@Test
     @Transactional
     public void checkCategoriaIsRequired() throws Exception {
         int databaseSizeBeforeTest = profesorRepository.findAll().size();
@@ -280,7 +330,7 @@ public class AsignaturaProfesorIntTest {
         assertThat(profesorList).hasSize(databaseSizeBeforeTest);
     }*/
 
-   /* @Test
+    /*@Test
     @Transactional
     public void checkLoginRequired() throws Exception {
         int databaseSizeBeforeTest = profesorRepository.findAll().size();
@@ -318,28 +368,23 @@ public class AsignaturaProfesorIntTest {
 
     /*@Test
     @Transactional
-    public void getAllProfesors() throws Exception {
+    public void getAllAsignaturasProfesor() throws Exception {
         // Initialize the database
-        profesorRepository.saveAndFlush(asignaturaProfesor);
+        asignaturaProfesorRepository.saveAndFlush(asignaturaProfesor);
 
         // Get all the profesorList
-        restProfesorMockMvc.perform(get("/api/profesors?sort=id,desc"))
+        restProfesorMockMvc.perform(get("/api/asignaturaprofesors"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(asignaturaProfesor.getId().intValue())))
-            .andExpect(jsonPath("$.[*].nombre").value(hasItem(DEFAULT_NUM_CREDITOS.toString())))
-            .andExpect(jsonPath("$.[*].primerApellido").value(hasItem(DEFAULT_PRIMER_APELLIDO.toString())))
-            .andExpect(jsonPath("$.[*].segundoApellido").value(hasItem(DEFAULT_SEGUNDO_APELLIDO.toString())))
-            .andExpect(jsonPath("$.[*].codProfesor").value(hasItem(DEFAULT_COD_PROFESOR)))
-            .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL.toString())))
-            .andExpect(jsonPath("$.[*].categoria").value(hasItem(DEFAULT_CATEGORIA.toString())))
-            .andExpect(jsonPath("$.[*].numCreditosImpartir").value(hasItem(DEFAULT_NUM_CREDITOS_IMPARTIR)))
-            .andExpect(jsonPath("$.[*].prioridad").value(hasItem(DEFAULT_PRIORIDAD)))
-            .andExpect(jsonPath("$.[*].usuAlta").value(hasItem(DEFAULT_USU_ALTA.toString())))
+            .andExpect(jsonPath("$.[*].idProfesor").value(hasItem(asignaturaProfesor.getProfAsigpk().getId_profesor())))
+            .andExpect(jsonPath("$.[*].idAsignatura").value(hasItem(asignaturaProfesor.getProfAsigpk().getId_asignatura())))
+            .andExpect(jsonPath("$.[*].fechaSeleccion").value(hasItem(asignaturaProfesor.getProfAsigpk().getFechaSeleccion())))
+            .andExpect(jsonPath("$.[*].num_creditos").value(hasItem(num_creditos.toString())))
+
         ;
     }*/
 
-   /* @Test
+    /*@Test
     @Transactional
     public void getProfesor() throws Exception {
         // Initialize the database
@@ -372,78 +417,68 @@ public class AsignaturaProfesorIntTest {
 
     /*@Test
     @Transactional
-    public void updateProfesor() throws Exception {
+    public void updateAsignaturaProfesor() throws Exception {
         // Initialize the database
-        profesorRepository.saveAndFlush(asignaturaProfesor);
-        int databaseSizeBeforeUpdate = profesorRepository.findAll().size();
+        asignaturaProfesorRepository.saveAndFlush(asignaturaProfesor);
+        int databaseSizeBeforeUpdate = asignaturaProfesorRepository.findAll().size();
 
         // Update the asignaturaProfesor
-        Profesor updatedProfesor = profesorRepository.findOne(asignaturaProfesor.getId());
-        updatedProfesor
-            .nombre(UPDATED_NOMBRE)
-            .primerApellido(UPDATED_PRIMER_APELLIDO)
-            .segundoApellido(UPDATED_SEGUNDO_APELLIDO)
-            .codProfesor(UPDATED_COD_PROFESOR)
-            .email(UPDATED_EMAIL)
-            .categoria(UPDATED_CATEGORIA)
-            .numCreditosImpartir(UPDATED_NUM_CREDITOS_IMPARTIR)
-            .prioridad(UPDATED_PRIORIDAD)
-            .usuAlta(UPDATED_USU_ALTA)
-            .login(UPDATED_LOGIN);
+        AsignaturaProfesor updatedAsignaturaProfesor = asignaturaProfesorRepository.findOne(asignaturaProfesor.getProfAsigpk());
+        updatedAsignaturaProfesor
+            .num_creditos(num_creditos)
+           ;
 
-        restProfesorMockMvc.perform(put("/api/profesors")
+        restAsignaturaProfesorMockMvc.perform(put("/api/asignaturaprofesors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(updatedProfesor)))
+            .content(TestUtil.convertObjectToJsonBytes(updatedAsignaturaProfesor)))
             .andExpect(status().isOk());
 
         // Validate the Profesor in the database
-        List<Profesor> profesorList = profesorRepository.findAll();
-        assertThat(profesorList).hasSize(databaseSizeBeforeUpdate);
-        Profesor testProfesor = profesorList.get(profesorList.size() - 1);
-        assertThat(testProfesor.getNombre()).isEqualTo(UPDATED_NOMBRE);
-        assertThat(testProfesor.getPrimerApellido()).isEqualTo(UPDATED_PRIMER_APELLIDO);
-        assertThat(testProfesor.getSegundoApellido()).isEqualTo(UPDATED_SEGUNDO_APELLIDO);
-        assertThat(testProfesor.getCodProfesor()).isEqualTo(UPDATED_COD_PROFESOR);
-        assertThat(testProfesor.getEmail()).isEqualTo(UPDATED_EMAIL);
-        assertThat(testProfesor.getCategoria()).isEqualTo(UPDATED_CATEGORIA);
-        assertThat(testProfesor.getNumCreditosImpartir()).isEqualTo(UPDATED_NUM_CREDITOS_IMPARTIR);
-        assertThat(testProfesor.getPrioridad()).isEqualTo(UPDATED_PRIORIDAD);
-        assertThat(testProfesor.getUsuAlta()).isEqualTo(UPDATED_USU_ALTA);
+        List<AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findAll();
+        assertThat(asignaturaProfesorList).hasSize(databaseSizeBeforeUpdate);
+        AsignaturaProfesor testAsignaturaProfesor = asignaturaProfesorList.get(asignaturaProfesorList.size() - 1);
+        assertThat(testAsignaturaProfesor.getNum_creditos()).isEqualTo(num_creditos);
     }*/
 
-    /*@Test
+    @Test
     @Transactional
-    public void updateNonExistingProfesor() throws Exception {
-        int databaseSizeBeforeUpdate = profesorRepository.findAll().size();
+    public void updateNonExistingAsignaturaProfesor() throws Exception {
+        int databaseSizeBeforeUpdate = asignaturaProfesorRepository.findAll().size();
 
-        // Create the Profesor
+        // Create the AsignaturaProfesor
 
         // If the entity doesn't have an ID, it will be created instead of just being updated
-        restProfesorMockMvc.perform(put("/api/profesors")
+        restAsignaturaProfesorMockMvc.perform(put("/api/asignaturaprofesors")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
             .content(TestUtil.convertObjectToJsonBytes(asignaturaProfesor)))
             .andExpect(status().isCreated());
 
-        // Validate the Profesor in the database
-        List<Profesor> profesorList = profesorRepository.findAll();
-        assertThat(profesorList).hasSize(databaseSizeBeforeUpdate + 1);
-    }*/
+        // Validate the AsignaturaProfesor in the database
+        List<AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findAll();
+        assertThat(asignaturaProfesorList).hasSize(databaseSizeBeforeUpdate + 1);
+    }
 
-   /* @Test
+    /*@Test
     @Transactional
-    public void deleteProfesor() throws Exception {
+    public void deleteAsignaturaProfesor() throws Exception {
         // Initialize the database
-        profesorRepository.saveAndFlush(asignaturaProfesor);
-        int databaseSizeBeforeDelete = profesorRepository.findAll().size();
+        asignaturaProfesorRepository.saveAndFlush(asignaturaProfesor);
+        int databaseSizeBeforeDelete = asignaturaProfesorRepository.findAll().size();
 
         // Get the asignaturaProfesor
-        restProfesorMockMvc.perform(delete("/api/profesors/{id}", asignaturaProfesor.getId())
+        /*restAsignaturaProfesorMockMvc.perform(post("/api/asignaturaprofesors/deleteselection", asignaturaProfesor.getId())
             .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());*/
+
+       /* restAsignaturaProfesorMockMvc.perform(post("/api/asignaturaprofesors/deleteselection")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(asignaturaProfesor)))
+            //.andExpect(status().isBadRequest());
             .andExpect(status().isOk());
 
         // Validate the database is empty
-        List<Profesor> profesorList = profesorRepository.findAll();
-        assertThat(profesorList).hasSize(databaseSizeBeforeDelete - 1);
+        List<AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findAll();
+        assertThat(asignaturaProfesorList).hasSize(databaseSizeBeforeDelete - 1);
     }*/
 
     /*@Test
