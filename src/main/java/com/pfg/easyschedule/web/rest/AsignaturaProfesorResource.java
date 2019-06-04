@@ -551,9 +551,9 @@ public class AsignaturaProfesorResource {
             log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
             log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
             mailService.sendEmail(
-                "blk20100@gmail.com",
+                "blnk20100@gmail.com",
                 "Mensaje de prueba desde spring",
-                "prueba de mail sender",
+                mensaje,
                 true,
                 true
             );
@@ -574,9 +574,9 @@ public class AsignaturaProfesorResource {
                 +" Debe entrar nuevamente a la aplicación y seleccionar una asignatura nueva.";
 
             mailService.sendEmail(
-                "blk20100@gmail.com",
+                "blnk20100@gmail.com",
                 "Mensaje de prueba desde spring",
-                "prueba de mail sender",
+                mensaje,
                 true,
                 true
             );
