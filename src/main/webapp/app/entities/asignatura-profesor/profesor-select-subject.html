@@ -8,15 +8,21 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <p data-translate="easyscheduleApp.asignatura.select.question" translate-values="{id: '{{vm.asignatura.id}}'}">Are you sure you want to select this Asignatura?</p
+        <p data-translate="easyscheduleApp.asignatura.select.question" translate-values="{id: '{{vm.asignatura.id}}'}">
+            Are you sure you want to select this Asignatura?</p
         
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="number" ng-model="vm.numCreditos" placeholder="Número de créditos"/>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear(vm.profesorId)">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span data-translate="entity.action.cancel">Cancel</span>
         </button>
         <button type="submit" ng-disabled="deleteForm.$invalid" class="btn btn-primary">
-            <span class=""glyphicon glyphicon-save""></span>&nbsp;<span data-translate="entity.action.save">Save</span>
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span data-translate="entity.action.save">Save</span>
         </button>
     </div>
 </form>

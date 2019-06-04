@@ -20,7 +20,7 @@
         vm.success = null;
 
         $timeout(function (){angular.element('#login').focus();});
-
+       // console.log("logueado: ", vm.login);
         function register () {
             if (vm.registerAccount.password !== vm.confirmPassword) {
                 vm.doNotMatch = 'ERROR';

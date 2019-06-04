@@ -6,22 +6,22 @@
         <table class="jh-table table table-striped">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span></th>
-                    <th jh-sort-by="nombre"><span data-translate="easyscheduleApp.asignatura.nombre">Nombre</span></th>
-                    <th jh-sort-by="plan"><span data-translate="easyscheduleApp.asignatura.plan">Plan</span></th>
-                    <th jh-sort-by="titulacion"><span data-translate="easyscheduleApp.asignatura.titulacion">Titulacion</span></th>
-                    <th jh-sort-by="creditos"><span data-translate="easyscheduleApp.asignatura.creditos">Creditos</span></th>
-                    <th jh-sort-by="num_grupos"><span data-translate="easyscheduleApp.asignatura.num_grupos">Num Grupos</span></th>
-                    <th jh-sort-by="creditos_teoricos"><span data-translate="easyscheduleApp.asignatura.creditos_teoricos">Creditos Teoricos</span></th>
-                    <th jh-sort-by="creditos_practicas"><span data-translate="easyscheduleApp.asignatura.creditos_practicas">Creditos Practicas</span></th>
-                    <th jh-sort-by="num_grupos_teoricos"><span data-translate="easyscheduleApp.asignatura.num_grupos_teoricos">Num Grupos Teoricos</span></th>
-                    <th jh-sort-by="num_grupos_practicas"><span data-translate="easyscheduleApp.asignatura.num_grupos_practicas">Num Grupos Practicas</span></th>
+                    <th jh-sort-by="id"><span data-translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="nombre"><span data-translate="easyscheduleApp.asignatura.nombre">Nombre</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="plan"><span data-translate="easyscheduleApp.asignatura.plan">Plan</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="titulacion"><span data-translate="easyscheduleApp.asignatura.titulacion">Titulacion</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creditos"><span data-translate="easyscheduleApp.asignatura.creditos">Creditos</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="num_grupos"><span data-translate="easyscheduleApp.asignatura.num_grupos">Num Grupos</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creditos_teoricos"><span data-translate="easyscheduleApp.asignatura.creditos_teoricos">Creditos Teoricos</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="creditos_practicas"><span data-translate="easyscheduleApp.asignatura.creditos_practicas">Creditos Practicas</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="num_grupos_teoricos"><span data-translate="easyscheduleApp.asignatura.num_grupos_teoricos">Num Grupos Teoricos</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="num_grupos_practicas"><span data-translate="easyscheduleApp.asignatura.num_grupos_practicas">Num Grupos Practicas</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="asignatura in  vm.asignaturaProfesors track by asignatura.id"> <!--track by asignatura.id ng-if='asignatura == vm.asignaturasMostrar' vm.asignaturaProfesors item in items | filter:x as results -->
-                    <td>{{asignatura.id}}</td>
+                <tr ng-repeat="asignatura in vm.asignaturas track by asignatura.id">
+                    <td><a ui-sref="asignatura-detail({id:asignatura.id})">{{asignatura.id}}</a></td>
                     <td>{{asignatura.nombre}}</td>
                     <td>{{asignatura.plan}}</td>
                     <td>{{asignatura.titulacion}}</td>
@@ -31,7 +31,6 @@
                     <td>{{asignatura.creditos_practicas}}</td>
                     <td>{{asignatura.num_grupos_teoricos}}</td>
                     <td>{{asignatura.num_grupos_practicas}}</td>
-                    <td>{{vm.profesor}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
@@ -42,7 +41,7 @@
                             </button>
                             <!-- ui-sref="asignatura-profesor.selectsubject({id_prof: vm.profesor,id_asig:asignatura.id})" -->
                         </div>
-                    </td>
+                    </td> 
                 </tr>
             </tbody>
         </table>

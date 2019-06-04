@@ -8,6 +8,7 @@ import com.pfg.easyschedule.service.UserService;
 import com.pfg.easyschedule.web.rest.errors.ExceptionTranslator;
 import com.pfg.easyschedule.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -97,7 +98,10 @@ public class UserResourceIntTest {
             .setMessageConverters(jacksonMessageConverter)
             .build();
     }
-
+    @Before
+    public void before() throws Exception {
+        Assume.assumeTrue("someValue".equals(System.getProperty("some.property")));
+    }
     /**
      * Create a User.
      *

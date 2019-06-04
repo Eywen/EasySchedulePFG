@@ -10,6 +10,7 @@ import com.pfg.easyschedule.repository.AsignaturaRepository;
 import com.pfg.easyschedule.repository.ProfesorRepository;
 import com.pfg.easyschedule.web.rest.errors.ExceptionTranslator;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -122,6 +123,10 @@ public class ProfesorResourceIntTest {
             .setMessageConverters(jacksonMessageConverter).build();
     }
 
+    @Before
+    public void before() throws Exception {
+        Assume.assumeTrue("someValue".equals(System.getProperty("some.property")));
+    }
     /**
      * Create an entity for this test.
      *

@@ -80,6 +80,25 @@ public class Asignatura implements Serializable {
     public Asignatura() {
     }
 
+    public Asignatura(Long id, String nombre, String plan, String titulacion, Integer creditos,
+                      Integer num_grupos, Integer creditos_teoricos, Integer creditos_practicas,
+                      Integer num_grupos_teoricos, Integer num_grupos_practicas,
+                      Integer creditos_totales, String usu_alta) {
+        this.id = id;
+        this.nombre = nombre;
+        this.plan = plan;
+        this.titulacion = titulacion;
+        this.creditos = creditos;
+        this.num_grupos = num_grupos;
+        this.creditos_teoricos = creditos_teoricos;
+        this.creditos_practicas = creditos_practicas;
+        this.num_grupos_teoricos = num_grupos_teoricos;
+        this.num_grupos_practicas = num_grupos_practicas;
+        this.creditos_totales = creditos_totales;
+        this.usu_alta = usu_alta;
+        this.profesors = profesors;
+    }
+
     public Long getId() {
         return id;
     }

@@ -102,7 +102,7 @@ public class AsignaturaProfesorResource {
     //@Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
     @Timed
     public ResponseEntity<AsignaturaFrontDto> deleteAsignaturaProfesors(@RequestBody Map<String, String> asignaturaborrar) {
-        log.debug("REST POST getProfesorSubjects: {}", asignaturaborrar);
+        log.debug("REST POST deleteAsignaturaProfesors: {}", asignaturaborrar);
         Asignatura asignatura = new Asignatura();
         AsignaturaFrontDto asignaturaFrontDto = new AsignaturaFrontDto();
         String idProfesor = asignaturaborrar.get("id_profesor");
@@ -381,12 +381,15 @@ public class AsignaturaProfesorResource {
         List <Profesor> highestPriorityProfesor = new ArrayList<>();
         List <AsignaturaProfesor> asignaturaProfesoreList = new ArrayList<>();
         asignaturaProfesoreList = asignatura.getProfesors();
+        log.debug("asignaturaProfesoreList  : {}", asignaturaProfesoreList);
         for (AsignaturaProfesor ap: asignaturaProfesoreList
             ) {
             profesoresList.add(profesorRepository.findOne(ap.getProfAsigpk().getId_profesor()));
         }
         log.debug("profesoresList in HIGHESTPRIORITY : {}", profesoresList);
+
         highestPriorityProfesor = highestPriorityTeachers(profesoresList,prof);
+        log.debug("returngethighestpriority : {}", highestPriorityProfesor);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(highestPriorityProfesor));
     }
 
@@ -408,12 +411,16 @@ public class AsignaturaProfesorResource {
        log.debug("PROFESORESlIST IN HIGHEST PRIORITY {}",profesoresList);
         for (Profesor profesor: profesoresList
              ) {
+            log.debug("profesor.getPrioridad {}",profesor.getPrioridad());
+            log.debug("prof.getPrioridad() {}",prof.getPrioridad());
+            log.debug("profesor.getPrioridad() < prof.getPrioridad() && profesor.getId() != prof.getId() {}",profesor.getPrioridad() < prof.getPrioridad() && profesor.getId() != prof.getId());
             if (profesor.getPrioridad() < prof.getPrioridad() && profesor.getId() != prof.getId()){
                 highestPriorityProfesor.add(profesor);
             }
         }
         //ordeno los profesores por prioridad antes de devolverlos
-        profesoresList.sort(Comparator.comparing(Profesor::getPrioridad));
+        //profesoresList.sort(Comparator.comparing(Profesor::getPrioridad));
+        highestPriorityProfesor.sort(Comparator.comparing(Profesor::getPrioridad));
         log.debug("RETURN PROFESORESlIST highestPriorityProfesor {}",highestPriorityProfesor);
         return highestPriorityProfesor;
     }
@@ -421,6 +428,7 @@ public class AsignaturaProfesorResource {
     /**
      * @param asignatura  to find
      * @return the ResponseEntity with status 200 (OK) and with body the profesors, or with status 404 (Not Found)
+       Profesores que tienen asignada una asignatura
      */
     @PostMapping ("/asignaturaprofesors/asignaturainprof")
     @Transactional(propagation= Propagation.REQUIRED, readOnly=true, noRollbackFor=Exception.class)
@@ -428,7 +436,8 @@ public class AsignaturaProfesorResource {
     public ResponseEntity<List<Profesor>> getSubjectInProfesores(@RequestBody Asignatura asignatura) {
         log.debug("REST request to get asignatura in Profesors: {}", asignatura);
         List <Profesor> profesoresList = new ArrayList<>(); //profesores que tienen asignada la asignatura
-        List <AsignaturaProfesor> asignaturaProfesorList = asignaturaProfesorRepository.findByAsignatura(asignatura.getId());
+        List <AsignaturaProfesor> asignaturaProfesorList =
+            asignaturaProfesorRepository.findByAsignatura(asignatura.getId());
 
         for (AsignaturaProfesor asigProf: asignaturaProfesorList
              ) {
@@ -479,12 +488,13 @@ public class AsignaturaProfesorResource {
     ///////////////////////reasignacion/:profmenorprioridadId/:profesorid
     /**
      * Servicio POST
-     * Borra al profesor de menor prioridad la asignatura que tiene asignada y se la asigna al profesor que tiene mayor prioridad
+     * Borra al profesor de menor prioridad la asignatura que tiene asignada y se la asigna al
+     * profesor que tiene mayor prioridad
      * @param datos  Map con los datos del id de los profesores de menor y mayor prioridad, el id de la asignatura y el número de creditos
      * para la reasignacion de una asignatura     * @return numero de creditos restantes para cubrir el total de creditos a impartir por el profesor
      */
     @PostMapping ("/asignaturaprofesors/reasignacion")
-    @Timed
+    //@Timed
     public ResponseEntity<Boolean> reasignacion(@RequestBody Map<String, String> datos) {
         log.debug("REST POST reasignacion datos: {} ",datos);
         String profMenorPrioridadId = datos.get("profmenorprioridadId");
@@ -537,10 +547,11 @@ public class AsignaturaProfesorResource {
                 +" Debe entrar nuevamente a la aplicación y seleccionar una asignatura nueva.";
             //Borra la asignación de la asignatura que tenga el mismo número de créditos si existe un con el mismo num de creditos
             asignaturaProfesorRepository.delete(asignaturaProfesor.getProfAsigpk());
+            log.debug("exist asig borrada: {} ",asignaturaProfesorRepository.exists(asignaturaProfesor.getProfAsigpk()));
             log.debug("eliminada asignacion menor prioridad: {} ",asignaturaProfesor.getProfAsigpk());
             log.debug("MAILSENDER  MAILSERVICE : {}", mailService);
             mailService.sendEmail(
-                "blk20100@gmail.com",
+                "blnk20100@gmail.com",
                 "Mensaje de prueba desde spring",
                 mensaje,
                 true,
@@ -563,7 +574,7 @@ public class AsignaturaProfesorResource {
                 +" Debe entrar nuevamente a la aplicación y seleccionar una asignatura nueva.";
 
             mailService.sendEmail(
-                "blk20100@gmail.com",
+                "blnk20100@gmail.com",
                 "Mensaje de prueba desde spring",
                 mensaje,
                 true,
@@ -583,7 +594,8 @@ public class AsignaturaProfesorResource {
 
     ////////creado 25-12-18
     /**
-     * POST  /asignaturaprofesors/getasigprof : get the "asignaturaProfesor" con nombre de profesor, nombre de asignatura y numero de creditos elegidos
+     * POST  /asignaturaprofesors/getasigprof : get the "asignaturaProfesor" con nombre de profesor,
+     * nombre de asignatura y numero de creditos elegidos
      * of asignaturaProfesor para un profesor.
      *
      * @param json
