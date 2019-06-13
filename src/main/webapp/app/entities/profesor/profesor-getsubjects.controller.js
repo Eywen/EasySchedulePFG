@@ -18,7 +18,9 @@
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.itemsPerPage = paginationConstants.itemsPerPage;
+        vm.seleccionesProfesor = entity;
 
+        console.log("profesor get subjects: ", entity);
         //loadAll();
 
        /* function loadAll () {

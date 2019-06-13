@@ -246,7 +246,7 @@
                         Profesor.update(vm.profesor,onSaveSuccess,onSaveError);
                     }
                 }); */
-            
+                
         }
 
         /////////14-14-19
@@ -340,7 +340,7 @@
                         }
                     });
                 }
-                
+                $uibModalInstance.close(result);
             },onSaveSuccess, onSaveError)
             ///210419---- ESTADO 3.
      

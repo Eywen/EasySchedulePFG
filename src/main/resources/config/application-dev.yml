@@ -45,7 +45,7 @@ spring:
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
     mail:
-        host: smtp.gmail.com #Si no se envian los correos hay que desactivar el antivirus pq lo bloquea
+        host: smtp.gmail.com #Si no se envian los correos hay que desactivar el antivirus pq lo bloquea 
         port: 587
         username: avisos.pfg@gmail.com  #Replace this field with your Gmail username.
         password: avisospfg19          #Replace this field with your Gmail password.

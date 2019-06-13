@@ -3,7 +3,7 @@
         <!-- <div class="col-md-4">
             <span class="hipster img-responsive img-rounded"></span>
         </div> -->
-        <div class="col-md-8">
+        <div style="width:100%" class="col-md-8">
             <h1 data-translate="home.title">Welcome, EasySchedule</h1>
             <!-- <p class="lead" data-translate="home.subtitle">This is your homepage</p> -->
             <br><br><br>
@@ -13,7 +13,7 @@
                      </div>
                 </div><br><br>
                 <div>                
-                    <button type="submit"
+                    <button style="padding: 10px 60px; border-radius: 30px; margin-bottom: 20%" type="submit"
                             ui-sref="home.profesor({id:vm.userLogin.id})"
                             class="btn btn-primary btn-sm" ng-switch-when="true" has-authority="ROLE_USER">
                         <span class="glyphicon glyphicon-eye-open"></span>
@@ -23,9 +23,9 @@
             </div>
                        
            
-                <div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.authenticated" translate-compile>
+                <!-- <div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.authenticated" translate-compile>
                     If you want to <a class="alert-link" href="" ng-click="vm.login()">sign in</a>, you can try the default accounts:<br/>- Administrator (login="admin" and password="admin") <br/>- User (login="user" and password="user").
-                </div>
+                </div> -->
 
                 <div class="alert alert-warning" ng-switch-when="false" data-translate="global.messages.info.register" translate-compile>
                     You don't have an account yet? <a class="alert-link" ui-sref="register">Register a new account</a>

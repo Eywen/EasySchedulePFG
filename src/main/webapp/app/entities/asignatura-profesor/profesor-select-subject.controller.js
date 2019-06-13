@@ -147,6 +147,7 @@
                     }
                 }); 
             }); */
+
         }
 
         /*function onSaveSuccess (result) {
@@ -183,7 +184,7 @@
             console.log(" para saber cuantos creditos hay libres de esta asignatura ", result);
             //var numCreditosAsignaturaCubiertos =  parseInt(result[0]);
             var numCreditosAsignaturaCubiertos = result.numCreditosSeleccionadosAsignatura;
-            if (numCreditosAsignaturaCubiertos < (vm.miAsignatura.creditos_totales-vm.miAsignatura.creditos)){
+            if (numCreditosAsignaturaCubiertos <= (vm.miAsignatura.creditos_totales-vm.miAsignatura.creditos)){
                 console.log("num de creditos de asignatura no está completo, asignación automatica entonces ", numCreditosAsignaturaCubiertos);
                 asignacionAutomatica();
             }else{
@@ -255,7 +256,7 @@
                     }
                 });
             }
-            
+            $uibModalInstance.close(result);
         },onSaveSuccess, onSaveError)
          ///210419---- ESTADO 3.
          
